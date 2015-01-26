@@ -6,10 +6,10 @@ set -eo pipefail
 
 # Configuration
 #-------------------------------------------------------------------------------
-FULLSPEC="Harpegnathos saltator"
-SPEC=Hsal
-ORIGFASTA=hsa_ref_HarSal_1.0_chrUn.fa.gz
-ORIGGFF3=ref_HarSal_1.0_top_level.gff3.gz
+FULLSPEC="Megachile rotundata"
+SPEC=Mrot
+ORIGFASTA=mro_ref_MROT_1.0_chrUn.fa.gz
+ORIGGFF3=ref_MROT_1.0_top_level.gff3.gz
 WD=$1
 
 # Procedure

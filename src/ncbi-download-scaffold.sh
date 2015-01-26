@@ -1,3 +1,5 @@
+NCBIBASE=ftp://ftp.ncbi.nih.gov/genomes/$(echo $FULLSPEC | tr ' ' '_')
+
 ncbi_download_scaffold()
 {
   echo "[HymHub: $FULLSPEC] download genome from NCBI"

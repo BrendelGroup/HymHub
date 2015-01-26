@@ -8,7 +8,6 @@ set -eo pipefail
 #-------------------------------------------------------------------------------
 FULLSPEC="Apis dorsata"
 SPEC=Ador
-NCBIBASE=ftp://ftp.ncbi.nih.gov/genomes/Apis_dorsata
 ORIGFASTA=ado_ref_Apis_dorsata_1.3_chrUn.fa.gz
 ORIGGFF3=ref_Apis_dorsata_1.3_top_level.gff3.gz
 WD=$1

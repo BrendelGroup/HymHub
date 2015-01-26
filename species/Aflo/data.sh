@@ -8,7 +8,6 @@ set -eo pipefail
 #-------------------------------------------------------------------------------
 FULLSPEC="Apis florea"
 SPEC=Aflo
-NCBIBASE=ftp://ftp.ncbi.nih.gov/genomes/Apis_florea
 ORIGFASTA=afl_ref_Aflo_1.0_chrUn.fa.gz
 ORIGGFF3=ref_Aflo_1.0_top_level.gff3.gz
 WD=$1
