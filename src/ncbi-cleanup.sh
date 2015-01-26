@@ -11,5 +11,5 @@ ncbi_cleanup()
       | grep -v $'\tmatch\t' \
       | grep -v $'\tcDNA_match\t' \
       | grep -v '##species' \
-      | gt gff3 -retainids -sort -tidy -o ${gff3} 2> ${gff3}.log
+      | gt gff3 -retainids -sort -tidy -o ${gff3} -force 2> ${gff3}.log
 }

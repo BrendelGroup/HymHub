@@ -6,11 +6,11 @@ set -eo pipefail
 
 # Configuration
 #-------------------------------------------------------------------------------
-FULLSPEC="Apis dorsata"
-SPEC=Ador
-NCBIBASE=ftp://ftp.ncbi.nih.gov/genomes/Apis_dorsata
-ORIGFASTA=ado_ref_Apis_dorsata_1.3_chrUn.fa.gz
-ORIGGFF3=ref_Apis_dorsata_1.3_top_level.gff3.gz
+FULLSPEC="Harpegnathos saltator"
+SPEC=Hsal
+NCBIBASE=ftp://ftp.ncbi.nih.gov/genomes/Harpegnathos_saltator
+ORIGFASTA=hsa_ref_HarSal_1.0_chrUn.fa.gz
+ORIGGFF3=ref_HarSal_1.0_top_level.gff3.gz
 WD=$1
 
 # Procedure
