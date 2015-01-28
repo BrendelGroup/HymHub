@@ -23,4 +23,4 @@ The purpose of HymHub is to facilitate genome analysis by gathering data from di
 ## More questions?
 
 Check out our [frequently asked questions](faq.html).
-If that still doesn't answer your question, feel free to (send us a note)[mailto:daniel.standage@gmail.com] or open an issue on the HymHub issue [tracker](http://github.com/BrendelGroup/HymHub/issues).
+If that still doesn't answer your question, feel free to [send us a note](mailto:daniel.standage@gmail.com) or open an issue on the HymHub issue [tracker](http://github.com/BrendelGroup/HymHub/issues).
