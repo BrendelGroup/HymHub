@@ -3,3 +3,4 @@ species/*/*.gz
 species/*/*.fa
 species/*/*.gff3
 scratch/
+_site
