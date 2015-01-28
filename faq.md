@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Contact"
+title: "Frequently Asked Questions"
 description: ""
 group: navigation
 ---

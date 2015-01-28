@@ -15,19 +15,12 @@ The purpose of HymHub is to facilitate genome analysis by gathering data from di
 
 ## What can I do with HymHub?
 
-* Go to [fig**share**](link coming soon) to download genome sequences (Fasta), annotations (GFF3), and summary data tables (TSV) for all sequenced Hymenopteran genomes.
+* Go to fig**share** (link coming soon) to download genome sequences (Fasta), annotations (GFF3), and summary data tables (TSV) for all sequenced Hymenopteran genomes.
 * Go to [GitHub](http://github.com/BrendelGroup/HymHub) to download the code we used to build these data files and construct them yourself on your local computer.
 * Check out our [interactive IPython notebooks and Rmd files](link coming soon) for tips to get started analyzing the data.
 * Use our [GitHub issue tracker](http://github.com/BrendelGroup/HymHub/issues) to tell us about any issues with the data or our code.
 
-## Where does the data come from?
+## More questions?
 
-We have done our best to locate and incorporate as much relevant data as possible from the [NCBI FTP site](ftp://ftp.ncbi.nlm.nih.gov/genomes).
-We've also included some data from [HymenopteraBase](http://hymenopteragenome.org/), as well as some unpublished data produced by our lab members and collaborators.
-
-## But HymHub doesn't include data for my favorite Hymenopteran!
-
-Has its genome been sequenced, assembled, and annotated?
-Is the relevant data publicly available, or would you be willing to make it publicly available?
-If so, send us a note with information about how we can access the data.
-Or even better, [fork](https://help.github.com/articles/fork-a-repo/) our [GitHub repository](http://github.com/BrendelGroup/HymHub), add instructions for downloading and incorporating your data, and send us a [pull request](https://help.github.com/articles/using-pull-requests/).
+Check out our [frequently asked questions](faq.html).
+If that still doesn't answer your question, feel free to (send us a note)[mailto:daniel.standage@gmail.com] or open an issue on the HymHub issue [tracker](http://github.com/BrendelGroup/HymHub/issues).
