@@ -8,7 +8,7 @@ set -eo pipefail
 #-------------------------------------------------------------------------------
 FULLSPEC="Tribolium castaneum"
 SPEC=Tcas
-ORIGFASTA=Tcas.orig.fa.gz
+ORIGFASTA=${SPEC}.orig.fa.gz
 ORIGGFF3=ref_Tcas_3.0_top_level.gff3.gz
 WD=$1
 
