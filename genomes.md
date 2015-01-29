@@ -6,6 +6,13 @@ group: navigation
 ---
 {% include JB/setup %}
 
+<style type="text/css">
+table
+{
+  width: 100%;
+}
+</style>
+
 |          Species           |   Label   |   Lineage   |         Source       |
 |:--------------------------:|:---------:|:-----------:|:--------------------:|
 |     *Apis dorsata*         |    Ador   |    Bees     |        NCBI          |
