@@ -25,5 +25,6 @@ table
 | *Harpegnathos saltator*    |    Hsal   |    Ants     |        NCBI          | 
 |   *Megachile rotundata*    |    Mrot   |    Bees     |        NCBI          | 
 |   *Nasonia vitripennis*    |    Nvit   |   Wasps     |        NCBI          | 
+|   *Polistes dominula*      |    Pdom   |   Wasps     |      Toth Lab        | 
 |   *Solenopsis invicta*     |    Sinv   |    Ants     |     HymenopteraBase  |
 |  *Tribolium castaneum*     |    Tcas   |  Outgroup   |        NCBI          | 
