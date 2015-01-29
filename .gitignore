@@ -2,5 +2,6 @@ species/*/*.log
 species/*/*.gz
 species/*/*.fa
 species/*/*.gff3
+species/*/*.gff
 scratch/
 _site
