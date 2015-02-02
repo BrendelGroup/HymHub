@@ -26,10 +26,10 @@ fi
 
 if [ "$DOFORMAT" != "0" ]; then
   echo "[HymHub: $FULLSPEC] renaming data files"
-  mv ${WD}/pdom-scaffolds-unmasked-r1.2.fa.gz ${WD}/Pdom.gdna.fa.gz
+  cp ${WD}/pdom-scaffolds-unmasked-r1.2.fa.gz ${WD}/Pdom.gdna.fa.gz
+  gunzip -f ${WD}/Pdom.gdna.fa.gz
 
-  gunzip ${WD}/Pdom.gdna.fa.gz
-  mv ${WD}/pdom-annot-r1.2.gff3 ${WD}/Pdom.gff3
+  cp ${WD}/pdom-annot-r1.2.gff3 ${WD}/Pdom.gff3
 
   echo "[HymHub: $FULLSPEC] verify data files"
   shasum -c species/${SPEC}/checksums.sha
