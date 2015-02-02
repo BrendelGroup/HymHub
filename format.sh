@@ -3,6 +3,7 @@
 # HymHub is distributed under the CC BY 4.0 License. See the
 # 'LICENSE' file in the HymHub code distribution or online at
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
+set -eo pipefail
 
 format_print_usage()
 {
@@ -29,7 +30,7 @@ done
 SPECIES="Ador Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas"
 
 if [ $NUMTHREADS > 1 ]; then
-  cmd="echo bash species/{}/data.sh -w species/{} -f"
+  cmd="bash species/{}/data.sh -w species/{} -f"
   if [ "$DOCLEANUP" != "0" ]; then
     cmd="$cmd -c"
   fi
@@ -37,7 +38,7 @@ if [ $NUMTHREADS > 1 ]; then
 else
   for spec in $SPECIES
   do
-    cmd="echo bash species/${spec}/data.sh -w species/${spec} -f"
+    cmd="bash species/${spec}/data.sh -w species/${spec} -f"
     if [ "$DOCLEANUP" != "0" ]; then
       cmd="$cmd -c"
     fi

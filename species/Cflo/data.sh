@@ -18,8 +18,8 @@ source src/data-cli.sh
 source src/filenames.sh
 
 if [ "$DODOWNLOAD" != "0" ]; then
-  source src/hymbase-download-scaffold.sh
-  hymbase_download_scaffold
+  source src/hymbase-download.sh
+  hymbase_download
 fi
 if [ "$DOFORMAT" != "0" ]; then
   source src/hymbase-format.sh

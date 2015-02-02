@@ -30,7 +30,7 @@ if [ "$DODOWNLOAD" != "0" ]; then
   ncbi_download_chromosome
 fi
 
-if [ "$DOFILTER" != "0" ]; then
+if [ "$DOFORMAT" != "0" ]; then
   source src/ncbi-format.sh
   ncbi_format NC_003081.2
 fi

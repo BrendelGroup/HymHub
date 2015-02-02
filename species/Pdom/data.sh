@@ -36,7 +36,11 @@ if [ "$DOFORMAT" != "0" ]; then
 fi
 
 if [ "$DOCLEANUP" != "0" ]; then
-  echo "[HymHub: $FULLSPEC] no cleanup required!"
+  echo "[HymHub: $FULLSPEC] clean up temporary files"
+  find $WD -type f \
+      | grep -v "/checksums.sha$" | grep -v "/data.sh$" \
+      | grep -v "/${SPEC}.gdna.fa$" | grep -v "/${SPEC}.gff3$" \
+      | xargs -n 1 rm -f || true
 fi
 
 echo "[HymHub: $FULLSPEC] complete!"

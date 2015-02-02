@@ -10,5 +10,5 @@ data_cleanup()
   find $WD -type f \
       | grep -v "/checksums.sha$" | grep -v "/data.sh$" \
       | grep -v "/${SPEC}.gdna.fa$" | grep -v "/${SPEC}.gff3$" \
-      | xargs -n 1 rm -f
+      | xargs -n 1 rm -f || true
 }
