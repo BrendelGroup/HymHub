@@ -11,16 +11,23 @@ SPEC=Cflo
 URLGENUS="camponotus"
 ORIGFASTA=Cflo_3.3_scaffolds.fa.gz
 ORIGGFF3=cflo_OGSv3.3.gff3.gz
-WD=$1
 
 # Procedure
 #-------------------------------------------------------------------------------
+source src/data-cli.sh
 source src/filenames.sh
-source src/hymbase-download.sh
-source src/hymbase-cleanup.sh
 
-hymbase_download
-hymbase_cleanup
+if [ "$DODOWNLOAD" != "0" ]; then
+  source src/hymbase-download-scaffold.sh
+  hymbase_download_scaffold
+fi
+if [ "$DOFORMAT" != "0" ]; then
+  source src/hymbase-format.sh
+  hymbase_format
+fi
+if [ "$DOCLEANUP" != "0" ]; then
+  source src/cleanup.sh
+  data_cleanup
+fi
 
 echo "[HymHub: $FULLSPEC] complete!"
-

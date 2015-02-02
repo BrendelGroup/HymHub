@@ -11,16 +11,23 @@ SPEC=Sinv
 URLGENUS="solenopsis"
 ORIGFASTA=Sinv_1.0_scaffolds.fa.gz
 ORIGGFF3=sinv_OGSv2.2.3.gff3.gz
-WD=$1
 
 # Procedure
 #-------------------------------------------------------------------------------
+source src/data-cli.sh
 source src/filenames.sh
-source src/hymbase-download.sh
-source src/hymbase-cleanup.sh
 
-hymbase_download
-hymbase_cleanup
+if [ "$DODOWNLOAD" != "0" ]; then
+  source src/hymbase-download.sh
+  hymbase_download
+fi
+if [ "$DOFORMAT" != "0" ]; then
+  source src/hymbase-format.sh
+  hymbase_format NC_014672.1
+fi
+if [ "$DOCLEANUP" != "0" ]; then
+  source src/cleanup.sh
+  data_cleanup
+fi
 
 echo "[HymHub: $FULLSPEC] complete!"
-

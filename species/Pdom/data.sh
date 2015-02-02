@@ -7,22 +7,36 @@ set -eo pipefail
 # Configuration
 #-------------------------------------------------------------------------------
 FULLSPEC="Polistes dominula"
+SPEC=Pdom
 PdomDataStore=/iplant/home/standage/Polistes_dominula/r1.2
 WD=$1
 
 # Procedure
 #-------------------------------------------------------------------------------
+source src/data-cli.sh
 
-echo "[HymHub: $FULLSPEC] download genome assembly"
-iget ${PdomDataStore}/genome-assembly/pdom-scaffolds-unmasked-r1.2.fa.gz ${WD}/.
+if [ "$DODOWNLOAD" != "0" ]; then
+  echo "[HymHub: $FULLSPEC] download genome assembly"
+  seqfile=pdom-scaffolds-unmasked-r1.2.fa.gz
+  iget ${PdomDataStore}/genome-assembly/${seqfile} ${WD}/${seqfile}
 
-echo "[HymHub: $FULLSPEC] downloading genome annotation"
-iget ${PdomDataStore}/genome-annotation/pdom-annot-r1.2.gff3 ${WD}/.
+  echo "[HymHub: $FULLSPEC] downloading genome annotation"
+  iget ${PdomDataStore}/genome-annotation/pdom-annot-r1.2.gff3 ${WD}/.
+fi
 
-echo "[HymHub: $FULLSPEC] renaming data files"
-mv ${WD}/pdom-scaffolds-unmasked-r1.2.fa.gz ${WD}/Pdom.gdna.fa.gz
-gunzip ${WD}/Pdom.gdna.fa.gz
-mv ${WD}/pdom-annot-r1.2.gff3 ${WD}/Pdom.gff3
+if [ "$DOFORMAT" != "0" ]; then
+  echo "[HymHub: $FULLSPEC] renaming data files"
+  mv ${WD}/pdom-scaffolds-unmasked-r1.2.fa.gz ${WD}/Pdom.gdna.fa.gz
+
+  gunzip ${WD}/Pdom.gdna.fa.gz
+  mv ${WD}/pdom-annot-r1.2.gff3 ${WD}/Pdom.gff3
+
+  echo "[HymHub: $FULLSPEC] verify data files"
+  shasum -c species/${SPEC}/checksums.sha
+fi
+
+if [ "$DOCLEANUP" != "0" ]; then
+  echo "[HymHub: $FULLSPEC] no cleanup required!"
+fi
 
 echo "[HymHub: $FULLSPEC] complete!"
-
