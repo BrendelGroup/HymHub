@@ -29,7 +29,7 @@ done
 
 SPECIES="Ador Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas"
 
-if [ $NUMTHREADS > 1 ]; then
+if [ "$NUMTHREADS" -gt "1" ]; then
   cmd="bash species/{}/data.sh -w species/{} -f"
   if [ "$DOCLEANUP" != "0" ]; then
     cmd="$cmd -c"
