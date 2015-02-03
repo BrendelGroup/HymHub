@@ -7,4 +7,4 @@ before_install:
   - cd AEGeAn && make test && sudo make install && sudo cp data/scripts/* /usr/local/bin/ && cd -
   - sudo ldconfig
 script:
-  - bash src/ci-build.sh
+  - bash ci-build.sh

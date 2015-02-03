@@ -4,7 +4,6 @@
 # 'LICENSE' file in the HymHub code distribution or online at
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
 set -eo pipefail
-source src/datatypes.sh
 
 build_print_usage()
 {
@@ -35,10 +34,11 @@ do
     f) DOFORMAT=1 ;;
     c) DOCLEANUP=1 ;;
     t) DODATATYPES=1 ;;
-    h) format_print_usage; exit 0 ;;
+    h) build_print_usage; exit 0 ;;
     p) NUMTHREADS=$OPTARG ;;
   esac
 done
+shift $((OPTIND-1))
 
 if [ "$DODOWNLOAD" == "0" ] && [ "$DOFORMAT"    == "0" ] &&
    [ "$DOCLEANUP"  == "0" ] && [ "$DODATATYPES" == "0" ]
@@ -61,7 +61,7 @@ if [ "$NUMTHREADS" -gt "1" ]; then
     # Even in parallel mode, data files should be downloaded one at a time
     for spec in $SPECIES
     do
-      bash species/{}/data.sh -w species/{} -d
+      bash species/${spec}/data.sh -w species/${spec} -d
     done
   fi
 
@@ -70,8 +70,8 @@ if [ "$NUMTHREADS" -gt "1" ]; then
     echo $SPECIES | tr ' ' '\n' | parallel --gnu --jobs $NUMTHREADS \
         bash species/{}/data.sh -w species/{} $tasks
   fi
-  
-  # 
+
+  # Run data types task in parallel
   if [ "$DODATATYPES" == "1" ]; then
     echo $SPECIES | tr ' ' '\n' | parallel --gnu --jobs $NUMTHREADS \
         bash src/datatypes.sh {}
