@@ -4,9 +4,8 @@ before_install:
   - sudo sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/genometools-x86_64.conf'
   - sudo ldconfig
   - git clone http://github.com/standage/AEGeAn.git
-  - cd AEGeAn && make test && sudo make install && cd -
+  - cd AEGeAn && make test && sudo make install && sudo cp data/scripts/* /usr/local/bin/ && cd -
   - sudo ldconfig
 script:
-  - export PATH=/usr/local/share/aegean/data/scripts:$PATH
   - bash ci.sh
   - bash datatypes.sh
