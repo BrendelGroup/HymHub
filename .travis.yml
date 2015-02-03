@@ -7,5 +7,6 @@ before_install:
   - cd AEGeAn && make test && sudo make install && cd -
   - sudo ldconfig
 script:
+  - export PATH=/usr/local/share/aegean/scripts:$PATH
   - bash ci.sh
   - bash datatypes.sh
