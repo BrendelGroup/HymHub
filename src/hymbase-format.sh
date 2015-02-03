@@ -21,7 +21,7 @@ hymbase_format()
       | $filtercmd \
       | grep -v $'\tregion\t' \
       | tidygff3 2> ${gff3}.tidy.log \
-      | seq-reg.py - species/${spec}/${spec}.gdna.fa \
+      | seq-reg.py - species/${SPEC}/${SPEC}.gdna.fa \
       | gt gff3 -retainids -sort -tidy -o ${gff3} -force 2> ${gff3}.log
 
   echo "[HymHub: $FULLSPEC] verify data files"
