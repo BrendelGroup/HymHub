@@ -23,7 +23,7 @@ if [ "$DODOWNLOAD" != "0" ]; then
 fi
 if [ "$DOFORMAT" != "0" ]; then
   source src/hymbase-format.sh
-  hymbase_format
+  hymbase_format 'C3809596|C3873680'
 fi
 if [ "$DOCLEANUP" != "0" ]; then
   source src/cleanup.sh

@@ -6,4 +6,6 @@ before_install:
   - git clone http://github.com/standage/AEGeAn.git
   - cd AEGeAn && make test && sudo make install && cd -
   - sudo ldconfig
-script: bash ci.sh
+script:
+  - bash ci.sh
+  - bash datatypes.sh
