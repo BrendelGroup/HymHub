@@ -1,0 +1,9 @@
+before_install:
+  - git clone http://github.com/genometools/genometools.git
+  - cd genometools && sudo make -j2 install && cd -
+  - sudo sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/genometools-x86_64.conf'
+  - sudo ldconfig
+  - git clone http://github.com/standage/AEGeAn.git
+  - cd AEGeAn && make test && sudo make install && cd -
+  - sudo ldconfig
+script: bash ci.sh
