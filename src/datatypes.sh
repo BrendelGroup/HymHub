@@ -19,12 +19,6 @@ get_iloci()
       > species/${1}/${1}.iloci.fa
 }
 
-for spec in Ador Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas
-do
-  if [ "$1" eq "parallel" ]; then
-    get_iloci $spec &
-  else
-    get_iloci $spec
-  fi
-done
-wait
+if [ -n "$1" ]; then
+  get_iloci $1
+fi
