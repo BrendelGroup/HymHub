@@ -7,10 +7,6 @@ before_install:
   - cd AEGeAn && make test && sudo make install && cd -
   - sudo ldconfig
 script:
-  - export PATH=/usr/local/share/aegean/scripts:$PATH
-  - ls -lhp /usr/local/share/aegean/scripts
-  - echo $PATH
-  - which seq-reg.py
-  - which lpdriver.py
+  - export PATH=/usr/local/share/aegean/data/scripts:$PATH
   - bash ci.sh
   - bash datatypes.sh
