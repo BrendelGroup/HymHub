@@ -42,12 +42,12 @@ if [ "$DOFORMAT" != "0" ]; then
   gunzip -c $refrfasta \
       | perl -ne 's/gi\|\d+\|(ref|gb)\|([^\|]+)\S+/$2/; print' \
       > $fasta
-  
+
   echo "[HymHub: $FULLSPEC] clean up annotation"
   gunzip -c $refrgff3 \
       | grep -v -f species/Dmel/excludes.txt \
       | species/Dmel/fix-trna.py \
-      | tidy 2> ${gff3}.tidy.log \
+      | tidygff3 2> ${gff3}.tidy.log \
       | gt gff3 -retainids -sort -tidy -o ${gff3} -force 2> ${gff3}.log
 
   echo "[HymHub: $FULLSPEC] verify data files"

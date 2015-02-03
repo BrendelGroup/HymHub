@@ -19,10 +19,12 @@ ncbi_format()
   echo "[HymHub: $FULLSPEC] clean up annotation"
   gunzip -c $refrgff3 \
       | $filtercmd \
-      | tidy 2> ${gff3}.tidy.log \
+      | grep -v $'\tregion\t' \
       | grep -v $'\tmatch\t' \
       | grep -v $'\tcDNA_match\t' \
+      | grep -v '###' \
       | grep -v '##species' \
+      | tidygff3 2> ${gff3}.tidy.log \
       | gt gff3 -retainids -sort -tidy -o ${gff3} -force 2> ${gff3}.log
 
   echo "[HymHub: $FULLSPEC] verify data files"
