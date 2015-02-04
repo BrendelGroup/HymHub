@@ -77,7 +77,7 @@ if [ "$NUMTHREADS" -gt "1" ]; then
         bash src/datatypes.sh {}
   fi
 else
-  if [ "$DODWONLOAD" == "1" ]; then
+  if [ "$DODOWNLOAD" == "1" ]; then
     tasks+=" -d"
   fi
   for spec in $SPECIES

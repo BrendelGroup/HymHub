@@ -3,5 +3,10 @@ species/*/*.gz
 species/*/*.fa
 species/*/*.gff3
 species/*/*.gff
+species/*/gff3seqids
+species/*/faseqids
+species/*/comm12
+species/*/comm13
+species/*/comm23
 scratch/
 _site
