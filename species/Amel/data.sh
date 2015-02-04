@@ -18,10 +18,11 @@ source src/filenames.sh
 
 if [ "$DODOWNLOAD" != "0" ]; then
   source src/ncbi-download-chromosome.sh
-  ASMBLFILES="CHR_Un/ame_ref_Amel_4.5_chrUn.fa.gz"
+  root="Assembled_chromosomes/seq"
+  ASMBLFILES="${root}/ame_ref_Amel_4.5_unplaced.fa.gz"
   for i in {1..16}
   do
-    ASMBLFILES="$ASMBLFILES CHR_LG${i}/ame_ref_Amel_4.5_chrLG${i}.fa.gz"
+    ASMBLFILES="$ASMBLFILES ${root}/ame_ref_Amel_4.5_chrLG${i}.fa.gz"
   done
   ncbi_download_chromosome
 fi

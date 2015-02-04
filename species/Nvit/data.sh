@@ -18,11 +18,11 @@ source src/filenames.sh
 
 if [ "$DODOWNLOAD" != "0" ]; then
   source src/ncbi-download-chromosome.sh
-  ASMBLFILES="CHR_Un/nvi_ref_Nvit_2.1_chrUn.fa.gz"
-  for i in {1..5}
+  root="Assembled_chromosomes/seq"
+  ASMBLFILES=""
+  for i in chr1 chr2 chr3 chr4 chr5 unlocalized unplaced
   do
-
-    ASMBLFILES="$ASMBLFILES CHR_0${i}/nvi_ref_Nvit_2.1_chr${i}.fa.gz"
+    ASMBLFILES="$ASMBLFILES ${root}/nvi_ref_Nvit_2.1_${i}.fa.gz"
   done
   ncbi_download_chromosome
 fi
