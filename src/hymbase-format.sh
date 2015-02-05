@@ -18,6 +18,7 @@ hymbase_format()
   fi
   echo "[HymHub: $FULLSPEC] clean up annotation"
   gunzip -c $refrgff3 \
+      | python scripts/uniq.py \
       | $filtercmd \
       | grep -v $'\tregion\t' \
       | tidygff3 2> ${gff3}.tidy.log \
