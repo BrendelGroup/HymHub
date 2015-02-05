@@ -14,8 +14,8 @@ Usage: $0 [-d] [-f] [-c] [-t] [-h] [-i] [-p NUMTHREADS]
   Tasks:
     -d    run download task
     -f    run data format task
-    -c    run file cleanup task
     -t    run data types task
+    -c    run file cleanup task
   Options:
     -h    print this help message and exit
     -p    run tasks in parallel (using GNU parallel program)
