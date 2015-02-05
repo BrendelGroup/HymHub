@@ -25,6 +25,10 @@ if [ "$DOFORMAT" != "0" ]; then
   source src/hymbase-format.sh
   hymbase_format 'C3809596|C3873680'
 fi
+if [ "$DODATATYPES" != "0" ]; then
+  source src/datatypes.sh
+  get_datatypes $SPEC
+fi
 if [ "$DOCLEANUP" != "0" ]; then
   source src/cleanup.sh
   data_cleanup

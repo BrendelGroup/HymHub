@@ -32,6 +32,11 @@ if [ "$DOFORMAT" != "0" ]; then
   ncbi_format NC_001566.1
 fi
 
+if [ "$DODATATYPES" != "0" ]; then
+  source src/datatypes.sh
+  get_datatypes $SPEC
+fi
+
 if [ "$DOCLEANUP" != "0" ]; then
   source src/cleanup.sh
   data_cleanup

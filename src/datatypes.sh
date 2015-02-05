@@ -40,8 +40,12 @@ get_genes()
       > ${WD}/${SPEC}.generepids.txt
 }
 
+get_datatypes()
+{
+  get_iloci $1
+  get_genes $1
+}
+
 if [ -n "$1" ]; then
-  SPEC=$1
-  get_iloci $SPEC
-  get_genes $SPEC
+  get_datatypes $1
 fi

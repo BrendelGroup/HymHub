@@ -54,6 +54,9 @@ fi
 if [ "$DOCLEANUP" == "1" ]; then
   tasks+=" -c"
 fi
+if [ "$DODATATYPES" == "1" ]; then
+  tasks+=" -t"
+fi
 
 SPECIES="Ador Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas"
 if [ "$NUMTHREADS" -gt "1" ]; then
@@ -65,16 +68,10 @@ if [ "$NUMTHREADS" -gt "1" ]; then
     done
   fi
 
-  # Run format and/or cleanup tasks in parallel
+  # Run format/cleanup/datatype tasks in parallel
   if [ -n "$tasks" ]; then
     echo $SPECIES | tr ' ' '\n' | parallel --gnu --jobs $NUMTHREADS \
         bash species/{}/data.sh -w species/{} $tasks
-  fi
-
-  # Run data types task in parallel
-  if [ "$DODATATYPES" == "1" ]; then
-    echo $SPECIES | tr ' ' '\n' | parallel --gnu --jobs $NUMTHREADS \
-        bash src/datatypes.sh {}
   fi
 else
   if [ "$DODOWNLOAD" == "1" ]; then
@@ -84,9 +81,6 @@ else
   do
     if [ -n "$tasks" ]; then
       bash species/${spec}/data.sh -w species/${spec} $tasks
-    fi
-    if [ "$DODATATYPES" == "1" ]; then
-      bash src/datatypes.sh $spec
     fi
   done
 fi

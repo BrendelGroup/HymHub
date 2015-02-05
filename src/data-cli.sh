@@ -7,11 +7,12 @@
 data_print_usage()
 {
   cat <<EOF
-Usage: $0 [-w workdir] [-d] [-f] [-c] [-h]
+Usage: $0 [-w workdir] [-d] [-f] [-t] [-c] [-h]
   Options:
     -h    print this help message and exit
     -d    run download task
     -f    run format task
+    -t    run datatypes task
     -c    run cleanup task
     -w    working directory; default is current directory
 EOF
@@ -20,19 +21,22 @@ EOF
 WD="."
 DODOWNLOAD=0
 DOFORMAT=0
+DODATATYPES=0
 DOCLEANUP=0
-while getopts "cdfhw:" OPTION
+while getopts "cdfhtw:" OPTION
 do
   case $OPTION in
     h) data_print_usage; exit 0 ;;
     d) DODOWNLOAD=1 ;;
     f) DOFORMAT=1 ;;
+    t) DODATATYPES=1 ;;
     c) DOCLEANUP=1 ;;
     w) WD=$OPTARG ;;
   esac
 done
 
-if [ "$DODOWNLOAD" == "0" ] && [ "$DOFORMAT" == "0" ] && [ "$DOCLEANUP" == "0" ]
+if [ "$DODOWNLOAD"  == "0" ] && [ "$DOFORMAT"  == "0" ] &&
+   [ "$DODATATYPES" == "0" ] && [ "$DOCLEANUP" == "0" ]
 then
   data_print_usage
   echo "Error: please specify task(s)"
