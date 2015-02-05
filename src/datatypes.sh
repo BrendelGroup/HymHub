@@ -7,18 +7,41 @@ set -eo pipefail
 
 get_iloci()
 {
-  echo "[HymHub: ${1}] computing iLocus boundaries"
-  lpdriver.py --idfmt="HymHub${1}ILCv0.0.1-%05lu" --delta=500 \
-              --out species/${1}/${1}.iloci.gff3 \
-              species/${1}/${1}.gff3 \
-      2> species/${1}/iloci.gff3.log
+  local SPEC=$1
+  local WD=species/${SPEC}
 
-  echo "[HymHub: ${1}] extracting iLocus sequences"
-  xtractore --type=locus species/${1}/${1}.iloci.gff3 \
-            species/${1}/${1}.gdna.fa \
-      > species/${1}/${1}.iloci.fa
+  echo "[HymHub: ${SPEC}] computing iLocus boundaries"
+  lpdriver.py --idfmt="HymHub${SPEC}ILCv0.0.1-%05lu" --delta=500 \
+              --out ${WD}/${SPEC}.iloci.gff3 \
+              ${WD}/${SPEC}.gff3 \
+      2> ${WD}/iloci.gff3.log
+
+  echo "[HymHub: ${SPEC}] extracting iLocus sequences"
+  xtractore --type=locus ${WD}/${SPEC}.iloci.gff3 \
+            ${WD}/${SPEC}.gdna.fa \
+      > ${WD}/${SPEC}.iloci.fa
+}
+
+get_genes()
+{
+  local SPEC=$1
+  local WD=species/${SPEC}
+  
+  echo "[HymHub: ${SPEC}] extracting gene sequences"
+  xtractore --type=gene ${WD}/${SPEC}.gff3 ${WD}/${SPEC}.gdna.fa \
+      > ${WD}/${SPEC}.genes.fa
+  
+  echo "[HymHub: ${SPEC}] extracting gene representatives (longest isoforms)"
+  xtractore --type=mRNA <(grep -v $'\tintron\t' ${WD}/${SPEC}.gff3 | pmrna) \
+                        ${WD}/${SPEC}.gdna.fa \
+      > ${WD}/${SPEC}.genereps.fa
+  perl -ne 'm/^>(\S+)/ and print "$1\n"' \
+      < ${WD}/${SPEC}.genereps.fa \
+      > ${WD}/${SPEC}.generepids.txt
 }
 
 if [ -n "$1" ]; then
-  get_iloci $1
+  SPEC=$1
+  get_iloci $SPEC
+  get_genes $SPEC
 fi

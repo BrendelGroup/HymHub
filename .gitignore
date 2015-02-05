@@ -8,5 +8,6 @@ species/*/faseqids
 species/*/comm12
 species/*/comm13
 species/*/comm23
+species/*/*.generepids.txt
 scratch/
 _site
