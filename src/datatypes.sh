@@ -26,11 +26,11 @@ get_genes()
 {
   local SPEC=$1
   local WD=species/${SPEC}
-  
+
   echo "[HymHub: ${SPEC}] extracting gene sequences"
   xtractore --type=gene ${WD}/${SPEC}.gff3 ${WD}/${SPEC}.gdna.fa \
       > ${WD}/${SPEC}.genes.fa
-  
+
   echo "[HymHub: ${SPEC}] extracting gene representatives (longest isoforms)"
   xtractore --type=mRNA <(grep -v $'\tintron\t' ${WD}/${SPEC}.gff3 | pmrna) \
                         ${WD}/${SPEC}.gdna.fa \
@@ -46,6 +46,3 @@ get_datatypes()
   get_genes $1
 }
 
-if [ -n "$1" ]; then
-  get_datatypes $1
-fi
