@@ -7,5 +7,5 @@ set -eo pipefail
 
 for spec in Ador Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Sinv Tcas
 do
-  bash species/${spec}/data.sh -w species/${spec} -d -f -t -c
+  bash species/${spec}/data.sh -w species/${spec} -d -f -t -s -c
 done

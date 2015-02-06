@@ -1,8 +1,11 @@
+data/*.tsv
+data/*.tsv.gz
 species/*/*.log
 species/*/*.gz
 species/*/*.fa
 species/*/*.gff3
 species/*/*.gff
+species/*/*.tsv
 species/*/gff3seqids
 species/*/faseqids
 species/*/comm12
