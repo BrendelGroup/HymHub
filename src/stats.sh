@@ -13,5 +13,6 @@ get_stats()
   echo "[HymHub: $SPEC] computing feature summary statistics"
   python scripts/feature-desc.py --species ${SPEC} \
       --iloci ${PRFX}.iloci.gff3 ${PRFX}.iloci.fa ${PRFX}.iloci.tsv \
-      --gnreps ${PRFX}.pmrnas.gff3 ${PRFX}.genereps.fa ${PRFX}.genereps.tsv
+      --gnreps ${PRFX}.pmrnas.gff3 ${PRFX}.genereps.fa ${PRFX}.genereps.tsv \
+      --mrnas ${PRFX}.maturemrnas.gff3 ${PRFX}.maturemrnas.fa ${PRFX}.mrnas.tsv
 }
