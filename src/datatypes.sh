@@ -32,7 +32,9 @@ get_genes()
       > ${WD}/${SPEC}.genes.fa
 
   echo "[HymHub: ${SPEC}] extracting gene representatives (longest isoforms)"
-  grep -v $'\tintron\t' ${WD}/${SPEC}.gff3 | pmrna > ${WD}/${SPEC}.pmrnas.gff3
+  grep -v $'\tintron\t' ${WD}/${SPEC}.gff3 | pmrna \
+      | canon-gff3 --outfile ${WD}/${SPEC}.pmrnas.gff3 2>&1 \
+      | grep -v 'no valid mRNAs' || true
   xtractore --type=mRNA ${WD}/${SPEC}.pmrnas.gff3 ${WD}/${SPEC}.gdna.fa \
       > ${WD}/${SPEC}.genereps.fa
   perl -ne 'm/^>(\S+)/ and print "$1\n"' \
@@ -55,10 +57,42 @@ get_mmrnas()
       | grep -v 'does not begin with "##gff-version"' || true
 }
 
+get_cds()
+{
+  local SPEC=$1
+  local WD=species/${SPEC}
+
+  echo "[HymHub: ${SPEC}] extracting coding sequences"
+  xtractore --type=CDS --outfile=${WD}/${SPEC}.cds.fa \
+            ${WD}/${SPEC}.pmrnas.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
+      | grep -v 'has not been previously introduced' \
+      | grep -v 'does not begin with "##gff-version"' || true
+}
+
+get_exons()
+{
+  local SPEC=$1
+  local WD=species/${SPEC}
+
+  echo "[HymHub: ${SPEC}] extracting exons"
+  xtractore --type=exon --outfile=${WD}/${SPEC}.exons.fa \
+            ${WD}/${SPEC}.pmrnas.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
+      | grep -v 'has not been previously introduced' \
+      | grep -v 'does not begin with "##gff-version"' || true
+
+  echo "[HymHub: ${SPEC}] extracting introns"
+  xtractore --type=intron --outfile=${WD}/${SPEC}.introns.fa \
+            ${WD}/${SPEC}.pmrnas.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
+      | grep -v 'has not been previously introduced' \
+      | grep -v 'does not begin with "##gff-version"' || true
+}
+
 get_datatypes()
 {
   get_iloci  $1
   get_genes  $1
   get_mmrnas $1
+  get_cds    $1
+  get_exons  $1
 }
 

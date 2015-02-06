@@ -29,7 +29,7 @@ fi
 
 if [ "$DOFORMAT" != "0" ]; then
   source src/ncbi-format.sh
-  ncbi_format
+  ncbi_format GeneID:100498670
 fi
 
 if [ "$DODATATYPES" != "0" ]; then
