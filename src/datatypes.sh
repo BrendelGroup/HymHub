@@ -32,17 +32,33 @@ get_genes()
       > ${WD}/${SPEC}.genes.fa
 
   echo "[HymHub: ${SPEC}] extracting gene representatives (longest isoforms)"
-  xtractore --type=mRNA <(grep -v $'\tintron\t' ${WD}/${SPEC}.gff3 | pmrna) \
-                        ${WD}/${SPEC}.gdna.fa \
+  grep -v $'\tintron\t' ${WD}/${SPEC}.gff3 | pmrna > ${WD}/${SPEC}.pmrnas.gff3
+  xtractore --type=mRNA ${WD}/${SPEC}.pmrnas.gff3 ${WD}/${SPEC}.gdna.fa \
       > ${WD}/${SPEC}.genereps.fa
   perl -ne 'm/^>(\S+)/ and print "$1\n"' \
       < ${WD}/${SPEC}.genereps.fa \
       > ${WD}/${SPEC}.generepids.txt
 }
 
+get_mmrnas()
+{
+  local SPEC=$1
+  local WD=species/${SPEC}
+
+  echo "[HymHub: ${SPEC}] extracting mature mRNA sequences"
+  python scripts/mrna-exons.py --convert \
+      < ${WD}/${SPEC}.pmrnas.gff3 \
+      > ${WD}/${SPEC}.maturemrnas.gff3
+  xtractore --type=mRNA --outfile=${WD}/${SPEC}.maturemrnas.fa \
+            ${WD}/${SPEC}.maturemrnas.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
+      | grep -v 'has not been previously introduced' \
+      | grep -v 'does not begin with "##gff-version"' || true
+}
+
 get_datatypes()
 {
-  get_iloci $1
-  get_genes $1
+  get_iloci  $1
+  get_genes  $1
+  get_mmrnas $1
 }
 
