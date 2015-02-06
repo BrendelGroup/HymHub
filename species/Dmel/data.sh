@@ -61,6 +61,11 @@ if [ "$DODATATYPES" != "0" ]; then
   get_datatypes $SPEC
 fi
 
+if [ "$DOSTATS" != "0" ]; then
+  source src/stats.sh
+  get_stats $SPEC
+fi
+
 if [ "$DOCLEANUP" != "0" ]; then
   echo "[HymHub: $FULLSPEC] clean up temporary files"
   find $WD -type f \

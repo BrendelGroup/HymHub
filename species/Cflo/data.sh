@@ -29,6 +29,10 @@ if [ "$DODATATYPES" != "0" ]; then
   source src/datatypes.sh
   get_datatypes $SPEC
 fi
+if [ "$DOSTATS" != "0" ]; then
+  source src/stats.sh
+  get_stats $SPEC
+fi
 if [ "$DOCLEANUP" != "0" ]; then
   source src/cleanup.sh
   data_cleanup

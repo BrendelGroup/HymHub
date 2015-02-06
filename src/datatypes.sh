@@ -95,4 +95,3 @@ get_datatypes()
   get_cds    $1
   get_exons  $1
 }
-
