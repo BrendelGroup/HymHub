@@ -94,7 +94,7 @@ fi
 
 if [ "$DOSTATS" == "1" ]; then
   cp species/Ador/Ador.iloci.tsv data/iloci.tsv
-  for spec in $SPECES
+  for spec in Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas
   do
     tail -n +2 species/${spec}/${spec}.iloci.tsv >> data/iloci.tsv
   done
