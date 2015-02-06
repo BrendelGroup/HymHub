@@ -1,3 +1,4 @@
+sudo: false
 before_install:
   - mkdir ${HOME}/local/
   - git clone http://github.com/genometools/genometools.git
