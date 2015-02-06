@@ -153,6 +153,34 @@ def generep_desc(gff3, fasta):
       utr3plen = 0
       yield values.split(" ")
 
+def mrna_desc(gff3, fasta):
+  """
+  Given mature (sans introns) mRNA sequences and their corresponding
+  annotations, generate a tabular record for each mRNA.
+  """
+  seqs = {}
+  for defline, seq in parse_fasta(fasta):
+    seqid = defline[1:].split(" ")[0]
+    seqs[seqid] = seq
+
+  mrnaid = ""
+  mrnalen = 0
+  for entry in gff3:
+    if "\tmRNA\t" in entry:
+      fields = entry.rstrip().split("\t")
+      assert len(fields) == 9
+      mrnaid = re.search("ID=([^;\n]+)", fields[8]).group(1)
+      mrnalen += int(fields[4]) - int(fields[3]) + 1
+    elif "###" in entry:
+      mrnaseq = seqs[mrnaid]
+      assert len(mrnaseq) == mrnalen, "mature mRNA '%s': length mismatch; gff=%d, fa=%d" % (mrnaid, mrnalen, len(mrnaseq))
+      gccontent = gc_content(mrnaseq)
+      gcskew = gc_skew(mrnaseq)
+      values = "%s %d %.3f %.3f" % (mrnaid, mrnalen, gccontent, gcskew)
+      mrnaid = ""
+      mrnalen = 0
+      yield values.split(" ")
+
 if __name__ == "__main__":
   desc = "Calculate descriptive statistics of genomic features in tabluar form"
   parser = argparse.ArgumentParser(description=desc)
@@ -162,6 +190,9 @@ if __name__ == "__main__":
   parser.add_argument("--gnreps", type=str, nargs=3,
                       metavar=("gff", "fa", "out"),
                       help="compute statistics on longest isoform of each gene")
+  parser.add_argument("--mrnas", type=str, nargs=3,
+                      metavar=("gff", "fa", "out"),
+                      help="compute mature mRNA statistics")
   parser.add_argument("--species", type=str, default="default", metavar="Spec",
                       help="specify species label")
   args = parser.parse_args()
@@ -183,5 +214,15 @@ if __name__ == "__main__":
       header = "Species MrnaId Accession Length GCContent GCSkew ExonCount IntronCount 5pUTRlen 3pUTRlen".split(" ")
       print >> out, "\t".join(header)
       for fields in generep_desc(gff, fa):
+        fields = [args.species] + fields
+        print >> out, "\t".join(fields)
+
+  # Process mature mRNAs
+  if args.mrnas:
+    a = args.mrnas
+    with open(a[0], "r") as gff, open(a[1], "r") as fa, open(a[2], "w") as out:
+      header = "Species MrnaId Length GCContent GCSkew".split(" ")
+      print >> out, "\t".join(header)
+      for fields in mrna_desc(gff, fa):
         fields = [args.species] + fields
         print >> out, "\t".join(fields)

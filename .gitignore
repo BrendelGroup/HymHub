@@ -6,6 +6,7 @@ species/*/*.fa
 species/*/*.gff3
 species/*/*.gff
 species/*/*.tsv
+species/*/*.temp
 species/*/gff3seqids
 species/*/faseqids
 species/*/comm12

@@ -50,11 +50,13 @@ get_mmrnas()
   echo "[HymHub: ${SPEC}] extracting mature mRNA sequences"
   python scripts/mrna-exons.py --convert \
       < ${WD}/${SPEC}.pmrnas.gff3 \
-      > ${WD}/${SPEC}.maturemrnas.gff3
-  xtractore --type=mRNA --outfile=${WD}/${SPEC}.maturemrnas.fa \
-            ${WD}/${SPEC}.maturemrnas.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
+      > ${WD}/${SPEC}.maturemrnas.temp
+  gt gff3 -retainids -sort -tidy -force -o ${WD}/${SPEC}.maturemrnas.gff3 \
+          ${WD}/${SPEC}.maturemrnas.temp 2>&1 \
       | grep -v 'has not been previously introduced' \
       | grep -v 'does not begin with "##gff-version"' || true
+  xtractore --type=mRNA --outfile=${WD}/${SPEC}.maturemrnas.fa \
+            ${WD}/${SPEC}.maturemrnas.gff3 ${WD}/${SPEC}.gdna.fa
 }
 
 get_cds()
