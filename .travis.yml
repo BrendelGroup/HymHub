@@ -4,10 +4,7 @@ before_install:
   - cd genometools && make -j2 prefix=${HOME}/local install && cd -
   - git clone http://github.com/standage/AEGeAn.git
   - export LD_LIBRARY_PATH=${HOME}/local/lib:$LD_LIBRARY_PATH
-  - ls -lhp ${HOME}/local/
-  - ls -lhp ${HOME}/local/include/
-  - ls -lhp ${HOME}/local/include/genometools/
-  - cd AEGeAn && make test && make prefix=${HOME}/local install && make prefix=${HOME}/local install-scripts && cd -
+  - cd AEGeAn && make prefix=${HOME}/local test install install-scripts && cd -
 script:
   - export LD_LIBRARY_PATH=${HOME}/local/lib:$LD_LIBRARY_PATH
   - export PATH=${HOME}/local/bin:$PATH
