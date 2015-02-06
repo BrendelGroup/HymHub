@@ -94,9 +94,11 @@ fi
 
 if [ "$DOSTATS" == "1" ]; then
   cp species/Ador/Ador.iloci.tsv data/iloci.tsv
+  cp species/Ador/Ador.genereps.tsv data/genereps.tsv
   for spec in Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas
   do
     tail -n +2 species/${spec}/${spec}.iloci.tsv >> data/iloci.tsv
+    tail -n +2 species/${spec}/${spec}.genereps.tsv >> data/genereps.tsv
   done
   shasum -c data/checksums.sha
 fi

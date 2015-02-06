@@ -97,19 +97,91 @@ def ilocus_desc(gff3, fasta):
     values = "%s %d %.3f %.3f %d %r" % (locusid, locuslen, gccontent, gcskew, genecount, unannot)
     yield values.split(" ")
 
+def generep_desc(gff3, fasta):
+  """
+  Given gene sequences and their corresponding annotations, generate a tabular
+  record for each gene. Note: we're looking at the longest `mRNA` feature for
+  each gene, or the "gene representative".
+  """
+  seqs = {}
+  for defline, seq in parse_fasta(fasta):
+    seqid = defline[1:].split(" ")[0]
+    seqs[seqid] = seq
+
+  mrnaid = ""
+  mrnaacc = ""
+  mrnalen = 0
+  gccontent = 0.0
+  gcskew = 0.0
+  exoncount = 0
+  introncount = 0
+  utr5plen = 0
+  utr3plen = 0
+  for entry in gff3:
+    if "\tmRNA\t" in entry:
+      fields = entry.rstrip().split("\t")
+      assert len(fields) == 9
+      mrnaid = re.search("ID=([^;\n]+)", fields[8]).group(1)
+      mrnaacc = re.search("Name=([^;\n]+)", fields[8]).group(1)
+      mrnalen = int(fields[4]) - int(fields[3]) + 1
+      mrnaseq = seqs[mrnaid]
+      assert len(mrnaseq) == mrnalen, "mRNA '%s': length mismatch; gff=%d, fa=%d" % (mrnaid, mrnalen, len(mrnaseq))
+      gccontent = gc_content(mrnaseq)
+      gcskew = gc_skew(mrnaseq)
+    elif "\texon\t" in entry:
+      exoncount += 1
+    elif "\tintron\t" in entry:
+      introncount += 1
+    elif "\tfive_prime_UTR\t" in entry:
+      fields = entry.rstrip().split("\t")
+      assert len(fields) == 9
+      utr5plen += int(fields[4]) - int(fields[3]) + 1
+    elif "\tthree_prime_UTR\t" in entry:
+      fields = entry.rstrip().split("\t")
+      assert len(fields) == 9
+      utr3plen += int(fields[4]) - int(fields[3]) + 1
+    elif "###" in entry:
+      values = "%s %s %d %.3f %.3f %d %d %d %d" % (mrnaid, mrnaacc, mrnalen, gccontent, gcskew, exoncount, introncount, utr5plen, utr3plen)
+      mrnaid = ""
+      mrnaacc = ""
+      mrnalen = 0
+      gccontent = 0.0
+      gcskew = 0.0
+      exoncount = 0
+      introncount = 0
+      utr5plen = 0
+      utr3plen = 0
+      yield values.split(" ")
+
 if __name__ == "__main__":
   desc = "Calculate descriptive statistics of genomic features in tabluar form"
   parser = argparse.ArgumentParser(description=desc)
   parser.add_argument("--iloci", type=str, nargs=3,
                       metavar=("gff", "fa", "out"),
-                      help="Compute iLocus statistics")
+                      help="compute iLocus statistics")
+  parser.add_argument("--gnreps", type=str, nargs=3,
+                      metavar=("gff", "fa", "out"),
+                      help="compute statistics on longest isoform of each gene")
+  parser.add_argument("--species", type=str, default="default", metavar="Spec",
+                      help="specify species label")
   args = parser.parse_args()
 
   # Process iLoci
   if args.iloci:
     a = args.iloci
     with open(a[0], "r") as gff, open(a[1], "r") as fa, open(a[2], "w") as out:
-      header = "LocusId Length GCContent GCSkew GeneCount SeqUnannot".split(" ")
+      header = "Species LocusId Length GCContent GCSkew GeneCount SeqUnannot".split(" ")
       print >> out, "\t".join(header)
       for fields in ilocus_desc(gff, fa):
+        fields = [args.species] + fields
+        print >> out, "\t".join(fields)
+
+  # Process gene reps
+  if args.gnreps:
+    a = args.gnreps
+    with open(a[0], "r") as gff, open(a[1], "r") as fa, open(a[2], "w") as out:
+      header = "Species MrnaId Accession Length GCContent GCSkew ExonCount IntronCount 5pUTRlen 3pUTRlen".split(" ")
+      print >> out, "\t".join(header)
+      for fields in generep_desc(gff, fa):
+        fields = [args.species] + fields
         print >> out, "\t".join(fields)

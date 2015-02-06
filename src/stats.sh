@@ -11,6 +11,7 @@ get_stats()
   local PRFX=species/${SPEC}/${SPEC}
 
   echo "[HymHub: $SPEC] computing feature summary statistics"
-  python scripts/feature-desc.py \
-      --iloci ${PRFX}.iloci.gff3 ${PRFX}.iloci.fa ${PRFX}.iloci.tsv
+  python scripts/feature-desc.py --species ${SPEC} \
+      --iloci ${PRFX}.iloci.gff3 ${PRFX}.iloci.fa ${PRFX}.iloci.tsv \
+      --gnreps ${PRFX}.pmrnas.gff3 ${PRFX}.genereps.fa ${PRFX}.genereps.tsv
 }
