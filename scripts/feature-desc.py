@@ -181,6 +181,38 @@ def mrna_desc(gff3, fasta):
       mrnalen = 0
       yield values.split(" ")
 
+def cds_desc(gff3, fasta):
+  """
+  Given CDS sequences and their corresponding annotations, generate a tabular
+  record for each CDS.
+  """
+  seqs = {}
+  for defline, seq in parse_fasta(fasta):
+    seqid = defline[1:].split(" ")[0]
+    seqs[seqid] = seq
+
+  cdsid = ""
+  cdslen = 0
+  for entry in gff3:
+    if "\tCDS\t" in entry:
+      fields = entry.rstrip().split("\t")
+      assert len(fields) == 9
+      cdsmatch = re.search("ID=([^;\n]+)", fields[8])
+      if not cdsmatch:
+        cdsmatch = re.search("Parent=([^;\n]+)", fields[8])
+        assert cdsmatch, "unable to parse CDS ID: %s" % fields[8]
+      cdsid = cdsmatch.group(1)
+      cdslen += int(fields[4]) - int(fields[3]) + 1
+    elif "###" in entry:
+      cdsseq = seqs[cdsid]
+      assert len(cdsseq) == cdslen, "CDS '%s': length mismatch; gff=%d, fa=%d" % (cdsid, cdslen, len(cdsseq))
+      gccontent = gc_content(cdsseq)
+      gcskew = gc_skew(cdsseq)
+      values = "%s %d %.3f %.3f" % (cdsid, cdslen, gccontent, gcskew)
+      cdsid = ""
+      cdslen = 0
+      yield values.split(" ")
+
 if __name__ == "__main__":
   desc = "Calculate descriptive statistics of genomic features in tabluar form"
   parser = argparse.ArgumentParser(description=desc)
@@ -193,6 +225,9 @@ if __name__ == "__main__":
   parser.add_argument("--mrnas", type=str, nargs=3,
                       metavar=("gff", "fa", "out"),
                       help="compute mature mRNA statistics")
+  parser.add_argument("--cds", type=str, nargs=3,
+                      metavar=("gff", "fa", "out"),
+                      help="compute CDS statistics")
   parser.add_argument("--species", type=str, default="default", metavar="Spec",
                       help="specify species label")
   args = parser.parse_args()
@@ -224,5 +259,15 @@ if __name__ == "__main__":
       header = "Species MrnaId Length GCContent GCSkew".split(" ")
       print >> out, "\t".join(header)
       for fields in mrna_desc(gff, fa):
+        fields = [args.species] + fields
+        print >> out, "\t".join(fields)
+
+  # Process coding sequences
+  if args.cds:
+    a = args.cds
+    with open(a[0], "r") as gff, open(a[1], "r") as fa, open(a[2], "w") as out:
+      header = "Species CdsId Length GCContent GCSkew".split(" ")
+      print >> out, "\t".join(header)
+      for fields in cds_desc(gff, fa):
         fields = [args.species] + fields
         print >> out, "\t".join(fields)
