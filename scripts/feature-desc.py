@@ -213,6 +213,115 @@ def cds_desc(gff3, fasta):
       cdslen = 0
       yield values.split(" ")
 
+def feat_overlap(f1, f2):
+  """
+  Given two features (lists of length=9 from GFF3), determine whether they
+  overlap.
+  """
+  f1start = int(f1[3])
+  f1end   = int(f1[4])
+  f2start = int(f2[3])
+  f2end   = int(f2[4])
+
+  if f1start <= f2end and f1end >= f2start:
+    return True;
+  return False;
+
+def exon_context(exon, start, stop):
+  """
+  Given an exon, a start codon, and a stop codon (GFF3 entries),
+  determine the context of the exon:
+    - cds (entirely coding)
+    - 5putr (entirely 5' UTR)
+    - 3putr (entirely 3' UTR)
+    - start (includes start codon)
+    - stop (includes stop codon)
+    - complete (includes both start and stop codon)
+  """
+  assert start and stop
+  exon  = exon.split("\t")
+  start = start.split("\t")
+  stop  = stop.split("\t")
+  assert len(exon) == 9 and len(start) == 9 and len(stop) == 9
+
+  hasstart = feat_overlap(exon, start)
+  hasstop  = feat_overlap(exon, stop)
+  if hasstart or hasstop:
+    if hasstart and hasstop:
+      return "complete"
+    elif hasstart:
+      return "start"
+    else:
+      assert hasstop
+      return "stop"
+
+  exonstart = int(exon[3])
+  exonend   = int(exon[4])
+  codonnucs = [start[3], start[4], stop[3], stop[4]]
+  codonnucs = [int(x) for x in codonnucs]
+  leftmostnuc = min(codonnucs)
+  rightmostnuc = max(codonnucs)
+  if exonend < leftmostnuc:
+    if exon[6] == "-":
+      return "3putr"
+    else:
+      return "5putr"
+  elif exonstart > rightmostnuc:
+    if exon[6] == "-":
+      return "5putr"
+    else:
+      return "3putr"
+  else:
+    assert exonstart > leftmostnuc and exonend < rightmostnuc
+    return "cds"
+
+def exon_desc(gff3, fasta):
+  """
+  Given CDS sequences and their corresponding annotations, generate a tabular
+  record for each CDS.
+  """
+  seqs = {}
+  for defline, seq in parse_fasta(fasta):
+    exonpos = defline[1:].split(" ")[1]
+    seqs[exonpos] = seq
+
+  exons, cdss = [], {}
+  start, stop = None, None
+  for entry in gff3:
+    if "\texon\t" in entry:
+      exons.append(entry)
+    elif "\tCDS\t" in entry:
+      fields = entry.split("\t")
+      pos = "%s_%s-%s" % (fields[0], fields[3], fields[4])
+      cdss[pos] = entry
+    elif "\tstart_codon\t" in entry:
+      start = entry
+    elif "\tstop_codon\t" in entry:
+      stop = entry
+    elif "###" in entry:
+      assert start, "No start codon for exon(s): %s" % exons[0]
+      assert stop,  "No stop codon for exon(s): %s" % exons[0]
+      for exon in exons:
+        fields = exon.split("\t")
+        assert len(fields) == 9, "entry does not have 9 fields: %s" % exon
+        exonpos = "%s_%s-%s" % (fields[0], fields[3], fields[4])
+        exonlength = int(fields[4]) - int(fields[3]) + 1
+        exonseq = seqs[exonpos]
+        assert len(exonseq) == exonlength, "exon '%s': length mismatch; gff=%d, fa=%d" % (exonpos, exonlength, len(exonseq))
+        gccontent = gc_content(exonseq)
+        gcskew = gc_skew(exonseq)
+        context = exon_context(exon, start, stop)
+        phase = None
+        remainder = None
+        if context == "cds":
+          cexon = cdss[exonpos]
+          phase = int(cexon.split("\t")[7])
+          remainder = (exonlength - phase) % 3
+        values = "%s %d %.3f %.3f %s %r %r" %(exonpos, exonlength, gccontent, gcskew, context, phase, remainder)
+        yield values.split(" ")
+      exons, cdss = [], {}
+      start, stop = None, None
+
 if __name__ == "__main__":
   desc = "Calculate descriptive statistics of genomic features in tabluar form"
   parser = argparse.ArgumentParser(description=desc)
@@ -228,6 +337,9 @@ if __name__ == "__main__":
   parser.add_argument("--cds", type=str, nargs=3,
                       metavar=("gff", "fa", "out"),
                       help="compute CDS statistics")
+  parser.add_argument("--exons", type=str, nargs=3,
+                      metavar=("gff", "fa", "out"),
+                      help="compute exon statistics")
   parser.add_argument("--species", type=str, default="default", metavar="Spec",
                       help="specify species label")
   args = parser.parse_args()
@@ -269,5 +381,15 @@ if __name__ == "__main__":
       header = "Species CdsId Length GCContent GCSkew".split(" ")
       print >> out, "\t".join(header)
       for fields in cds_desc(gff, fa):
+        fields = [args.species] + fields
+        print >> out, "\t".join(fields)
+
+  # Process exons
+  if args.exons:
+    a = args.exons
+    with open(a[0], "r") as gff, open(a[1], "r") as fa, open(a[2], "w") as out:
+      header = "Species ExonPos Length GCContent GCSkew Context Phase Remainder".split(" ")
+      print >> out, "\t".join(header)
+      for fields in exon_desc(gff, fa):
         fields = [args.species] + fields
         print >> out, "\t".join(fields)
