@@ -30,6 +30,9 @@ These issues are shared on a for-your-information basis.
   
   This issue has not yet been reported to NCBI, but presumably this should be addressed with a bug fix to the ``annotwriter`` program in the NCBI C++ Toolkit.
 
+* **Ribosomal slippage**: The ornithine decarboxylase antizyme in *Drosophila* and *Tribolium* has a ribosomal slippage anomaly that introduces a 2bp gap in the coding sequence.
+  This gene is discarded when calculating exon-level statistics, but is included in all other calculations.
+
 * **_Camponotus floridanus_**: Two sequence IDs in the *Camponotus floridanus* data set appear in the GFF3 annotation but not in the genome Fasta file.
   These IDs are ``C3809596`` and ``C3873680``.
   This issue was reported the HymenopteraBase by email in February 2013.
