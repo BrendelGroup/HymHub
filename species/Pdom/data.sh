@@ -52,6 +52,7 @@ if [ "$DOCLEANUP" != "0" ]; then
   find $WD -type f \
       | grep -v "/checksums.sha$" | grep -v "/data.sh$" \
       | grep -v "/${SPEC}.gdna.fa$" | grep -v "/${SPEC}.gff3$" \
+      | grep -v ".tsv$" \
       | xargs -n 1 rm -f || true
 fi
 
