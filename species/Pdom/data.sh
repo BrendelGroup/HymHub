@@ -8,20 +8,22 @@ set -eo pipefail
 #-------------------------------------------------------------------------------
 FULLSPEC="Polistes dominula"
 SPEC=Pdom
-PdomDataStore=/iplant/home/standage/Polistes_dominula/r1.2
-WD=$1
 
 # Procedure
 #-------------------------------------------------------------------------------
 source src/data-cli.sh
+source src/filenames.sh
 
 if [ "$DODOWNLOAD" != "0" ]; then
   echo "[HymHub: $FULLSPEC] download genome assembly"
   seqfile=pdom-scaffolds-unmasked-r1.2.fa.gz
-  iget ${PdomDataStore}/genome-assembly/${seqfile} ${WD}/${seqfile}
+  curl ${IPLNT}/53B7319E-3201-4087-9607-2D541FF34DD0/${seqfile} \
+      > ${WD}/${seqfile} 2> ${WD}/${seqfile}.log
 
   echo "[HymHub: $FULLSPEC] downloading genome annotation"
-  iget ${PdomDataStore}/genome-annotation/pdom-annot-r1.2.gff3 ${WD}/.
+  featfile=pdom-annot-r1.2.gff3
+  curl ${IPLNT}/E4944CBB-7DE4-4CA1-A889-3D2A5D2E8696/${featfile} \
+      > ${WD}/${featfile} 2> ${WD}/${featfile}.log
 fi
 
 if [ "$DOFORMAT" != "0" ]; then
