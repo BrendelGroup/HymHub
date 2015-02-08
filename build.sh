@@ -93,13 +93,6 @@ else
 fi
 
 if [ "$DOSTATS" == "1" ]; then
-  for feattype in iloci genereps mrnas cds
-  do
-    cp species/Ador/${feattype}.tsv data/${feattype}.tsv
-    for spec in Ador Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas
-    do
-      tail -n +2 species/${spec}/${feattype}.tsv >> data/${feattype}.tsv
-    done
-  done
-  shasum -c data/checksums.sha
+  source src/stats.sh
+  aggregate_stats
 fi

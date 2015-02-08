@@ -299,6 +299,14 @@ def exon_desc(gff3, fasta):
     elif "\tstop_codon\t" in entry:
       stop = entry
     elif "###" in entry:
+      xcept = False
+      for exonpos in cdss:
+        if ";exception=ribosomal slippage" in cdss[exonpos]:
+          xcept = True
+      if xcept:
+        exons, cdss = [], {}
+        start, stop = None, None
+        continue
       assert start, "No start codon for exon(s): %s" % exons[0]
       assert stop,  "No stop codon for exon(s): %s" % exons[0]
       for exon in exons:
