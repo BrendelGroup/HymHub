@@ -9,9 +9,10 @@ echo "[HymHub] running functional tests"
 python scripts/feature-desc.py \
     --iloci test/ftest-iloci.gff3 test/ftest-iloci.fa test/iloci-test.tsv \
     --gnreps test/ftest-genereps.gff3 test/ftest-genereps.fa test/genereps-test.tsv \
-    --mrnas test/ftest-mrnas.gff3 test/ftest-mrnas.fa test/mrnas-test.tsv
+    --mrnas test/ftest-mrnas.gff3 test/ftest-mrnas.fa test/mrnas-test.tsv \
+    --cds test/ftest-cds.gff3 test/ftest-cds.fa test/cds-test.tsv
 
-for ftype in iloci genereps mrnas
+for ftype in iloci genereps mrnas cds
 do
   echo -n "[HymHub]     $ftype functional test..."
   diff -q test/ftest-${ftype}.tsv test/${ftype}-test.tsv
