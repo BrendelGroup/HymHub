@@ -277,8 +277,8 @@ def exon_context(exon, start, stop):
 
 def exon_desc(gff3, fasta):
   """
-  Given CDS sequences and their corresponding annotations, generate a tabular
-  record for each CDS.
+  Given exon sequences and their corresponding annotations, generate a tabular
+  record for each exon.
   """
   seqs = {}
   for defline, seq in parse_fasta(fasta):
@@ -325,10 +325,87 @@ def exon_desc(gff3, fasta):
           cexon = cdss[exonpos]
           phase = int(cexon.split("\t")[7])
           remainder = (exonlength - phase) % 3
-        values = "%s %d %.3f %.3f %s %r %r" %(exonpos, exonlength, gccontent, gcskew, context, phase, remainder)
+        values = "%s %d %.3f %.3f %s %r %r" % (exonpos, exonlength, gccontent, gcskew, context, phase, remainder)
         yield values.split(" ")
       exons, cdss = [], {}
       start, stop = None, None
+
+def intron_context(intron, start, stop):
+  """
+  Given an intron, a start codon, and a stop codon (GFF3 entries),
+  determine the context of the exon:
+    - cds (entirely coding)
+    - 5putr (entirely 5' UTR)
+    - 3putr (entirely 3' UTR)
+    - start (includes start codon)
+    - stop (includes stop codon)
+    - complete (includes both start and stop codon)
+  """
+  assert start and stop
+  intron = intron.split("\t")
+  start  = start.split("\t")
+  stop   = stop.split("\t")
+  assert len(intron) == 9 and len(start) == 9 and len(stop) == 9
+
+  intronstart = int(intron[3])
+  intronend   = int(intron[4])
+  codonnucs = [start[3], start[4], stop[3], stop[4]]
+  codonnucs = [int(x) for x in codonnucs]
+  leftmostnuc = min(codonnucs)
+  rightmostnuc = max(codonnucs)
+  if intronend < leftmostnuc:
+    if intron[6] == "-":
+      return "3putr"
+    else:
+      return "5putr"
+  elif intronstart > rightmostnuc:
+    if intron[6] == "-":
+      return "5putr"
+    else:
+      return "3putr"
+  else:
+    assert intronstart > leftmostnuc and intronend < rightmostnuc
+    return "cds"
+
+def intron_desc(gff3, fasta):
+  """
+  Given intron sequences and their corresponding annotations, generate a tabular
+  record for each intron.
+  """
+  seqs = {}
+  for defline, seq in parse_fasta(fasta):
+    intronpos = defline[1:].split(" ")[1]
+    seqs[intronpos] = seq
+
+  introns = []
+  start, stop = None, None
+  for entry in gff3:
+    if "\tintron\t" in entry:
+      introns.append(entry)
+    elif "\tstart_codon\t" in entry:
+      start = entry
+    elif "\tstop_codon\t" in entry:
+      stop = entry
+    elif "###" in entry:
+      assert start, "No start codon for introns(s): %s" % introns[0]
+      assert stop,  "No stop codon for introns(s): %s" % introns[0]
+      if len(introns) > 0:
+        for intron in introns:
+          fields = intron.split("\t")
+          assert len(fields) == 9, "entry does not have 9 fields: %s" % intron
+          mrnaid = re.search("Parent=([^;\n]+)", fields[8]).group(1)
+          intronpos = "%s_%s-%s" % (fields[0], fields[3], fields[4])
+          intronlength = int(fields[4]) - int(fields[3]) + 1
+          intronseq = seqs[intronpos]
+          assert len(intronseq) == intronlength, "intron '%s': length mismatch; gff=%d, fa=%d" % (intronpos, intronlength, len(intronseq))
+          gccontent = gc_content(intronseq)
+          gcskew = gc_skew(intronseq)
+          context = intron_context(intron, start, stop)
+          values = "%s %s %d %.3f %.3f %s" % (intronpos, mrnaid, intronlength, gccontent, gcskew, context)
+          yield values.split(" ")
+      introns = []
+      start, stop = None, None
+      continue
 
 if __name__ == "__main__":
   desc = "Calculate descriptive statistics of genomic features in tabluar form"
@@ -348,6 +425,9 @@ if __name__ == "__main__":
   parser.add_argument("--exons", type=str, nargs=3,
                       metavar=("gff", "fa", "out"),
                       help="compute exon statistics")
+  parser.add_argument("--introns", type=str, nargs=3,
+                      metavar=("gff", "fa", "out"),
+                      help="compute intron statistics")
   parser.add_argument("--species", type=str, default="default", metavar="Spec",
                       help="specify species label")
   args = parser.parse_args()
@@ -399,5 +479,15 @@ if __name__ == "__main__":
       header = "Species ExonPos Length GCContent GCSkew Context Phase Remainder".split(" ")
       print >> out, "\t".join(header)
       for fields in exon_desc(gff, fa):
+        fields = [args.species] + fields
+        print >> out, "\t".join(fields)
+
+  # Process introns
+  if args.introns:
+    a = args.introns
+    with open(a[0], "r") as gff, open(a[1], "r") as fa, open(a[2], "w") as out:
+      header = "Species MrnaId IntronPos Length GCContent GCSkew Context".split(" ")
+      print >> out, "\t".join(header)
+      for fields in intron_desc(gff, fa):
         fields = [args.species] + fields
         print >> out, "\t".join(fields)
