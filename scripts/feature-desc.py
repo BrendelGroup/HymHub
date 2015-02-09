@@ -312,6 +312,7 @@ def exon_desc(gff3, fasta):
       for exon in exons:
         fields = exon.split("\t")
         assert len(fields) == 9, "entry does not have 9 fields: %s" % exon
+        mrnaid = re.search("Parent=([^;\n]+)", fields[8]).group(1)
         exonpos = "%s_%s-%s" % (fields[0], fields[3], fields[4])
         exonlength = int(fields[4]) - int(fields[3]) + 1
         exonseq = seqs[exonpos]
@@ -325,7 +326,7 @@ def exon_desc(gff3, fasta):
           cexon = cdss[exonpos]
           phase = int(cexon.split("\t")[7])
           remainder = (exonlength - phase) % 3
-        values = "%s %d %.3f %.3f %s %r %r" % (exonpos, exonlength, gccontent, gcskew, context, phase, remainder)
+        values = "%s %s %d %.3f %.3f %s %r %r" % (exonpos, mrnaid, exonlength, gccontent, gcskew, context, phase, remainder)
         yield values.split(" ")
       exons, cdss = [], {}
       start, stop = None, None
@@ -476,7 +477,7 @@ if __name__ == "__main__":
   if args.exons:
     a = args.exons
     with open(a[0], "r") as gff, open(a[1], "r") as fa, open(a[2], "w") as out:
-      header = "Species ExonPos Length GCContent GCSkew Context Phase Remainder".split(" ")
+      header = "Species ExonPos MrnaId Length GCContent GCSkew Context Phase Remainder".split(" ")
       print >> out, "\t".join(header)
       for fields in exon_desc(gff, fa):
         fields = [args.species] + fields
@@ -486,7 +487,7 @@ if __name__ == "__main__":
   if args.introns:
     a = args.introns
     with open(a[0], "r") as gff, open(a[1], "r") as fa, open(a[2], "w") as out:
-      header = "Species MrnaId IntronPos Length GCContent GCSkew Context".split(" ")
+      header = "Species IntronPos MrnaId Length GCContent GCSkew Context".split(" ")
       print >> out, "\t".join(header)
       for fields in intron_desc(gff, fa):
         fields = [args.species] + fields
