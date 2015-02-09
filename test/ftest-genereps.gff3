@@ -1,0 +1,48 @@
+NT_033777.2	RefSeq	gene	25683374	25684658	.	-	.	ID=gene5900;Name=CG7824;Dbxref=FLYBASE:FBgn0039711,GeneID:43530;gbkey=Gene;gene=CG7824;gene_synonym=Dmel%5CCG7824;locus_tag=Dmel_CG7824
+NT_033777.2	RefSeq	mRNA	25683374	25684658	.	-	.	ID=mRNA11008;Parent=gene5900;Name=NM_143481.3;Note=CG7824-RA%3B Dmel%5CCG7824-RA;Dbxref=Genbank:NM_143481.3,FLYBASE:FBgn0039711,GeneID:43530;gbkey=mRNA;gene=CG7824;product=CG7824%2C transcript variant A;transcript_id=NM_143481.3
+NT_033777.2	.	three_prime_UTR	25683374	25683478	.	-	.	Parent=mRNA11008
+NT_033777.2	RefSeq	exon	25683374	25684440	.	-	.	Parent=mRNA11008;Note=CG7824-RA%3B Dmel%5CCG7824-RA;Dbxref=Genbank:NM_143481.3,FLYBASE:FBgn0039711,GeneID:43530;gbkey=mRNA;gene=CG7824;product=CG7824%2C transcript variant A;transcript_id=NM_143481.3
+NT_033777.2	.	stop_codon	25683479	25683481	.	-	.	Parent=mRNA11008
+NT_033777.2	RefSeq	CDS	25683479	25684440	.	-	2	ID=CDS9568;Parent=mRNA11008;Name=NP_651738.1;Dbxref=Genbank:NP_651738.1,FLYBASE:FBgn0039711,GeneID:43530;gbkey=CDS;product=CG7824%2C isoform A;protein_id=NP_651738.1
+NT_033777.2	.	intron	25684441	25684496	.	-	.	Parent=mRNA11008
+NT_033777.2	RefSeq	CDS	25684497	25684593	.	-	0	ID=CDS9568;Parent=mRNA11008;Name=NP_651738.1;Dbxref=Genbank:NP_651738.1,FLYBASE:FBgn0039711,GeneID:43530;gbkey=CDS;product=CG7824%2C isoform A;protein_id=NP_651738.1
+NT_033777.2	RefSeq	exon	25684497	25684658	.	-	.	Parent=mRNA11008;Note=CG7824-RA%3B Dmel%5CCG7824-RA;Dbxref=Genbank:NM_143481.3,FLYBASE:FBgn0039711,GeneID:43530;gbkey=mRNA;gene=CG7824;product=CG7824%2C transcript variant A;transcript_id=NM_143481.3
+NT_033777.2	.	start_codon	25684591	25684593	.	-	.	Parent=mRNA11008
+NT_033777.2	.	five_prime_UTR	25684594	25684658	.	-	.	Parent=mRNA11008
+###
+NT_176910.1	RefSeq	gene	604226	636973	.	-	.	ID=gene6416;Name=LOC100742189;Dbxref=GeneID:100742189;gbkey=Gene;gene=LOC100742189
+NT_176910.1	RefSeq	mRNA	604226	636973	.	-	.	ID=mRNA6690;Parent=gene6416;Name=XM_003491029.1;Dbxref=GeneID:100742189,Genbank:XM_003491029.1;gbkey=mRNA;gene=LOC100742189;product=hypothetical protein LOC100742189;transcript_id=XM_003491029.1
+NT_176910.1	.	three_prime_UTR	604226	604447	.	-	.	Parent=mRNA6690
+NT_176910.1	RefSeq	exon	604226	604485	.	-	.	Parent=mRNA6690;Dbxref=GeneID:100742189,Genbank:XM_003491029.1;gbkey=mRNA;gene=LOC100742189;product=hypothetical protein LOC100742189;transcript_id=XM_003491029.1
+NT_176910.1	.	stop_codon	604448	604450	.	-	.	Parent=mRNA6690
+NT_176910.1	RefSeq	CDS	604448	604485	.	-	2	ID=CDS6497;Parent=mRNA6690;Name=XP_003491077.1;Dbxref=GeneID:100742189,Genbank:XP_003491077.1;gbkey=CDS;product=hypothetical protein LOC100742189;protein_id=XP_003491077.1
+NT_176910.1	.	intron	604486	620063	.	-	.	Parent=mRNA6690
+NT_176910.1	RefSeq	exon	620064	620254	.	-	.	Parent=mRNA6690;Dbxref=GeneID:100742189,Genbank:XM_003491029.1;gbkey=mRNA;gene=LOC100742189;product=hypothetical protein LOC100742189;transcript_id=XM_003491029.1
+NT_176910.1	RefSeq	CDS	620064	620254	.	-	1	ID=CDS6497;Parent=mRNA6690;Name=XP_003491077.1;Dbxref=GeneID:100742189,Genbank:XP_003491077.1;gbkey=CDS;product=hypothetical protein LOC100742189;protein_id=XP_003491077.1
+NT_176910.1	.	intron	620255	636923	.	-	.	Parent=mRNA6690
+NT_176910.1	RefSeq	exon	636924	636973	.	-	.	Parent=mRNA6690;Dbxref=GeneID:100742189,Genbank:XM_003491029.1;gbkey=mRNA;gene=LOC100742189;product=hypothetical protein LOC100742189;transcript_id=XM_003491029.1
+NT_176910.1	RefSeq	CDS	636924	636973	.	-	0	ID=CDS6497;Parent=mRNA6690;Name=XP_003491077.1;Dbxref=GeneID:100742189,Genbank:XP_003491077.1;gbkey=CDS;product=hypothetical protein LOC100742189;protein_id=XP_003491077.1
+NT_176910.1	.	start_codon	636971	636973	.	-	.	Parent=mRNA6690
+###
+Si_gnF.scaffold05793	sinv_OGSv2.2.3	gene	1151	3104	.	-	.	ID=gene15312;Name=SINV13460
+Si_gnF.scaffold05793	sinv_OGSv2.2.3	mRNA	1151	3104	.	-	.	ID=mRNA15321;Parent=gene15312;Name=SINV13460-RA;Alias=SI2.2.0_80461
+Si_gnF.scaffold05793	.	stop_codon	1151	1153	.	-	.	Parent=mRNA15321
+Si_gnF.scaffold05793	sinv_OGSv2.2.3	CDS	1151	1255	.	-	0	ID=CDS8243;Parent=mRNA15321
+Si_gnF.scaffold05793	sinv_OGSv2.2.3	exon	1151	1255	.	-	.	Parent=mRNA15321
+Si_gnF.scaffold05793	.	intron	1256	1348	.	-	.	Parent=mRNA15321
+Si_gnF.scaffold05793	sinv_OGSv2.2.3	CDS	1349	1534	.	-	0	ID=CDS8243;Parent=mRNA15321
+Si_gnF.scaffold05793	sinv_OGSv2.2.3	exon	1349	1534	.	-	.	Parent=mRNA15321
+Si_gnF.scaffold05793	.	intron	1535	2103	.	-	.	Parent=mRNA15321
+Si_gnF.scaffold05793	sinv_OGSv2.2.3	CDS	2104	2212	.	-	1	ID=CDS8243;Parent=mRNA15321
+Si_gnF.scaffold05793	sinv_OGSv2.2.3	exon	2104	2212	.	-	.	Parent=mRNA15321
+Si_gnF.scaffold05793	.	intron	2213	2288	.	-	.	Parent=mRNA15321
+Si_gnF.scaffold05793	sinv_OGSv2.2.3	CDS	2289	2449	.	-	0	ID=CDS8243;Parent=mRNA15321
+Si_gnF.scaffold05793	sinv_OGSv2.2.3	exon	2289	2449	.	-	.	Parent=mRNA15321
+Si_gnF.scaffold05793	.	intron	2450	2586	.	-	.	Parent=mRNA15321
+Si_gnF.scaffold05793	sinv_OGSv2.2.3	CDS	2587	2817	.	-	0	ID=CDS8243;Parent=mRNA15321
+Si_gnF.scaffold05793	sinv_OGSv2.2.3	exon	2587	2817	.	-	.	Parent=mRNA15321
+Si_gnF.scaffold05793	.	intron	2818	2891	.	-	.	Parent=mRNA15321
+Si_gnF.scaffold05793	sinv_OGSv2.2.3	CDS	2892	3104	.	-	0	ID=CDS8243;Parent=mRNA15321
+Si_gnF.scaffold05793	sinv_OGSv2.2.3	exon	2892	3104	.	-	.	Parent=mRNA15321
+Si_gnF.scaffold05793	.	start_codon	3102	3104	.	-	.	Parent=mRNA15321
+###

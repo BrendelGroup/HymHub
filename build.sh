@@ -65,6 +65,9 @@ if [ "$DOSTATS" == "1" ]; then
   tasks+=" -s"
 fi
 
+# Run functional tests before trying anything too ambitious! ;-)
+test/runft.sh
+
 SPECIES="Ador Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas"
 if [ "$NUMTHREADS" -gt "1" ]; then
   if [ "$DODOWNLOAD" == "1" ]; then
