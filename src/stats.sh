@@ -16,12 +16,13 @@ get_stats()
       --gnreps ${PRFX}.pmrnas.gff3 ${PRFX}.genereps.fa ${PRFX}.genereps.tsv \
       --mrnas ${PRFX}.maturemrnas.gff3 ${PRFX}.maturemrnas.fa ${PRFX}.mrnas.tsv \
       --cds ${PRFX}.pmrnas.gff3 ${PRFX}.cds.fa ${PRFX}.cds.tsv \
-      --exons ${PRFX}.pmrnas.gff3 ${PRFX}.exons.fa ${PRFX}.exons.tsv
+      --exons ${PRFX}.pmrnas.gff3 ${PRFX}.exons.fa ${PRFX}.exons.tsv \
+      --introns ${PRFX}.pmrnas.gff3 ${PRFX}.introns.fa ${PRFX}.introns.tsv
 }
 
 aggregate_stats()
 {
-  for feattype in iloci genereps mrnas cds exons
+  for feattype in iloci genereps mrnas cds exons introns
   do
     cp species/Ador/Ador.${feattype}.tsv data/${feattype}.tsv
     for spec in Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas
