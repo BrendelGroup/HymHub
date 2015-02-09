@@ -1,3 +1,7 @@
+##gff-version   3
+##sequence-region   NT_033777.2 25683374 25684658
+##sequence-region   NT_176910.1 604226 636973
+##sequence-region   Si_gnF.scaffold05793 1151 3104
 NT_033777.2	RefSeq	gene	25683374	25684658	.	-	.	ID=gene5900;Name=CG7824;Dbxref=FLYBASE:FBgn0039711,GeneID:43530;gbkey=Gene;gene=CG7824;gene_synonym=Dmel%5CCG7824;locus_tag=Dmel_CG7824
 NT_033777.2	RefSeq	mRNA	25683374	25684658	.	-	.	ID=mRNA11008;Parent=gene5900;Name=NM_143481.3;Note=CG7824-RA%3B Dmel%5CCG7824-RA;Dbxref=Genbank:NM_143481.3,FLYBASE:FBgn0039711,GeneID:43530;gbkey=mRNA;gene=CG7824;product=CG7824%2C transcript variant A;transcript_id=NM_143481.3
 NT_033777.2	.	three_prime_UTR	25683374	25683478	.	-	.	Parent=mRNA11008

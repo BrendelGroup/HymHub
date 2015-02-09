@@ -8,9 +8,10 @@ set -eo pipefail
 echo "[HymHub] running functional tests"
 python scripts/feature-desc.py \
     --iloci test/ftest-iloci.gff3 test/ftest-iloci.fa test/iloci-test.tsv \
-    --gnreps test/ftest-genereps.gff3 test/ftest-genereps.fa test/genereps-test.tsv
+    --gnreps test/ftest-genereps.gff3 test/ftest-genereps.fa test/genereps-test.tsv \
+    --mrnas test/ftest-mrnas.gff3 test/ftest-mrnas.fa test/mrnas-test.tsv
 
-for ftype in iloci genereps
+for ftype in iloci genereps mrnas
 do
   echo -n "[HymHub]     $ftype functional test..."
   diff -q test/ftest-${ftype}.tsv test/${ftype}-test.tsv
