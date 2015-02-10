@@ -1,0 +1,62 @@
+---
+title: "HymHub: analysis demo"
+output: html_document
+---
+
+HymHub provides descriptive statistics of several genome features for 13 species in the order Hymenoptera.
+These summary statistics are stored in tabular format (tab-separated values or TSV) to facilitate loading into popular statistics packages for analysis.This notebook provides a brief demo for loading the data into R for analysis.
+This demo will focus on interval loci (iLoci), but everything in this demo also  applies to the data tables for other genomic features available from HymHub.
+
+## Read data into memory
+
+In R, tabular data is read into memory using the `read.table` function.
+This creates a data frame object, which we can peek at using the `head` function.
+
+```{r}
+loci <- read.table("iloci.tsv", header=TRUE, sep="\t", stringsAsFactors=FALSE)
+head(loci, n=5) # First 5 rows
+```
+
+We can use the `str` command for a more detailed description.
+
+```{r}
+str(loci)
+```
+
+## Get the number of iLoci for each species
+
+iLocus data for all 13 species in HymHub are included in the same table.
+The **Species** column is provided to help distinguish which species a particular iLocus belongs to (see [this page](http://brendelgroup.github.io/HymHub/genomes.html) for a full description).
+We can grab the species values and determine how many rows (iLoci) correspond to each species.
+
+```{r}
+loci.rle <- rle(as.vector(loci$Species))
+nloci <- data.frame(loci.rle$values, loci.rle$lengths)
+colnames(nloci) <- c("Species", "NumLoci")
+nloci
+```
+
+# Plot distribution of iLocus GC content
+
+Here, we discard the 10% most extreme iLoci in terms of length, and then plot the GC content of the remaining iLoci by species.
+
+```{r}
+# Discard extremely short and extremely long iLoci
+lq <- quantile(loci$Length, probs=c(0.05, 0.95))
+loci.s <- loci[loci$Length > lq[1] & loci$Length < lq[2],]
+lq
+
+# Grab species list
+species <- sort(unique(loci$Species))
+nspecies <- length(species)
+
+# Plot histograms as lines
+h <- hist(loci.s$GCContent[loci.s$Species == species[1]], plot=FALSE, breaks=20)
+plot(h$mids, h$counts, type="l", main="", xlab="%GC Content", ylab="Frequency",
+     xlim=c(0, 0.8), ylim=c(0, 12000), col=rainbow(nspecies)[1])
+for(i in 2:nspecies)
+{
+  h <- hist(loci.s$GCContent[loci.s$Species == species[i]], plot=FALSE, breaks=20)
+  lines(h$mids, h$counts, col=rainbow(nspecies)[i])
+}
+```
