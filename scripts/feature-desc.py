@@ -287,9 +287,9 @@ def exon_desc(gff3, fasta):
   seqs = {}
   for defline, seq in parse_fasta(fasta):
     exonpos = defline[1:].split(" ")[1]
-    assert exonpos not in seqs
     seqs[exonpos] = seq
 
+  reported_exons = {}
   exons, cdss = [], {}
   start, stop = None, None
   for entry in gff3:
@@ -319,6 +319,8 @@ def exon_desc(gff3, fasta):
         assert len(fields) == 9, "entry does not have 9 fields: %s" % exon
         mrnaid = re.search("Parent=([^;\n]+)", fields[8]).group(1)
         exonpos = "%s_%s-%s%s" % (fields[0], fields[3], fields[4], fields[6])
+        if exonpos in reported_exons:
+          continue
         exonlength = int(fields[4]) - int(fields[3]) + 1
         exonseq = seqs[exonpos]
         assert len(exonseq) == exonlength, "exon '%s': length mismatch; gff=%d, fa=%d" % (exonpos, exonlength, len(exonseq))
@@ -332,6 +334,7 @@ def exon_desc(gff3, fasta):
           phase = int(cexon.split("\t")[7])
           remainder = (exonlength - phase) % 3
         values = "%s %s %d %.3f %.3f %s %r %r" % (exonpos, mrnaid, exonlength, gccontent, gcskew, context, phase, remainder)
+        reported_exons[exonpos] = 1
         yield values.split(" ")
       exons, cdss = [], {}
       start, stop = None, None
@@ -381,9 +384,9 @@ def intron_desc(gff3, fasta):
   seqs = {}
   for defline, seq in parse_fasta(fasta):
     intronpos = defline[1:].split(" ")[1]
-    assert intronpos not in seqs
     seqs[intronpos] = seq
 
+  reported_introns = {}
   introns = []
   start, stop = None, None
   for entry in gff3:
@@ -402,6 +405,8 @@ def intron_desc(gff3, fasta):
           assert len(fields) == 9, "entry does not have 9 fields: %s" % intron
           mrnaid = re.search("Parent=([^;\n]+)", fields[8]).group(1)
           intronpos = "%s_%s-%s%s" % (fields[0], fields[3], fields[4], fields[6])
+          if intronpos in reported_introns:
+            continue
           intronlength = int(fields[4]) - int(fields[3]) + 1
           intronseq = seqs[intronpos]
           assert len(intronseq) == intronlength, "intron '%s': length mismatch; gff=%d, fa=%d" % (intronpos, intronlength, len(intronseq))
@@ -409,13 +414,14 @@ def intron_desc(gff3, fasta):
           gcskew = gc_skew(intronseq)
           context = intron_context(intron, start, stop)
           values = "%s %s %d %.3f %.3f %s" % (intronpos, mrnaid, intronlength, gccontent, gcskew, context)
+          reported_introns[intronpos] = 1
           yield values.split(" ")
       introns = []
       start, stop = None, None
       continue
 
 if __name__ == "__main__":
-  desc = "Calculate descriptive statistics of genomic features in tabluar form"
+  desc = "Calculate descriptive statistics of genomic features in tabular form"
   parser = argparse.ArgumentParser(description=desc)
   parser.add_argument("--iloci", type=str, nargs=3,
                       metavar=("gff", "fa", "out"),
