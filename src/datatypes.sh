@@ -8,10 +8,11 @@ set -eo pipefail
 get_iloci()
 {
   local SPEC=$1
+  local VERSION=$2
   local WD=species/${SPEC}
 
   echo "[HymHub: ${SPEC}] computing iLocus boundaries"
-  lpdriver.py --idfmt="HymHub${SPEC}ILCv0.0.1-%05lu" --delta=500 \
+  lpdriver.py --idfmt="HymHub${SPEC}ILC${VERSION}-%05lu" --delta=500 \
               --out ${WD}/${SPEC}.iloci.gff3 \
               ${WD}/${SPEC}.gff3 \
       2> ${WD}/iloci.gff3.log
@@ -91,7 +92,8 @@ get_exons()
 
 get_datatypes()
 {
-  get_iloci  $1
+  VERSION=$(cat VERSION)
+  get_iloci  $1 $VERSION
   get_genes  $1
   get_mmrnas $1
   get_cds    $1

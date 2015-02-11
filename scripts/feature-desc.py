@@ -71,6 +71,7 @@ def ilocus_desc(gff3, fasta):
   seqs = {}
   for defline, seq in parse_fasta(fasta):
     seqid = defline[1:].split(" ")[0]
+    assert seqid not in seqs
     seqs[seqid] = seq
 
   for entry in gff3:
@@ -106,6 +107,7 @@ def generep_desc(gff3, fasta):
   seqs = {}
   for defline, seq in parse_fasta(fasta):
     seqid = defline[1:].split(" ")[0]
+    assert seqid not in seqs
     seqs[seqid] = seq
 
   mrnaid = ""
@@ -161,6 +163,7 @@ def mrna_desc(gff3, fasta):
   seqs = {}
   for defline, seq in parse_fasta(fasta):
     seqid = defline[1:].split(" ")[0]
+    assert seqid not in seqs
     seqs[seqid] = seq
 
   mrnaid = ""
@@ -189,6 +192,7 @@ def cds_desc(gff3, fasta):
   seqs = {}
   for defline, seq in parse_fasta(fasta):
     seqid = defline[1:].split(" ")[0]
+    assert seqid not in seqs
     seqs[seqid] = seq
 
   cdsid = ""
@@ -283,6 +287,7 @@ def exon_desc(gff3, fasta):
   seqs = {}
   for defline, seq in parse_fasta(fasta):
     exonpos = defline[1:].split(" ")[1]
+    assert exonpos not in seqs
     seqs[exonpos] = seq
 
   exons, cdss = [], {}
@@ -292,7 +297,7 @@ def exon_desc(gff3, fasta):
       exons.append(entry)
     elif "\tCDS\t" in entry:
       fields = entry.split("\t")
-      pos = "%s_%s-%s" % (fields[0], fields[3], fields[4])
+      pos = "%s_%s-%s%s" % (fields[0], fields[3], fields[4], fields[6])
       cdss[pos] = entry
     elif "\tstart_codon\t" in entry:
       start = entry
@@ -313,7 +318,7 @@ def exon_desc(gff3, fasta):
         fields = exon.split("\t")
         assert len(fields) == 9, "entry does not have 9 fields: %s" % exon
         mrnaid = re.search("Parent=([^;\n]+)", fields[8]).group(1)
-        exonpos = "%s_%s-%s" % (fields[0], fields[3], fields[4])
+        exonpos = "%s_%s-%s%s" % (fields[0], fields[3], fields[4], fields[6])
         exonlength = int(fields[4]) - int(fields[3]) + 1
         exonseq = seqs[exonpos]
         assert len(exonseq) == exonlength, "exon '%s': length mismatch; gff=%d, fa=%d" % (exonpos, exonlength, len(exonseq))
@@ -376,6 +381,7 @@ def intron_desc(gff3, fasta):
   seqs = {}
   for defline, seq in parse_fasta(fasta):
     intronpos = defline[1:].split(" ")[1]
+    assert intronpos not in seqs
     seqs[intronpos] = seq
 
   introns = []
@@ -395,7 +401,7 @@ def intron_desc(gff3, fasta):
           fields = intron.split("\t")
           assert len(fields) == 9, "entry does not have 9 fields: %s" % intron
           mrnaid = re.search("Parent=([^;\n]+)", fields[8]).group(1)
-          intronpos = "%s_%s-%s" % (fields[0], fields[3], fields[4])
+          intronpos = "%s_%s-%s%s" % (fields[0], fields[3], fields[4], fields[6])
           intronlength = int(fields[4]) - int(fields[3]) + 1
           intronseq = seqs[intronpos]
           assert len(intronseq) == intronlength, "intron '%s': length mismatch; gff=%d, fa=%d" % (intronpos, intronlength, len(intronseq))
