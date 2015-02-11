@@ -15,4 +15,5 @@ species/*/comm23
 species/*/*.generepids.txt
 scratch/
 test/*-test.tsv
+.ipynb_checkpoints
 _site
