@@ -1,8 +1,16 @@
 # HymHub
 
-* Homepage: http://brendelgroup.github.io/HymHub
-* Data (courtesy of fig**share**): coming soon!
-* Code (courtesy of GitHub): https://github.com/BrendelGroup/HymHub
+## Overview
+
+I would like to:
+
+* **download the data**: data is available for download at [doi:m9.figshare.1306864](http://dx.doi.org/10.6084/m9.figshare.1306864) courtesy of fig**share**.
+* **see the code**: the code used to generate the data files is available at [BrendelGroup/HymHub](https://github.com/BrendelGroup/HymHub) courtesy of GitHub.
+  Also included is a basic data analysis demo (implemented both in R and Python) that you can download and use interactively on your local system.
+  A static rendering of the demo is available from the following links.
+  * [R (RStudio/knitr) demo](http://htmlpreview.github.io/?https://github.com/BrendelGroup/HymHub/blob/master/data/HymHubDemo.html)
+  * [Python (IPython Notebook) demo](http://nbviewer.ipython.org/github/BrendelGroup/HymHub/blob/master/data/HymHubDemo.ipynb)
+* **read more about HymHub**: check out [our homepage](http://brendelgroup.github.io/HymHub).
 
 ## Building HymHub yourself
 
