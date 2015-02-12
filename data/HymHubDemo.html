@@ -55,12 +55,13 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 </div>
 
 
-<p>HymHub provides descriptive statistics of several genome features for 13 species in the order Hymenoptera. These summary statistics are stored in tabular format (tab-separated values or TSV) to facilitate loading into popular statistics packages for analysis.This notebook provides a brief demo for loading the data into R for analysis. This demo will focus on interval loci (iLoci), but everything in this demo also applies to the data tables for other genomic features available from HymHub.</p>
+<p><a href="http://brendelgroup.github.io/HymHub">HymHub</a> provides descriptive statistics of several genome features for 13 species in the order Hymenoptera. These summary statistics are stored in tabular format (tab-separated values or TSV) to facilitate loading into popular statistics packages for analysis.</p>
+<p>This notebook isn’t designed to do anything particularly useful other than provide a brief demo for loading a data set into an R data frame and pulling data of interest out of that data frame. Here we will focus on interval loci (iLoci), but everything in this demo also applies to the data tables for other genomic features available from HymHub.</p>
 <div id="read-data-into-memory" class="section level2">
 <h2>Read data into memory</h2>
 <p>In R, tabular data is read into memory using the <code>read.table</code> function. This creates a data frame object, which we can peek at using the <code>head</code> function.</p>
 <pre class="r"><code>loci &lt;- read.table(&quot;iloci.tsv&quot;, header=TRUE, sep=&quot;\t&quot;, stringsAsFactors=FALSE)
-head(loci, n=5) # First 5 rows</code></pre>
+head(loci, n=5) # Let's check out the first 5 rows of the data frame</code></pre>
 <pre><code>##   Species                   LocusId Length GCContent GCSkew GeneCount
 ## 1    Ador HymHubAdorILCv0.0.1-00001  26624     0.431  0.010         0
 ## 2    Ador HymHubAdorILCv0.0.1-00002  49798     0.411 -0.014         1

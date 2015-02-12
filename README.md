@@ -1,7 +1,5 @@
 # HymHub
 
-## Overview
-
 I would like to:
 
 * **download the data**: data is available for download at [doi:m9.figshare.1306864](http://dx.doi.org/10.6084/m9.figshare.1306864) courtesy of fig**share**.
