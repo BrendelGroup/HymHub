@@ -15,9 +15,9 @@ The purpose of HymHub is to facilitate genome analysis by gathering data from di
 
 ## What can I do with HymHub?
 
-* Go to fig**share** (link coming soon) to download genome sequences (Fasta), annotations (GFF3), and summary data tables (TSV) for all sequenced Hymenopteran genomes.
+* Go to [fig**share**](http://dx.doi.org/10.6084/m9.figshare.1306864) to download genome sequences (Fasta), annotations (GFF3), and summary data tables (TSV) for all sequenced Hymenopteran genomes.
 * Go to [GitHub](http://github.com/BrendelGroup/HymHub) to download the code we used to build these data files and construct them yourself on your local computer.
-* Check out our [interactive IPython notebooks and Rmd files](link coming soon) for tips to get started analyzing the data.
+* Check out our [interactive IPython notebooks and Rmd files](demo.html) for tips to get started analyzing the data.
 * Use our [GitHub issue tracker](http://github.com/BrendelGroup/HymHub/issues) to tell us about any issues with the data or our code.
 
 ## More questions?
