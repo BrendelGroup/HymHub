@@ -79,7 +79,10 @@ def ilocus_desc(gff3, fasta):
       continue
     fields = entry.rstrip().split("\t")
     assert len(fields) == 9
-    locusid = re.search("ID=([^;\n]+)", fields[8]).group(1)
+    locusid = "%s_%s-%s" % (fields[0], fields[3], fields[4])
+    locusidmatch = re.search("ID=([^;\n]+)", fields[8])
+    if locusidmatch:
+      locusid = locusidmatch.group(1)
     locuslen = int(fields[4]) - int(fields[3]) + 1
     locusseq = seqs[locusid]
     assert len(locusseq) == locuslen, "Locus '%s': length mismatch; gff=%d, fa=%d" % (locusid, locuslen, len(locusseq))

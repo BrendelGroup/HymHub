@@ -18,11 +18,13 @@ get_stats()
       --cds ${PRFX}.pmrnas.gff3 ${PRFX}.cds.fa ${PRFX}.cds.tsv \
       --exons ${PRFX}.pmrnas.gff3 ${PRFX}.exons.fa ${PRFX}.exons.tsv \
       --introns ${PRFX}.pmrnas.gff3 ${PRFX}.introns.fa ${PRFX}.introns.tsv
+  python scripts/feature-desc.py --species ${SPEC} \
+      --iloci ${PRFX}.miloci.gff3 ${PRFX}.miloci.fa ${PRFX}.miloci.tsv
 }
 
 aggregate_stats()
 {
-  for feattype in iloci genereps mrnas cds exons introns
+  for feattype in iloci miloci genereps mrnas cds exons introns
   do
     cp species/Ador/Ador.${feattype}.tsv data/${feattype}.tsv
     for spec in Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas
