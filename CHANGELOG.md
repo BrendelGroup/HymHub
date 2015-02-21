@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
   as a default locusid (rather than causing an assertion failure).
 
 ### Added
-- Parsing of miLoci (merged iLoci); still needs testing.
+- Parsing of miLoci (merged iLoci), complete with functional tests.
 
 ## [v0.0.1] - 2015-02-12
 

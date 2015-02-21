@@ -91,11 +91,12 @@ def ilocus_desc(gff3, fasta):
 
     genecount = 0
     unannot = False
-    if ";fragment=true" in entry:
-      unannot = ";unannot=true" in entry
-    elif ";gene=" in entry:
+    attrs = fields[8]
+    if "fragment=true" in attrs:
+      unannot = "unannot=true" in attrs
+    elif "gene=" in attrs:
       locustype = "gene"
-      gmatch = re.search(";gene=(\d+)", fields[8])
+      gmatch = re.search("gene=(\d+)", attrs)
       assert gmatch
       genecount = int(gmatch.group(1))
     values = "%s %d %.3f %.3f %d %r" % (locusid, locuslen, gccontent, gcskew, genecount, unannot)

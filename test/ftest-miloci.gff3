@@ -1,0 +1,7 @@
+##gff-version   3
+##sequence-region   NT_177092.1 204599 205560
+##sequence-region   NW_003789385.1 3710728 3716614
+##sequence-region   NW_006265157.1 1 227
+NT_177092.1	AEGeAn::LocusPocus	locus	204599	205560	.	.	.	geneless=true
+NW_003789385.1	AEGeAn::LocusPocus	locus	3710728	3716614	.	.	.	gene=1;transcript=1
+NW_006265157.1	AEGeAn::uloci.py	locus	1	227	.	.	.	geneless=true;fragment=true;unannot=true
