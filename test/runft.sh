@@ -8,12 +8,14 @@ set -eo pipefail
 echo "[HymHub] running functional tests"
 python scripts/feature-desc.py \
     --iloci test/ftest-iloci.gff3 test/ftest-iloci.fa test/iloci-test.tsv \
-    --iloci test/ftest-miloci.gff3 test/ftest-miloci.fa test/miloci-test.tsv \
     --gnreps test/ftest-genereps.gff3 test/ftest-genereps.fa test/genereps-test.tsv \
     --mrnas test/ftest-mrnas.gff3 test/ftest-mrnas.fa test/mrnas-test.tsv \
     --cds test/ftest-cds.gff3 test/ftest-cds.fa test/cds-test.tsv \
     --exons test/ftest-exons.gff3 test/ftest-exons.fa test/exons-pre-test.tsv \
     --introns test/ftest-introns.gff3 test/ftest-introns.fa test/introns-pre-test.tsv
+
+python scripts/feature-desc.py \
+    --iloci test/ftest-miloci.gff3 test/ftest-miloci.fa test/miloci-test.tsv
 
 head -n 1 test/exons-pre-test.tsv > test/exons-test.tsv
 grep 'NT_033778.3_19722259-19722625' test/exons-pre-test.tsv >> test/exons-test.tsv
