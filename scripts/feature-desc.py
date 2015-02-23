@@ -63,6 +63,16 @@ def gc_skew(dna):
     return 0.0
   return float(gcount - ccount) / float(gcount + ccount)
 
+def n_content(dna):
+  """
+  Calculate the proportion of fully ambigious nucleotides in a DNA sequence.
+  """
+  ncount = dna.count("N") + dna.count("n") +
+           dna.count("X") + dna.count("x")
+  if ncount == 0:
+    return 0.0
+  return float(ncount) / float(len(dna))
+
 def ilocus_desc(gff3, fasta):
   """
   Given iLocus sequences and their corresponding annotations, generate a tabular
@@ -88,6 +98,7 @@ def ilocus_desc(gff3, fasta):
     assert len(locusseq) == locuslen, "Locus '%s': length mismatch; gff=%d, fa=%d" % (locusid, locuslen, len(locusseq))
     gccontent = gc_content(locusseq)
     gcskew = gc_skew(locusseq)
+    ncontent = n_content(locusseq)
 
     genecount = 0
     unannot = False
@@ -99,7 +110,7 @@ def ilocus_desc(gff3, fasta):
       gmatch = re.search("gene=(\d+)", attrs)
       assert gmatch
       genecount = int(gmatch.group(1))
-    values = "%s %d %.3f %.3f %d %r" % (locusid, locuslen, gccontent, gcskew, genecount, unannot)
+    values = "%s %d %.3f %.3f %.3f %d %r" % (locusid, locuslen, gccontent, gcskew, ncontent, genecount, unannot)
     yield values.split(" ")
 
 def generep_desc(gff3, fasta):
@@ -119,6 +130,7 @@ def generep_desc(gff3, fasta):
   mrnalen = 0
   gccontent = 0.0
   gcskew = 0.0
+  ncontent = 0.0
   exoncount = 0
   introncount = 0
   utr5plen = 0
@@ -134,6 +146,7 @@ def generep_desc(gff3, fasta):
       assert len(mrnaseq) == mrnalen, "mRNA '%s': length mismatch; gff=%d, fa=%d" % (mrnaid, mrnalen, len(mrnaseq))
       gccontent = gc_content(mrnaseq)
       gcskew = gc_skew(mrnaseq)
+      ncontent = n_content(mrnaseq)
     elif "\texon\t" in entry:
       exoncount += 1
     elif "\tintron\t" in entry:
@@ -147,12 +160,13 @@ def generep_desc(gff3, fasta):
       assert len(fields) == 9
       utr3plen += int(fields[4]) - int(fields[3]) + 1
     elif "###" in entry:
-      values = "%s %s %d %.3f %.3f %d %d %d %d" % (mrnaid, mrnaacc, mrnalen, gccontent, gcskew, exoncount, introncount, utr5plen, utr3plen)
+      values = "%s %s %d %.3f %.3f %.3f %d %d %d %d" % (mrnaid, mrnaacc, mrnalen, gccontent, gcskew, ncontent, exoncount, introncount, utr5plen, utr3plen)
       mrnaid = ""
       mrnaacc = ""
       mrnalen = 0
       gccontent = 0.0
       gcskew = 0.0
+      ncontent = 0.0
       exoncount = 0
       introncount = 0
       utr5plen = 0
@@ -183,7 +197,8 @@ def mrna_desc(gff3, fasta):
       assert len(mrnaseq) == mrnalen, "mature mRNA '%s': length mismatch; gff=%d, fa=%d" % (mrnaid, mrnalen, len(mrnaseq))
       gccontent = gc_content(mrnaseq)
       gcskew = gc_skew(mrnaseq)
-      values = "%s %d %.3f %.3f" % (mrnaid, mrnalen, gccontent, gcskew)
+      nconten = n_content(mrnaseq)
+      values = "%s %d %.3f %.3f %.3f" % (mrnaid, mrnalen, gccontent, gcskew, ncontent)
       mrnaid = ""
       mrnalen = 0
       yield values.split(" ")
@@ -216,7 +231,8 @@ def cds_desc(gff3, fasta):
       assert len(cdsseq) == cdslen, "CDS '%s': length mismatch; gff=%d, fa=%d" % (cdsid, cdslen, len(cdsseq))
       gccontent = gc_content(cdsseq)
       gcskew = gc_skew(cdsseq)
-      values = "%s %d %.3f %.3f" % (cdsid, cdslen, gccontent, gcskew)
+      ncontent = n_content(cdsseq)
+      values = "%s %d %.3f %.3f %.3f" % (cdsid, cdslen, gccontent, gcskew, ncontent)
       cdsid = ""
       cdslen = 0
       yield values.split(" ")
@@ -330,6 +346,7 @@ def exon_desc(gff3, fasta):
         assert len(exonseq) == exonlength, "exon '%s': length mismatch; gff=%d, fa=%d" % (exonpos, exonlength, len(exonseq))
         gccontent = gc_content(exonseq)
         gcskew = gc_skew(exonseq)
+        ncontent = n_content(exonseq)
         context = exon_context(exon, start, stop)
         phase = None
         remainder = None
@@ -337,7 +354,7 @@ def exon_desc(gff3, fasta):
           cexon = cdss[exonpos]
           phase = int(cexon.split("\t")[7])
           remainder = (exonlength - phase) % 3
-        values = "%s %s %d %.3f %.3f %s %r %r" % (exonpos, mrnaid, exonlength, gccontent, gcskew, context, phase, remainder)
+        values = "%s %s %d %.3f %.3f %.3f %s %r %r" % (exonpos, mrnaid, exonlength, gccontent, gcskew, ncontent, context, phase, remainder)
         reported_exons[exonpos] = 1
         yield values.split(" ")
       exons, cdss = [], {}
@@ -416,8 +433,9 @@ def intron_desc(gff3, fasta):
           assert len(intronseq) == intronlength, "intron '%s': length mismatch; gff=%d, fa=%d" % (intronpos, intronlength, len(intronseq))
           gccontent = gc_content(intronseq)
           gcskew = gc_skew(intronseq)
+          ncontent = n_content(intronseq)
           context = intron_context(intron, start, stop)
-          values = "%s %s %d %.3f %.3f %s" % (intronpos, mrnaid, intronlength, gccontent, gcskew, context)
+          values = "%s %s %d %.3f %.3f %.3f %s" % (intronpos, mrnaid, intronlength, gccontent, gcskew, ncontent, context)
           reported_introns[intronpos] = 1
           yield values.split(" ")
       introns = []
@@ -453,7 +471,7 @@ if __name__ == "__main__":
   if args.iloci:
     a = args.iloci
     with open(a[0], "r") as gff, open(a[1], "r") as fa, open(a[2], "w") as out:
-      header = "Species LocusId Length GCContent GCSkew GeneCount SeqUnannot".split(" ")
+      header = "Species LocusId Length GCContent GCSkew NContent GeneCount SeqUnannot".split(" ")
       print >> out, "\t".join(header)
       for fields in ilocus_desc(gff, fa):
         fields = [args.species] + fields
@@ -463,7 +481,7 @@ if __name__ == "__main__":
   if args.gnreps:
     a = args.gnreps
     with open(a[0], "r") as gff, open(a[1], "r") as fa, open(a[2], "w") as out:
-      header = "Species MrnaId Accession Length GCContent GCSkew ExonCount IntronCount 5pUTRlen 3pUTRlen".split(" ")
+      header = "Species MrnaId Accession Length GCContent GCSkew NContent ExonCount IntronCount 5pUTRlen 3pUTRlen".split(" ")
       print >> out, "\t".join(header)
       for fields in generep_desc(gff, fa):
         fields = [args.species] + fields
@@ -473,7 +491,7 @@ if __name__ == "__main__":
   if args.mrnas:
     a = args.mrnas
     with open(a[0], "r") as gff, open(a[1], "r") as fa, open(a[2], "w") as out:
-      header = "Species MrnaId Length GCContent GCSkew".split(" ")
+      header = "Species MrnaId Length GCContent GCSkew NContent".split(" ")
       print >> out, "\t".join(header)
       for fields in mrna_desc(gff, fa):
         fields = [args.species] + fields
@@ -483,7 +501,7 @@ if __name__ == "__main__":
   if args.cds:
     a = args.cds
     with open(a[0], "r") as gff, open(a[1], "r") as fa, open(a[2], "w") as out:
-      header = "Species CdsId Length GCContent GCSkew".split(" ")
+      header = "Species CdsId Length GCContent GCSkew NContent".split(" ")
       print >> out, "\t".join(header)
       for fields in cds_desc(gff, fa):
         fields = [args.species] + fields
@@ -493,7 +511,7 @@ if __name__ == "__main__":
   if args.exons:
     a = args.exons
     with open(a[0], "r") as gff, open(a[1], "r") as fa, open(a[2], "w") as out:
-      header = "Species ExonPos MrnaId Length GCContent GCSkew Context Phase Remainder".split(" ")
+      header = "Species ExonPos MrnaId Length GCContent GCSkew NContent Context Phase Remainder".split(" ")
       print >> out, "\t".join(header)
       for fields in exon_desc(gff, fa):
         fields = [args.species] + fields
@@ -503,7 +521,7 @@ if __name__ == "__main__":
   if args.introns:
     a = args.introns
     with open(a[0], "r") as gff, open(a[1], "r") as fa, open(a[2], "w") as out:
-      header = "Species IntronPos MrnaId Length GCContent GCSkew Context".split(" ")
+      header = "Species IntronPos MrnaId Length GCContent GCSkew NContent Context".split(" ")
       print >> out, "\t".join(header)
       for fields in intron_desc(gff, fa):
         fields = [args.species] + fields

@@ -1,4 +1,4 @@
-Species	MrnaId	Length	GCContent	GCSkew
-default	mRNA6484	525	0.465	0.016
-default	mRNA9962	1955	0.515	0.042
-default	mRNA14616	288	0.340	0.061
+Species	MrnaId	Length	GCContent	GCSkew	NContent
+default	mRNA6484	525	0.465	0.016	0.000
+default	mRNA9962	1955	0.515	0.042	0.000
+default	mRNA14616	288	0.340	0.061	0.000

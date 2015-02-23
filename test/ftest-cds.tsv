@@ -1,4 +1,4 @@
-Species	CdsId	Length	GCContent	GCSkew
-default	CDS4389	450	0.404	0.198
-default	CDS875	1080	0.342	0.003
-default	PdomMRNAr1.2-09997.1.cds	525	0.610	0.150
+Species	CdsId	Length	GCContent	GCSkew	NContent
+default	CDS4389	450	0.404	0.198	0.000
+default	CDS875	1080	0.342	0.003	0.000
+default	PdomMRNAr1.2-09997.1.cds	525	0.610	0.150	0.000
