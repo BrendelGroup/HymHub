@@ -80,6 +80,33 @@ def n_content(dna):
     return float(ncount) / float(len(dna))
 
 
+def ilocus_classify(ilocus):
+    """
+    Determine the type of gene(s), if any, encoded in this iLocus.
+    """
+    fields = ilocus.split("\t")
+    assert len(fields) == 9
+    attrs = fields[8]
+
+    counts = {}
+    for keyvaluepair in attrs.split(";"):
+        key, value = keyvaluepair.split("=")
+        if key not in ["ID", "fragment", "unannot", "merged", "gene"]:
+            counts[key] = 1
+
+    if len(counts) == 0:
+        return "geneless"
+
+    if len(counts) > 1:
+        assert "geneless" not in counts
+        return "mixed"
+
+    rnatype = counts.keys()[0]
+    if rnatype in ["transcript", "primary_transcript"]:
+        rnatype = "ncRNA"
+    return rnatype
+
+
 def ilocus_desc(gff3, fasta):
     """
     Given iLocus sequences and their corresponding annotations, generate a
@@ -109,6 +136,7 @@ def ilocus_desc(gff3, fasta):
         gcskew = gc_skew(locusseq)
         ncontent = n_content(locusseq)
 
+        locusclass = ilocus_classify(entry.rstrip())
         genecount = 0
         unannot = False
         attrs = fields[8]
@@ -119,8 +147,9 @@ def ilocus_desc(gff3, fasta):
             gmatch = re.search("gene=(\d+)", attrs)
             assert gmatch
             genecount = int(gmatch.group(1))
-        values = "%s %d %.3f %.3f %.3f %d %r" % (
-            locusid, locuslen, gccontent, gcskew, ncontent, genecount, unannot)
+        values = "%s %d %.3f %.3f %.3f %s %d %r" % (
+            locusid, locuslen, gccontent, gcskew, ncontent, locusclass,
+            genecount, unannot)
         yield values.split(" ")
 
 
@@ -514,7 +543,7 @@ if __name__ == "__main__":
                 open(a[1], "r") as fa,  \
                 open(a[2], "w") as out:
             header = ["Species", "LocusId", "Length", "GCContent", "GCSkew",
-                      "NContent", "GeneCount", "SeqUnannot"]
+                      "NContent", "LocusClass", "GeneCount", "SeqUnannot"]
             print >> out, "\t".join(header)
             for fields in ilocus_desc(gff, fa):
                 fields = [args.species] + fields
