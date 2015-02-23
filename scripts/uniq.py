@@ -7,7 +7,7 @@
 import sys
 lines = {}
 for line in sys.stdin:
-  if line in lines:
-    continue
-  lines[line] = 1
-  print line
+    if line in lines:
+        continue
+    lines[line] = 1
+    print line
