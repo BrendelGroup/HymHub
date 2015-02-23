@@ -67,7 +67,7 @@ def n_content(dna):
   """
   Calculate the proportion of fully ambigious nucleotides in a DNA sequence.
   """
-  ncount = dna.count("N") + dna.count("n") +
+  ncount = dna.count("N") + dna.count("n") + \
            dna.count("X") + dna.count("x")
   if ncount == 0:
     return 0.0
@@ -197,7 +197,7 @@ def mrna_desc(gff3, fasta):
       assert len(mrnaseq) == mrnalen, "mature mRNA '%s': length mismatch; gff=%d, fa=%d" % (mrnaid, mrnalen, len(mrnaseq))
       gccontent = gc_content(mrnaseq)
       gcskew = gc_skew(mrnaseq)
-      nconten = n_content(mrnaseq)
+      ncontent = n_content(mrnaseq)
       values = "%s %d %.3f %.3f %.3f" % (mrnaid, mrnalen, gccontent, gcskew, ncontent)
       mrnaid = ""
       mrnalen = 0
