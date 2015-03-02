@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - When parsing iLoci, `scripts/feature-desc.py` will now use the iLocus position
   as a default locusid (rather than causing an assertion failure).
+- Fixed species GFF3 checksums to account for improved pseudogene correction in
+  AEGeAn.
 
 ### Added
 - Parsing of miLoci (merged iLoci), complete with functional tests.
