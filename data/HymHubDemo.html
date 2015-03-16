@@ -62,26 +62,28 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <p>In R, tabular data is read into memory using the <code>read.table</code> function. This creates a data frame object, which we can peek at using the <code>head</code> function.</p>
 <pre class="r"><code>loci &lt;- read.table(&quot;iloci.tsv&quot;, header=TRUE, sep=&quot;\t&quot;, stringsAsFactors=FALSE)
 head(loci, n=5) # Let's check out the first 5 rows of the data frame</code></pre>
-<pre><code>##   Species                   LocusId Length GCContent GCSkew GeneCount
-## 1    Ador HymHubAdorILCv0.0.1-00001  26624     0.431  0.010         0
-## 2    Ador HymHubAdorILCv0.0.1-00002  49798     0.411 -0.014         1
-## 3    Ador HymHubAdorILCv0.0.1-00003   3565     0.344  0.115         0
-## 4    Ador HymHubAdorILCv0.0.1-00004  17238     0.296 -0.021         1
-## 5    Ador HymHubAdorILCv0.0.1-00005   6340     0.252  0.011         2
-##   SeqUnannot
-## 1      False
-## 2      False
-## 3      False
-## 4      False
-## 5      False</code></pre>
+<pre><code>##   Species                   LocusId Length GCContent GCSkew NContent
+## 1    Ador HymHubAdorILCv0.0.1-00001  26624     0.431  0.010    0.082
+## 2    Ador HymHubAdorILCv0.0.1-00002  49798     0.411 -0.014    0.084
+## 3    Ador HymHubAdorILCv0.0.1-00003   3565     0.344  0.115    0.041
+## 4    Ador HymHubAdorILCv0.0.1-00004  17238     0.296 -0.021    0.028
+## 5    Ador HymHubAdorILCv0.0.1-00005   6340     0.252  0.011    0.000
+##   LocusClass GeneCount SeqUnannot
+## 1   geneless         0      False
+## 2       mRNA         1      False
+## 3   geneless         0      False
+## 4       mRNA         1      False
+## 5      ncRNA         2      False</code></pre>
 <p>We can use the <code>str</code> command for a more detailed description.</p>
 <pre class="r"><code>str(loci)</code></pre>
-<pre><code>## 'data.frame':    301165 obs. of  7 variables:
+<pre><code>## 'data.frame':    301165 obs. of  9 variables:
 ##  $ Species   : chr  &quot;Ador&quot; &quot;Ador&quot; &quot;Ador&quot; &quot;Ador&quot; ...
 ##  $ LocusId   : chr  &quot;HymHubAdorILCv0.0.1-00001&quot; &quot;HymHubAdorILCv0.0.1-00002&quot; &quot;HymHubAdorILCv0.0.1-00003&quot; &quot;HymHubAdorILCv0.0.1-00004&quot; ...
 ##  $ Length    : int  26624 49798 3565 17238 6340 31642 80759 17007 137366 1201 ...
 ##  $ GCContent : num  0.431 0.411 0.344 0.296 0.252 0.288 0.29 0.335 0.319 0.293 ...
 ##  $ GCSkew    : num  0.01 -0.014 0.115 -0.021 0.011 -0.006 -0.022 -0.002 0.001 -0.028 ...
+##  $ NContent  : num  0.082 0.084 0.041 0.028 0 0.045 0.022 0.033 0.04 0 ...
+##  $ LocusClass: chr  &quot;geneless&quot; &quot;mRNA&quot; &quot;geneless&quot; &quot;mRNA&quot; ...
 ##  $ GeneCount : int  0 1 0 1 2 0 1 0 1 0 ...
 ##  $ SeqUnannot: chr  &quot;False&quot; &quot;False&quot; &quot;False&quot; &quot;False&quot; ...</code></pre>
 </div>
