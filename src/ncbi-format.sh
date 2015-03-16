@@ -25,7 +25,7 @@ ncbi_format()
       | grep -v '###' \
       | grep -v '##species' \
       | tidygff3 2> ${gff3}.tidy.log \
-      | gt gff3 -retainids -sort -tidy -o ${gff3} -force 2>&1 \
+      | gt gff3 -sort -tidy -o ${gff3} -force 2>&1 \
       | grep -v 'has not been previously introduced' \
       | grep -v 'does not begin with "##gff-version"' || true
 

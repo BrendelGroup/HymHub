@@ -5,10 +5,12 @@
 # 'LICENSE' file in the HymHub code distribution or online at
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
 
+import re
 import sys
-lines = {}
 for line in sys.stdin:
-    if line in lines:
-        continue
-    lines[line] = 1
-    print line.rstrip()
+    line = line.rstrip()
+    idmatch = re.search("ID=([^;\n]+)", line)
+    namematch = re.search("Name=([^;\n]+)", line)
+    if idmatch and not namematch:
+        line += ";Name=%s" % idmatch.group(1)
+    print line

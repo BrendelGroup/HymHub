@@ -6,9 +6,14 @@
 
 # Procedure for downloading genomes and corresponding annotations for
 # data sets from HymenopteraBase.
-HYMBASE=http://hymenopteragenome.org/drupal/sites/hymenopteragenome.org.${URLGENUS}/files/data
+
 hymbase_download()
 {
+  HYMBASE=http://hymenopteragenome.org/drupal/sites/hymenopteragenome.org.${URLGENUS}/files/data
+  if [ ! -z "$1" ]; then
+      HYMBASE=$1
+  fi
+
   echo "[HymHub: $FULLSPEC] download genome from HymenopteraBase"
   curl ${HYMBASE}/${ORIGFASTA} > $refrfasta 2> ${refrfasta}.log
 
