@@ -2,6 +2,7 @@ data/*.tsv
 data/*.tsv.gz
 species/*/*.log
 species/*/*.gz
+species/*/*.gz.orig
 species/*/*.fa
 species/*/*.gff3
 species/*/*.gff
