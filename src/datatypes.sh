@@ -51,6 +51,22 @@ get_genes()
       > ${WD}/${SPEC}.generepids.txt
 }
 
+get_proteins()
+{
+  local SPEC=$1
+  local WD=species/${SPEC}
+
+  echo "[HymHub: ${SPEC}] extracting protein sequences"
+  grep $'\tCDS\t' ${WD}/${SPEC}.pmrnas.gff3 \
+      | perl -ne 'm/protein_id=([^;\n]++)/ and print "$1\n"' \
+      | sort | uniq \
+      > ${WD}/${SPEC}.protids.txt
+  perl scripts/select-seq.pl ${WD}/${SPEC}.protids.txt $protfa \
+      > ${WD}/${SPEC}.rep-prot.fa
+  python scripts/protein-ilocus-mapping.py < ${WD}/${SPEC}.iloci.gff3 \
+      > ${WD}/${SPEC}.protein2ilocus.txt
+}
+
 get_mmrnas()
 {
   local SPEC=$1
@@ -101,9 +117,10 @@ get_exons()
 get_datatypes()
 {
   VERSION=$(cat VERSION)
-  get_iloci  $1 $VERSION
-  get_genes  $1
-  get_mmrnas $1
-  get_cds    $1
-  get_exons  $1
+  get_iloci    $1 $VERSION
+  get_genes    $1
+  get_proteins $1
+  get_mmrnas   $1
+  get_cds      $1
+  get_exons    $1
 }

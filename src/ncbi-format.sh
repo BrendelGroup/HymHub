@@ -12,6 +12,11 @@ ncbi_format()
       | perl -ne 's/gi\|\d+\|(ref|gb)\|([^\|]+)\S+/$2/; print' \
       > $fasta
 
+  echo "[HymHub: $FULLSPEC] simplify protein Fasta deflines"
+  gunzip -c ${WD}/protein.fa.gz \
+      | perl -ne 's/gi\|\d+\|(ref|gb)\|([^\|]+)\S+/$2/; print' \
+      > $protfa
+
   filtercmd=cat
   if [ -n "$1" ]; then
     filtercmd="grep -Ev $1"

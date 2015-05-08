@@ -20,4 +20,7 @@ ncbi_download_chromosome()
 
   echo "[HymHub: $FULLSPEC] download annotation from NCBI"
   curl ${NCBIBASE}/GFF/${ORIGGFF3} > $refrgff3 2> ${refrgff3}.log
+
+  echo "[HymHub: $FULLSPEC] download protein sequences from NCBI"
+  curl ${NCBIBASE}/protein/protein.fa.gz > $protfa 2> ${protfa}.log
 }

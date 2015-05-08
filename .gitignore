@@ -14,6 +14,8 @@ species/*/comm12
 species/*/comm13
 species/*/comm23
 species/*/*.generepids.txt
+species/*/*.protein2ilocus.txt
+species/*/*.protids.txt
 scratch/
 test/*-test.tsv
 .ipynb_checkpoints
