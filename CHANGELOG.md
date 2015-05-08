@@ -11,8 +11,8 @@ All notable changes to this project will be documented in this file.
 - Formatting task used to impose `-retainids` at a downstream step of the
   pipeline, after a previous step had not. Removed this and updated the data
   checksums accordingly.
-- Updated checksums to account for updates to *M. rotundata* and *B. terrestris*
-  annotations.
+- Updated checksums to account for updates to several genome annotations.
+- Updated checksums to account for updates to AEGeAn's `tidygff3` program.
 
 ### Added
 - Parsing of miLoci (merged iLoci), complete with functional tests.
