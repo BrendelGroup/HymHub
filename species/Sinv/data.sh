@@ -23,7 +23,7 @@ if [ "$DODOWNLOAD" != "0" ]; then
 fi
 if [ "$DOFORMAT" != "0" ]; then
   source src/hymbase-format.sh
-  hymbase_format NC_014672.1
+  hymbase_format   # NC_014672.1: not in HymBase data
 fi
 if [ "$DODATATYPES" != "0" ]; then
   source src/datatypes.sh
