@@ -33,7 +33,7 @@ fi
 
 if [ "$DOFORMAT" != "0" ]; then
   source src/ncbi-format.sh
-  ncbi_format
+  ncbi_format '-f species/Bter/excludes.txt'
 fi
 
 if [ "$DODATATYPES" != "0" ]; then

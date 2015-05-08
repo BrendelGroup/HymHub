@@ -1,2 +1,0 @@
-exception=unclassified transcription discrepancy
-exception=unclassified translation discrepancy
