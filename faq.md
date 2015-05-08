@@ -49,7 +49,7 @@ These issues are shared on a for-your-information basis.
   The *D. melanogaster* annotation also includes several trans-spliced genes.
   The way these genes are encoded does not follow the GFF3 spec and is not handled correctly by the GenomeTools GFF3 parser, so these genes are discarded during the build process.
 
-* **_Harpegnathos saltator_**: The NCBI annotation for *H. saltator* includes a few "uncharacterized transcription/translation discrepancies"--genome edits that result in unusual annotation artifacts.
+* **Uncharacterized transcription/translations discrepancies**: NCBI annotations for several species include some "uncharacterized transcription/translation discrepancies"--transcript-informed genome edits that result in unusual annotation artifacts.
   For now we have elected to discard these features, although we may try to incorporate them in the future.
 
 ## Why make this data resource available online?
