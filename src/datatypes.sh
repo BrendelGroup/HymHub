@@ -61,7 +61,7 @@ get_proteins()
       | perl -ne 'm/protein_id=([^;\n]++)/ and print "$1\n"' \
       | sort | uniq \
       > ${WD}/${SPEC}.protids.txt
-  perl scripts/select-seq.pl ${WD}/${SPEC}.protids.txt $protfa \
+  perl scripts/select-seq.py ${WD}/${SPEC}.protids.txt $protfa \
       > ${WD}/${SPEC}.rep-prot.fa
   python scripts/protein-ilocus-mapping.py < ${WD}/${SPEC}.iloci.gff3 \
       > ${WD}/${SPEC}.protein2ilocus.txt
@@ -117,10 +117,10 @@ get_exons()
 get_datatypes()
 {
   VERSION=$(cat VERSION)
-  get_iloci    $1 $VERSION
+  #get_iloci    $1 $VERSION
   get_genes    $1
   get_proteins $1
-  get_mmrnas   $1
-  get_cds      $1
-  get_exons    $1
+  #get_mmrnas   $1
+  #get_cds      $1
+  #get_exons    $1
 }
