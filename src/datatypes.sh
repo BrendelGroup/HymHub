@@ -117,10 +117,10 @@ get_exons()
 get_datatypes()
 {
   VERSION=$(cat VERSION)
-  #get_iloci    $1 $VERSION
+  get_iloci    $1 $VERSION
   get_genes    $1
   get_proteins $1
-  #get_mmrnas   $1
-  #get_cds      $1
-  #get_exons    $1
+  get_mmrnas   $1
+  get_cds      $1
+  get_exons    $1
 }
