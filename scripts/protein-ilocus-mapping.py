@@ -87,7 +87,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     parse_func = parse_ncbi
-    if parser.mode == 'hymbase':
+    if args.mode == 'hymbase':
         parse_func = parse_hymbase
     for pid, lid in parse_func(args.gff3):
         print "%s\t%s" % (pid, lid)
