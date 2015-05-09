@@ -12,6 +12,11 @@ hymbase_format()
       | perl -ne 's/gnl\|[^|]+\|//g; print' \
       > $fasta
 
+  echo "[HymHub: $FULLSPEC] simplify protein Fasta deflines"
+  gunzip -c ${WD}/protein.fa.gz \
+      | perl -ne 's/gnl\|[^|]+\|//g; print' \
+      > $protfa
+
   filtercmd=cat
   if [ -n "$1" ]; then
     filtercmd="grep -Ev $1"

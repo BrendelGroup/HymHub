@@ -19,4 +19,8 @@ hymbase_download()
 
   echo "[HymHub: $FULLSPEC] download annotation from HymenopteraBase"
   curl ${HYMBASE}/${ORIGGFF3} > $refrgff3 2> ${refrgff3}.log
+
+  echo "[HymHub: $FULLSPEC] download protein sequences from NCBI"
+  curl ${HYMBASE}/${ORIGPROT} > ${WD}/protein.fa.gz \
+      2> ${WD}/protein.log
 }

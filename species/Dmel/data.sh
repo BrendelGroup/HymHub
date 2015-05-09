@@ -29,11 +29,15 @@ if [ "$DODOWNLOAD" != "0" ]; then
     curl ${NCBIBASE}/${chr}.fna \
         > ${WD}/${basename}.fa  \
         2> ${WD}/${basename}.fa.log
+    curl ${NCBIBASE}/${chr}.faa \
+        > ${WD}/${basename}.prot.faa \
+        2> ${WD}/${basename}.prot.log
     curl ${NCBIBASE}/${chr}.gff \
         > ${WD}/${basename}.gff \
         2> ${WD}/${basename}.gff.log
   done
   cat ${WD}/N*_*.fa | gzip -c > $refrfasta
+  cat ${WD}/*.prot.faa | gzip -c > ${WD}/protein.fa.gz
   gt gff3 -sort -tidy ${WD}/N*_*.gff 2> ${refrgff3}.log | gzip -c > $refrgff3
 fi
 
@@ -42,6 +46,11 @@ if [ "$DOFORMAT" != "0" ]; then
   gunzip -c $refrfasta \
       | perl -ne 's/gi\|\d+\|(ref|gb)\|([^\|]+)\S+/$2/; print' \
       > $fasta
+
+  echo "[HymHub: $FULLSPEC] simplify protein Fasta deflines"
+  gunzip -c ${WD}/protein.fa.gz \
+      | perl -ne 's/gi\|\d+\|(ref|gb)\|([^\|]+)\S+/$2/; print' \
+      > $protfa
 
   echo "[HymHub: $FULLSPEC] clean up annotation"
   gunzip -c $refrgff3 \

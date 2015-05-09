@@ -11,6 +11,7 @@ SPEC=Sinv
 URLGENUS="solenopsis"
 ORIGFASTA=Sinv_1.0_scaffolds.fa.gz
 ORIGGFF3=sinv_OGSv2.2.3.gff3.gz
+ORIGPROT=sinv_OGSv2.2.3_pep.fa.gz
 
 # Procedure
 #-------------------------------------------------------------------------------
