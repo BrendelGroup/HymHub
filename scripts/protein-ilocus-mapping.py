@@ -82,7 +82,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument('--mode', type=str, default='ncbi',
                         help='Mode (ncbi or hymbase)')
-    parser.add_argument('gff3', type=argparse.FileType('r'), nargs='+',
+    parser.add_argument('gff3', type=argparse.FileType('r'),
                         help='iLocus GFF3 file')
     args = parser.parse_args()
 
