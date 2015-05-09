@@ -22,5 +22,6 @@ ncbi_download_chromosome()
   curl ${NCBIBASE}/GFF/${ORIGGFF3} > $refrgff3 2> ${refrgff3}.log
 
   echo "[HymHub: $FULLSPEC] download protein sequences from NCBI"
-  curl ${NCBIBASE}/protein/protein.fa.gz > $protfa 2> ${protfa}.log
+  curl ${NCBIBASE}/protein/protein.fa.gz > ${WD}/protein.fa.gz \
+      2> ${WD}/protein.log
 }
