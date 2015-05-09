@@ -20,6 +20,11 @@ if [ "$DODOWNLOAD" != "0" ]; then
   curl ${IPLNT}/53B7319E-3201-4087-9607-2D541FF34DD0/${seqfile} \
       > ${WD}/${seqfile} 2> ${WD}/${seqfile}.log
 
+  echo "[HymHub: $FULLSPEC] download protein sequences"
+  protfile=pdom-annot-r1.2-proteins.fa
+  curl ${IPLNT}/ACD29139-6619-48DF-A9F2-F75CA382E248/${protfile} \
+      | gzip -c > ${WD}/protein.fa.gz 2> ${WD}/protein.log
+
   echo "[HymHub: $FULLSPEC] downloading genome annotation"
   featfile=pdom-annot-r1.2.gff3
   curl ${IPLNT}/E4944CBB-7DE4-4CA1-A889-3D2A5D2E8696/${featfile} \
