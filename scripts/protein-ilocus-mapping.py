@@ -6,6 +6,7 @@
 # 'LICENSE' file in the HymHub code distribution or online at
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
 
+import argparse
 import sys
 import re
 
@@ -48,6 +49,45 @@ def parse_ncbi(filehandle):
                 proteins[proteinid] = 1
                 yield proteinid, ilocusid
 
+
+def parse_hymbase(filehandle):
+    """
+    """
+    gene2loci = dict()
+    for line in filehandle:
+        fields = line.split("\t")
+        if len(fields) != 9:
+            continue
+        feattype = fields[2]
+        if feattype == 'gene':
+            idmatch = re.search('ID=([^;\n]+);Parent=([^;\n]+)', fields[8])
+            assert idmatch, \
+                'Unable to parse gene and iLocus IDs: %s' % fields[8]
+            geneid = idmatch.group(1)
+            ilocusid = idmatch.group(2)
+            gene2loci[geneid] = ilocusid
+        elif feattype == 'mRNA':
+            idmatch = re.search('ID=([^;\n]+);Parent=([^;\n]+)', fields[8])
+            assert idmatch, \
+                'Unable to parse mRNA and gene IDs: %s' % fields[8]
+            mrnaid = idmatch.group(1)
+            geneid = idmatch.group(2)
+            locusid = gene2loci[geneid]
+            proteinid = re.sub('-R', '-P', mrnaid)
+            yield proteinid, locusid
+
+
 if __name__ == '__main__':
-    for pid, lid in parse_ncbi(sys.stdin):
+    desc = 'Parse protein --> iLocus mapping from an iLocus GFF3 file'
+    parser = argparse.ArgumentParser(description=desc)
+    parser.add_argument('--mode', type=str, default='ncbi',
+                        help='Mode (ncbi or hymbase)')
+    parser.add_argument('gff3', type=argparse.FileType('r'), nargs='+',
+                        help='iLocus GFF3 file')
+    args = parser.parse_args()
+
+    parse_func = parse_ncbi
+    if parser.mode == 'hymbase':
+        parse_func = parse_hymbase
+    for pid, lid in parse_func(args.gff3):
         print "%s\t%s" % (pid, lid)

@@ -54,17 +54,30 @@ get_genes()
 get_proteins()
 {
   local SPEC=$1
+  local MODE=$2
   local WD=species/${SPEC}
 
   echo "[HymHub: ${SPEC}] extracting protein sequences"
-  grep $'\tCDS\t' ${WD}/${SPEC}.pmrnas.gff3 \
-      | perl -ne 'm/protein_id=([^;\n]++)/ and print "$1\n"' \
-      | sort | uniq \
-      > ${WD}/${SPEC}.protids.txt
+  if [ "$MODE" == "ncbi" ]; then
+    grep $'\tCDS\t' ${WD}/${SPEC}.pmrnas.gff3 \
+        | perl -ne 'm/protein_id=([^;\n]++)/ and print "$1\n"' \
+        | sort | uniq \
+        > ${WD}/${SPEC}.protids.txt
+    python scripts/protein-ilocus-mapping.py --mode ncbi \
+        ${WD}/${SPEC}.iloci.gff3 \
+        > ${WD}/${SPEC}.protein2ilocus.txt
+  else
+    grep $'\tmRNA\t' ${WD}/${SPEC}.pmrnas.gff3 \
+        | perl -ne 'm/Name=([^;\n]++)/ and print "$1\n"' \
+        | perl -ne 's/-R/-P/; print' \
+        | sort | uniq \
+        > ${WD}/${SPEC}.protids.txt
+    python scripts/protein-ilocus-mapping.py --mode hymbase \
+        ${WD}/${SPEC}.iloci.gff3 \
+        > ${WD}/${SPEC}.protein2ilocus.txt
+  fi
   perl scripts/select-seq.py ${WD}/${SPEC}.protids.txt $protfa \
       > ${WD}/${SPEC}.rep-prot.fa
-  python scripts/protein-ilocus-mapping.py < ${WD}/${SPEC}.iloci.gff3 \
-      > ${WD}/${SPEC}.protein2ilocus.txt
 }
 
 get_mmrnas()
