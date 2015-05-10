@@ -12,6 +12,7 @@ URLGENUS="camponotus"
 ORIGFASTA=Cflo_3.3_scaffolds.fa.gz
 ORIGGFF3=cflo_OGSv3.3.gff3.gz
 ORIGPROT=cflo_OGSv3.3_pep.fa.gz
+MODE="hymbase"
 
 # Procedure
 #-------------------------------------------------------------------------------

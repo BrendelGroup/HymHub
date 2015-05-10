@@ -8,6 +8,7 @@ set -eo pipefail
 #-------------------------------------------------------------------------------
 FULLSPEC="Polistes dominula"
 SPEC=Pdom
+MODE="hymbase"
 
 # Procedure
 #-------------------------------------------------------------------------------
@@ -23,7 +24,8 @@ if [ "$DODOWNLOAD" != "0" ]; then
   echo "[HymHub: $FULLSPEC] download protein sequences"
   protfile=pdom-annot-r1.2-proteins.fa
   curl ${IPLNT}/ACD29139-6619-48DF-A9F2-F75CA382E248/${protfile} \
-      | gzip -c > ${WD}/protein.fa.gz 2> ${WD}/protein.log
+      2> ${WD}/protein.log \
+      | gzip -c > ${WD}/protein.fa.gz
 
   echo "[HymHub: $FULLSPEC] downloading genome annotation"
   featfile=pdom-annot-r1.2.gff3
@@ -35,6 +37,7 @@ if [ "$DOFORMAT" != "0" ]; then
   echo "[HymHub: $FULLSPEC] renaming data files"
   cp ${WD}/pdom-scaffolds-unmasked-r1.2.fa.gz ${WD}/Pdom.gdna.fa.gz
   gunzip -f ${WD}/Pdom.gdna.fa.gz
+  gunzip -c ${WD}/protein.fa.gz > ${WD}/Pdom.prot.fa
 
   cp ${WD}/pdom-annot-r1.2.gff3 ${WD}/Pdom.gff3
 
