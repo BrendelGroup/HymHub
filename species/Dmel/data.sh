@@ -77,13 +77,8 @@ if [ "$DOSTATS" != "0" ]; then
 fi
 
 if [ "$DOCLEANUP" != "0" ]; then
-  echo "[HymHub: $FULLSPEC] clean up temporary files"
-  find $WD -type f \
-      | grep -v "/checksums.sha$" | grep -v "/data.sh$" \
-      | grep -v "/${SPEC}.gdna.fa$" | grep -v "/${SPEC}.gff3$" \
-      | grep -v "/fix-trna.py$" | grep -v "/excludes.txt$" \
-      | grep -v ".tsv$" \
-      | xargs -n 1 rm -f || true
+  source src/cleanup.sh
+  data_cleanup
 fi
 
 echo "[HymHub: $FULLSPEC] complete!"
