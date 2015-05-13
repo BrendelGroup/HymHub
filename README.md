@@ -21,7 +21,7 @@ I would like to:
 [![HymHub build status](https://api.travis-ci.org/BrendelGroup/HymHub.svg?branch=master)](https://travis-ci.org/BrendelGroup/HymHub)
 
 Every change to HymHub is verified by an automated build process (courtesy of [Travis CI][travis]).
-If you would like to build HymHub yourself, you must first install the [GenomeTools][genometools] library and the [AEGeAn Toolkit][aegean].
+If you would like to build HymHub yourself, you must first install the [GenomeTools][genometools] library, the [AEGeAn Toolkit][aegean], and [CD-HIT][cdhit].
 HymHub's Travis configuration file (`.travis.yml`) contains an executable description of how to install these prerequisites on a UNIX system, assuming you have administrative rights.
 
 HymHub provides two alternative build scripts.
@@ -35,3 +35,4 @@ If you would like more control over the process, run `./build.sh -h` for a descr
 [travis]: https://travis-ci.org/BrendelGroup/HymHub
 [genometools]: http://genometools.org
 [aegean]: http://standage.github.io/AEGeAn
+[cdhit]: http://weizhongli-lab.org/cd-hit

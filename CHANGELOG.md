@@ -20,10 +20,12 @@ All notable changes to this project will be documented in this file.
   ncRNA.
 - A field for N content (percent ambiguous nucleotides) for each data type.
 - Compliance to pep8 style for Python code.
-- New data sets: *Apis mellifera* data from OGS 1.1 and OGS 3.2.
+- New data sets: *Apis mellifera* data from OGS 1.1 and OGS 3.2. These are not
+  integrated into aggregate stats however.
 - An ISSUES file. FAQ page on the site will continue to show the current known
   issues, but we need to have a record of issues in the version history. Thus,
   this file was born.
+- Protein clustering for hiLocus classification.
 
 ## [v0.0.1] - 2015-02-12
 
