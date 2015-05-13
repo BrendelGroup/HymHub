@@ -12,6 +12,7 @@ before_install:
   - cd cdhit-4.6.1/
   - make openmp=yes
   - cp cd-hit ${HOME}/local/bin
+  - cd -
 script:
   - export LD_LIBRARY_PATH=${HOME}/local/lib:$LD_LIBRARY_PATH
   - export PATH=${HOME}/local/bin:$PATH
