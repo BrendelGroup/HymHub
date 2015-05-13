@@ -10,12 +10,13 @@ build_print_usage()
   cat <<EOF
 build.sh: Build HymHub data files
 
-Usage: $0 [-d] [-f] [-t] [-s] [-c] [-h] [-i] [-p NUMTHREADS]
+Usage: $0 [-d] [-f] [-t] [-s] [-l] [-c] [-h] [-p NUMTHREADS]
   Tasks:
     -d    run download task (fetch raw data from primary sources)
     -f    run format task (streamline all data into a consistent format)
     -t    run datatypes task (extract features of interest and their sequences)
     -s    run statistics task (compute statistics on various features)
+    -l    run clustering task (determine homology by protein clustering)
     -c    run cleanup task (remove intermediate data files
   Options:
     -h    print this help message and exit
@@ -27,15 +28,17 @@ DODOWNLOAD=0
 DOFORMAT=0
 DODATATYPES=0
 DOSTATS=0
+DOCLUSTER=0
 DOCLEANUP=0
 NUMTHREADS=1
-while getopts "cdfhp:st" OPTION
+while getopts "cdfhlp:st" OPTION
 do
   case $OPTION in
     d) DODOWNLOAD=1 ;;
     f) DOFORMAT=1 ;;
     t) DODATATYPES=1 ;;
     s) DOSTATS=1 ;;
+    l) DOCLUSTER=1 ;;
     c) DOCLEANUP=1 ;;
     h) build_print_usage; exit 0 ;;
     p) NUMTHREADS=$OPTARG ;;
@@ -45,7 +48,7 @@ shift $((OPTIND-1))
 
 if [ "$DODOWNLOAD"  == "0" ] && [ "$DOFORMAT"  == "0" ] &&
    [ "$DODATATYPES" == "0" ] && [ "$DOSTATS"   == "0" ] &&
-   [ "$DOCLEANUP"   == "0" ]
+   [ "$DOCLUSTER"   == "0" ] && [ "$DOCLEANUP" == "0" ]
 then
   build_print_usage
   echo "Error: please specify build task(s)"
@@ -98,4 +101,8 @@ fi
 if [ "$DOSTATS" == "1" ]; then
   source src/stats.sh
   aggregate_stats
+fi
+if [ "$DOCLUSTER" == "1" ]; then
+  source src/hiLoci.sh
+  cluster_proteins
 fi

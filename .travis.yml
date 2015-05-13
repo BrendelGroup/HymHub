@@ -1,3 +1,4 @@
+
 sudo: false
 before_install:
   - mkdir ${HOME}/local/
@@ -6,6 +7,11 @@ before_install:
   - git clone http://github.com/standage/AEGeAn.git
   - export LD_LIBRARY_PATH=${HOME}/local/lib:$LD_LIBRARY_PATH
   - cd AEGeAn && make prefix=${HOME}/local test install install-scripts && cd -
+  - wget https://github.com/weizhongli/cdhit/archive/V4.6.1.tar.gz
+  - tar xzf V4.6.1.tar.gz
+  - cd cdhit-4.6.1/
+  - make openmp=yes
+  - cp cd-hit ${HOME}/local/bin
 script:
   - export LD_LIBRARY_PATH=${HOME}/local/lib:$LD_LIBRARY_PATH
   - export PATH=${HOME}/local/bin:$PATH

@@ -1,5 +1,6 @@
 data/*.tsv
 data/*.tsv.gz
+data/hym-prot*
 species/*/*.log
 species/*/*.gz
 species/*/*.gz.orig

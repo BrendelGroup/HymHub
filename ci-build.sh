@@ -5,6 +5,7 @@
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
 set -eo pipefail
 source src/stats.sh
+source src/hiLoci.sh
 
 test/runft.sh
 for spec in Ador Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas
@@ -12,3 +13,4 @@ do
   bash species/${spec}/data.sh -w species/${spec} -d -f -t -s -c
 done
 aggregate_stats
+cluster_proteins

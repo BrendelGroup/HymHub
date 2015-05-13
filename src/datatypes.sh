@@ -76,6 +76,7 @@ get_proteins()
         > ${WD}/${SPEC}.protein2ilocus.txt
   fi
   perl scripts/select-seq.py ${WD}/${SPEC}.protids.txt $protfa \
+      | sed "s/>/>gnl|$SPEC|/" \
       > ${WD}/${SPEC}.rep-prot.fa
 }
 
