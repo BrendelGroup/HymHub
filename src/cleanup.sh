@@ -11,5 +11,6 @@ data_cleanup()
       | grep -v "/checksums.sha$" | grep -v "/data.sh$" \
       | grep -v "/${SPEC}.gdna.fa$" | grep -v "/${SPEC}.gff3$" \
       | grep -v "/excludes.txt" | grep -v ".tsv$" \
+      | grep -v "/${SPEC}.rep-prot.fa" \
       | xargs -n 1 rm -f || true
 }

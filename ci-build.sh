@@ -13,5 +13,4 @@ do
   bash species/${spec}/data.sh -w species/${spec} -d -f -t -s -c
 done
 aggregate_stats
-ls -lhp species/*/*
 cluster_proteins
