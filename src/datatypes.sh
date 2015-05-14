@@ -73,7 +73,6 @@ get_proteins()
         | sort | uniq \
         > ${WD}/${SPEC}.protids.txt
   fi
-  echo "python scripts/tein-ilocus-mapping.py --mode $specmode ${WD}/${SPEC}.iloci.gff3 > ${WD}/${SPEC}.protein2ilocus.txt"
   python scripts/protein-ilocus-mapping.py --mode $specmode \
       ${WD}/${SPEC}.iloci.gff3 \
       > ${WD}/${SPEC}.protein2ilocus.txt
