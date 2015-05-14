@@ -1,3 +1,4 @@
+*.swp
 data/*.tsv
 data/*.tsv.gz
 data/hym-prot*
@@ -18,6 +19,7 @@ species/*/*.generepids.txt
 species/*/*.protein2ilocus.txt
 species/*/*.protids.txt
 species/*/*.faa
+src/*.pyc
 scratch/
 test/*-test.tsv
 .ipynb_checkpoints
