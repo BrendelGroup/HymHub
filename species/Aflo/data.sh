@@ -22,7 +22,7 @@ if [ "$DODOWNLOAD" != "0" ]; then
 fi
 if [ "$DOFORMAT" != "0" ]; then
   source src/ncbi-format.sh
-  ncbi_format
+  ncbi_format '-f species/Aflo/excludes.txt'
 fi
 if [ "$DODATATYPES" != "0" ]; then
   source src/datatypes.sh
