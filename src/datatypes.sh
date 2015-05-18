@@ -29,6 +29,11 @@ get_iloci()
       3>&1 1>&2 2>&3 > ${WD}/${SPEC}.miloci.fa \
       | grep -v 'has not been previously introduced' \
       | grep -v 'does not begin with "##gff-version"' || true
+
+  echo "[HymHub: ${SPEC}] extracting iLocus representatives (longest isoforms)"
+  grep -v $'\tintron\t' ${WD}/${SPEC}.gff3 | pmrna --locus \
+      | canon-gff3 --outfile ${WD}/${SPEC}.locus-pmrnas.gff3 2>&1 \
+      | grep -v 'no valid mRNAs' || true
 }
 
 get_genes()
@@ -62,7 +67,7 @@ get_proteins()
 
   echo "[HymHub: ${SPEC}] extracting protein sequences"
   if [ "$specmode" == "hymbase" ]; then
-    grep $'\tmRNA\t' ${WD}/${SPEC}.pmrnas.gff3 \
+    grep $'\tmRNA\t' ${WD}/${SPEC}.locus-pmrnas.gff3 \
         | perl -ne 'm/Name=([^;\n]++)/ and print "$1\n"' \
         | perl -ne 's/-R/-P/; print' \
         | sort | uniq \
