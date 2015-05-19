@@ -31,7 +31,7 @@ get_iloci()
       | grep -v 'does not begin with "##gff-version"' || true
 
   echo "[HymHub: ${SPEC}] extracting iLocus representatives (longest isoforms)"
-  grep -v $'\tintron\t' ${WD}/${SPEC}.gff3 | pmrna --locus \
+  grep -v $'\tintron\t' ${WD}/${SPEC}.iloci.gff3 | pmrna --locus \
       | canon-gff3 --outfile ${WD}/${SPEC}.locus-pmrnas.gff3 2>&1 \
       | grep -v 'no valid mRNAs' || true
 }
@@ -73,7 +73,7 @@ get_proteins()
         | sort | uniq \
         > ${WD}/${SPEC}.protids.txt
   else
-    grep $'\tCDS\t' ${WD}/${SPEC}.pmrnas.gff3 \
+    grep $'\tCDS\t' ${WD}/${SPEC}.locus-pmrnas.gff3 \
         | perl -ne 'm/protein_id=([^;\n]++)/ and print "$1\n"' \
         | sort | uniq \
         > ${WD}/${SPEC}.protids.txt
