@@ -1,25 +1,9 @@
 #!/usr/bin/env python
 import subprocess
+import hilocus_utils
 """
 Compute a multiple sequence alignment for a hiLocus.
 """
-
-
-def parse_fasta(fp):
-    """
-    Stolen shamelessly from http://stackoverflow.com/a/7655072/459780.
-    """
-    name, seq = None, []
-    for line in fp:
-        line = line.rstrip()
-        if line.startswith(">"):
-            if name:
-                yield (name, ''.join(seq))
-            name, seq = line, []
-        else:
-            seq.append(line)
-    if name:
-        yield (name, ''.join(seq))
 
 
 def run_msa(proteinseqs, outfile=None, command='clustalo', path=None):
@@ -35,49 +19,6 @@ def run_msa(proteinseqs, outfile=None, command='clustalo', path=None):
         args.append('--outfile=' + outfile)
     proc = subprocess.Popen(args, stdin=subprocess.PIPE)
     proc.communicate(input=proteinseqs)
-
-
-def load_proteins(protids, specieslist, rootdir='.', suffix='rep-prot.fa'):
-    """
-    Load the specified protein sequences into memory.
-    """
-
-    proteinseqs = ''
-    for species in specieslist:
-        filename = '%s/species/%s/%s.%s' % (rootdir, species, species, suffix)
-        for defline, seq in parse_fasta(open(filename, 'r')):
-            pid = defline.split(' ')[0].split('|')[2]
-            if pid in protids:
-                proteinseqs += '%s\n%s\n' % (defline, seq)
-    return proteinseqs
-
-
-def resolve_protein_ids(ilocuslist, specieslist, rootdir='.',
-                        suffix='protein2ilocus.txt'):
-    """
-    Determine the representative proteins corresponding to a list of iLoci.
-    """
-
-    protids = dict()
-    for species in specieslist:
-        filename = '%s/species/%s/%s.%s' % (rootdir, species, species, suffix)
-        for line in open(filename, 'r'):
-            proteinid, ilocusid = line.rstrip().split('\t')
-            if ilocusid in ilocuslist:
-                protids[proteinid] = 1
-    return protids
-
-
-def load_hilocus(hid, rootdir='.', filepath='data/hiloci.tsv'):
-    """
-    Given a hiLocus ID, search through the hiLocus data table to extract the
-    relevant information.
-    """
-    filename = rootdir + '/' + filepath
-    for line in open(filename, 'r'):
-        values = line.rstrip().split()
-        if values[0] == hid:
-            return values
 
 
 if __name__ == '__main__':
@@ -99,10 +40,12 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    hilocus = load_hilocus(args.hid, rootdir=args.path)
+    hilocus = hilocus_utils.load_hilocus(args.hid, rootdir=args.path)
     iloci = hilocus[5].split(',')
     species = hilocus[6].split(',')
 
-    protids = resolve_protein_ids(iloci, species, rootdir=args.path)
-    proteinseqs = load_proteins(protids, species, rootdir=args.path)
+    protids = hilocus_utils.resolve_protein_ids(iloci, species,
+                                                rootdir=args.path)
+    proteinseqs = hilocus_utils.load_proteins(protids, species,
+                                              rootdir=args.path)
     run_msa(proteinseqs, outfile=args.out, path=args.cpath)
