@@ -1,9 +1,16 @@
 #!/usr/bin/env python
-import subprocess
-import hilocus_utils
+
+# Copyright (c) 2015, Daniel S. Standage and CONTRIBUTORS
+#
+# HymHub is distributed under the CC BY 4.0 License. See the
+# 'LICENSE' file in the HymHub code distribution or online at
+# https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
 """
 Compute a multiple sequence alignment for a hiLocus.
 """
+
+import subprocess
+import hilocus_utils
 
 
 def run_msa(proteinseqs, outfile=None, command='clustalo', path=None):

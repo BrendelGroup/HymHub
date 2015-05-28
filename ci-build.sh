@@ -5,7 +5,7 @@
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
 set -eo pipefail
 source src/stats.sh
-source src/hiLoci.sh
+source src/hiloci.sh
 
 test/runft.sh
 for spec in Ador Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas

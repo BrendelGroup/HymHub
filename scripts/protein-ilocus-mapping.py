@@ -5,6 +5,16 @@
 # HymHub is distributed under the CC BY 4.0 License. See the
 # 'LICENSE' file in the HymHub code distribution or online at
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
+"""
+All of this would be much simpler if we could traverse each feature graph in a
+manner similar to this.
+
+    if feature.type == 'locus':
+        for subfeature in feature:
+            if subfeature.type == 'CDS':
+                yield feature.get_attribute('ID'), \
+                      subfeature.get_attribute('protein_id')
+"""
 
 import argparse
 import sys
@@ -13,6 +23,12 @@ import re
 
 def parse_ncbi(filehandle):
     """
+    Parse iLocus / protein relationships from GFF3 files obtained from NCBI.
+
+    In NCBI-derived GFF3 files, protein IDs are contained in the 'protein_id'
+    attribute of CDS features. Therefore, to resolve the relationship between
+    proteins and IDs, we must track CDS to mRNA, mRNA to gene, and gene to
+    iLocus.
     """
     gene2loci = dict()
     mrna2gene = dict()
@@ -52,6 +68,12 @@ def parse_ncbi(filehandle):
 
 def parse_hymbase(filehandle):
     """
+    Parse iLocus / protein relationships from HymenopteraBase GFF3 files.
+
+    IDs of protein sequences are not present in HymenopteraBase-derived GFF3
+    files, but they can be easily obtained from the corresponding mRNA IDs
+    (changing an 'R' to a 'P'). To resolve the relationship between proteins
+    and IDs, we must track mRNA to gene, and gene to iLocus.
     """
     gene2loci = dict()
     for line in filehandle:

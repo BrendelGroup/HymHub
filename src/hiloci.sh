@@ -15,9 +15,9 @@ cluster_proteins()
          -T 1 -d 0 -c 0.60 -s 0.65 -p 1 -n 4 \
          > scratch/cdhit.log 2>&1
 
-  python src/hilocus.py --mint="HymHubHIL${VERSION}-%06d" \
-                        --outfile=data/hiloci.tsv \
-                        data/hym-prot.clstr \
-                        <(cat species/*/*.protein2ilocus.txt)
-  shasum -c data/hiLoci.sha
+  python scripts/hilocus-create.py --mint="HymHubHIL${VERSION}-%06d" \
+                                   --outfile=data/hiloci.tsv \
+                                   data/hym-prot.clstr \
+                                   <(cat species/*/*.protein2ilocus.txt)
+  shasum -c data/hilocus-data.sha
 }

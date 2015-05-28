@@ -6,53 +6,39 @@
 # 'LICENSE' file in the HymHub code distribution or online at
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
 
+import argparse
 import re
 import sys
+import fasta_utils
 
 
-def parse_fasta(fp):
-    """
-    Stolen shamelessly from http://stackoverflow.com/a/7655072/459780.
-    """
-    name, seq = None, []
-    for line in fp:
-        line = line.rstrip()
-        if line.startswith(">"):
-            if name:
-                yield (name, ''.join(seq))
-            name, seq = line, []
-        else:
-            seq.append(line)
-    if name:
-        yield (name, ''.join(seq))
+def get_args():
+    desc = 'Retrieve sequences by ID from Fasta data.'
+    parser = argparse.ArgumentParser(description=desc)
+    parser.add_argument('-o', '--out', type=argparse.FileType('w'),
+                        default=sys.stdout,
+                        help='Output file; default is terminal (stdout)')
+    parser.add_argument('-l', '--line_width', type=int, default=80,
+                        help='Max line width for sequences; default is 80 bp')
+    parser.add_argument('idlist', type=argparse.FileType('r'))
+    parser.add_argument('seqs', type=argparse.FileType('r'))
+    return parser
 
 
-def format_seq(seq, length=80, outstream=sys.stdout):
-    if len(seq) <= length:
-        print >> outstream, seq
-        return
-
-    i = 0
-    while i < len(seq):
-        print >> outstream, seq[i:i+length]
-        i += length
-
-
-if __name__ == '__main__':
-    usage = 'python %s seqidlist.txt seqs.fasta' % sys.argv[0]
-    assert len(sys.argv) == 3, 'Usage: %s' % usage
-    seqlist = sys.argv[1]
-    seqfile = sys.argv[2]
+def main(parser=get_args()):
+    args = parser.parse_args()
 
     ids = dict()
-    with open(seqlist, 'r') as fp:
-        for line in fp:
-            seqid = line.rstrip()
-            ids[seqid] = 1
+    for line in args.idlist:
+        seqid = line.rstrip()
+        ids[seqid] = True
 
-    with open(seqfile, 'r') as fp:
-        for defline, seq in parse_fasta(fp):
-            seqid = re.search('>(\S+)', defline).group(1)
-            if seqid in ids:
-                print defline
-                format_seq(seq)
+    for defline, seq in fasta_utils.parse_fasta(args.seqs):
+        seqid = re.search('>(\S+)', defline).group(1)
+        if seqid in ids:
+            print >> args.out, defline
+            fasta_utils.format_seq(seq, linewidth=args.line_width,
+                                   outstream=args.out)
+
+if __name__ == '__main__':
+    main()

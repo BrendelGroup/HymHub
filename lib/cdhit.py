@@ -1,15 +1,10 @@
 #!/usr/bin/env python
-"""
-Parse results of protein clustering from CD-HIT.
-"""
 
 import re
 
 
 class ClusterSeq():
-    """
-    Object representing a sequence entry in a CD-HIT cluster.
-    """
+    """Object representing a sequence entry in a CD-HIT cluster."""
 
     def __init__(self, line):
         self.rawdata = line.rstrip()
@@ -53,8 +48,9 @@ class ClusterSeq():
 
 def parse_clusters(filehandle):
     """
-    Iterate over clusters from a CD-HIT output file. Yields the cluster ID (a
-    numeric string) and a list of sequence objects.
+    Iterate over clusters from a CD-HIT output file.
+
+    Yields the cluster ID (a numeric string) and a list of sequence objects.
     """
     clusterid = None
     clusterseqs = list()
@@ -72,9 +68,7 @@ def parse_clusters(filehandle):
 
 
 if __name__ == '__main__':
-    """
-    Minimal undocumented CLI: read from stdin, write to stdout.
-    """
+    """Minimal undocumented CLI: read from stdin, write to stdout."""
     import sys
     for clusterid, clusterseqs in parse_clusters(sys.stdin):
         print clusterid, len(clusterseqs), clusterseqs

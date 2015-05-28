@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 if [ -d scripts/ ]; then
-  pep8 --max-line-length=80 scripts/*.py
+  pep8 --max-line-length=80 scripts/*.py lib/*.py
 fi

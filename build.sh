@@ -103,6 +103,6 @@ if [ "$DOSTATS" == "1" ]; then
   aggregate_stats
 fi
 if [ "$DOCLUSTER" == "1" ]; then
-  source src/hiLoci.sh
+  source src/hiloci.sh
   cluster_proteins
 fi

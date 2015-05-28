@@ -9,23 +9,7 @@
 import argparse
 import re
 import sys
-
-
-def parse_fasta(fp):
-    """
-    Stolen shamelessly from http://stackoverflow.com/a/7655072/459780.
-    """
-    name, seq = None, []
-    for line in fp:
-        line = line.rstrip()
-        if line.startswith(">"):
-            if name:
-                yield (name, ''.join(seq))
-            name, seq = line, []
-        else:
-            seq.append(line)
-    if name:
-        yield (name, ''.join(seq))
+import fasta_utils
 
 
 def gc_content(dna):
@@ -113,7 +97,7 @@ def ilocus_desc(gff3, fasta):
     tabular record for each iLocus.
     """
     seqs = {}
-    for defline, seq in parse_fasta(fasta):
+    for defline, seq in fasta_utils.parse_fasta(fasta):
         seqid = defline[1:].split(" ")[0]
         assert seqid not in seqs
         seqs[seqid] = seq
@@ -160,7 +144,7 @@ def generep_desc(gff3, fasta):
     each gene, or the "gene representative".
     """
     seqs = {}
-    for defline, seq in parse_fasta(fasta):
+    for defline, seq in fasta_utils.parse_fasta(fasta):
         seqid = defline[1:].split(" ")[0]
         assert seqid not in seqs
         seqs[seqid] = seq
@@ -224,7 +208,7 @@ def mrna_desc(gff3, fasta):
     annotations, generate a tabular record for each mRNA.
     """
     seqs = {}
-    for defline, seq in parse_fasta(fasta):
+    for defline, seq in fasta_utils.parse_fasta(fasta):
         seqid = defline[1:].split(" ")[0]
         assert seqid not in seqs
         seqs[seqid] = seq
@@ -258,7 +242,7 @@ def cds_desc(gff3, fasta):
     record for each CDS.
     """
     seqs = {}
-    for defline, seq in parse_fasta(fasta):
+    for defline, seq in fasta_utils.parse_fasta(fasta):
         seqid = defline[1:].split(" ")[0]
         assert seqid not in seqs
         seqs[seqid] = seq
@@ -360,7 +344,7 @@ def exon_desc(gff3, fasta):
     record for each exon.
     """
     seqs = {}
-    for defline, seq in parse_fasta(fasta):
+    for defline, seq in fasta_utils.parse_fasta(fasta):
         exonpos = defline[1:].split(" ")[1]
         seqs[exonpos] = seq
 
@@ -466,7 +450,7 @@ def intron_desc(gff3, fasta):
     tabular record for each intron.
     """
     seqs = {}
-    for defline, seq in parse_fasta(fasta):
+    for defline, seq in fasta_utils.parse_fasta(fasta):
         intronpos = defline[1:].split(" ")[1]
         seqs[intronpos] = seq
 

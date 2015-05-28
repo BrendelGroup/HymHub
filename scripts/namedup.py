@@ -4,6 +4,10 @@
 # HymHub is distributed under the CC BY 4.0 License. See the
 # 'LICENSE' file in the HymHub code distribution or online at
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
+"""
+Process a GFF3 file, and for any feature that has an ID but lacks a `Name`
+attribute, copy the ID attribute to the Name attribute.
+"""
 
 import re
 import sys

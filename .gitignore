@@ -19,7 +19,9 @@ species/*/*.generepids.txt
 species/*/*.protein2ilocus.txt
 species/*/*.protids.txt
 species/*/*.faa
-src/*.pyc
+species/*/*.ul
+species/*/*.lp
+*.pyc
 scratch/
 test/*-test.tsv
 .ipynb_checkpoints
