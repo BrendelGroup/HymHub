@@ -1,5 +1,25 @@
 #!/usr/bin/env python
+
+# Copyright (c) 2015, Daniel S. Standage and CONTRIBUTORS
+#
+# HymHub is distributed under the CC BY 4.0 License. See the
+# 'LICENSE' file in the HymHub code distribution or online at
+# https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
+
 import subprocess
+import fasta_utils
+
+
+def retrieve_proteins(protids, specieslist, rootdir='.', suffix='rep-prot.fa'):
+    """Retrieve the specified protein sequences."""
+
+    proteinseqs = ''
+    for species in specieslist:
+        filename = '%s/species/%s/%s.%s' % (rootdir, species, species, suffix)
+        for defline, seq in fasta_utils.parse_fasta(open(filename, 'r')):
+            pid = defline.split(' ')[0].split('|')[2]
+            if pid in protids:
+                yield defline, seq
 
 
 def load_proteins(protids, specieslist, rootdir='.', suffix='rep-prot.fa'):
@@ -8,7 +28,7 @@ def load_proteins(protids, specieslist, rootdir='.', suffix='rep-prot.fa'):
     proteinseqs = ''
     for species in specieslist:
         filename = '%s/species/%s/%s.%s' % (rootdir, species, species, suffix)
-        for defline, seq in parse_fasta(open(filename, 'r')):
+        for defline, seq in fasta_utils.parse_fasta(open(filename, 'r')):
             pid = defline.split(' ')[0].split('|')[2]
             if pid in protids:
                 proteinseqs += '%s\n%s\n' % (defline, seq)

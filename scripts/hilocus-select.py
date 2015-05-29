@@ -6,8 +6,6 @@
 # 'LICENSE' file in the HymHub code distribution or online at
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
 
-import hilocus_utils
-
 
 def iloci_for_species(spec, phyloclass=None, ilocus_count_filter=None,
                       rootdir='.', filepath='data/hiloci.tsv'):
@@ -45,6 +43,8 @@ def iloci_for_species(spec, phyloclass=None, ilocus_count_filter=None,
 
 if __name__ == '__main__':
     import argparse
+    import fasta_utils
+    import hilocus_utils
 
     desc = 'Retrieve hiLocus-related proteins meeting the specified criteria'
     parser = argparse.ArgumentParser(description=desc)
@@ -55,16 +55,29 @@ if __name__ == '__main__':
                         'integer value to be matched (such as "11") or a '
                         'comma-separated pair of integers representing a '
                         'closed interval (such as "8,10")')
+    parser.add_argument('-o', '--out', type=argparse.FileType('w'),
+                        help='write output to file; default is terminal '
+                        '(stdout)')
+    parser.add_argument('-r', '--root', default='.',
+                        help='path to HymHub root directory')
     parser.add_argument('species', help='retrieve proteins from this species '
                         '(provide 4-letter species abbreviation such as "Amel"'
                         'or "Pdom")')
     args = parser.parse_args()
 
-    if ',' in args.locuscount:
-        lc_filter = [int(x) for x in args.locuscount.split(',')]
-    else:
-        lc_filter = int(args.locuscount)
+    lc_filter = None
+    if args.locuscount is not None:
+        if ',' in args.locuscount:
+            lc_filter = [int(x) for x in args.locuscount.split(',')]
+        else:
+            lc_filter = int(args.locuscount)
     iloci = list(iloci_for_species(args.species, phyloclass=args.phyloclass,
-                                   ilocus_count_filter=lc_filter))
-    protein_ids = hilocus_utils.resolve_protein_ids(iloci, [args.species])
-    print hilocus_utils.load_proteins(protein_ids, [args.species])
+                                   ilocus_count_filter=lc_filter,
+                                   rootdir=args.root))
+    protein_ids = hilocus_utils.resolve_protein_ids(iloci, [args.species],
+                                                    rootdir=args.root)
+    for defline, seq in hilocus_utils.retrieve_proteins(protein_ids,
+                                                        [args.species],
+                                                        rootdir=args.root):
+        print defline
+        fasta_utils.format_seq(seq)

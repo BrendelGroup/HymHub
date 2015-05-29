@@ -30,7 +30,7 @@ def parse_fasta(data):
         yield (name, ''.join(seq))
 
 
-def format_seq(seq, linewidth=80, outstream=sys.stdout):
+def format_seq(seq, linewidth=70, outstream=sys.stdout):
     """Print a sequence in a readable format."""
     if linewidth == 0 or len(seq) <= linewidth:
         print >> outstream, seq
