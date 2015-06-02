@@ -83,44 +83,114 @@ class hiLocus():
         self.species = set([species_from_defline(x.defline) for x in seqlist])
 
     @property
+    def phylo_dist(self):
+        dist = {'Ador': 0, 'Aflo': 0, 'Amel': 0,
+                'Bimp': 0, 'Bter': 0, 'Cflo': 0,
+                'Hsal': 0, 'Mrot': 0, 'Nvit': 0,
+                'Pdom': 0, 'Sinv': 0, 'Dmel': 0,
+                'Tcas': 0}
+        for s in self.species:
+            assert s in dist
+            dist[s] = 1
+        profile = ''
+        for species in sorted(dist):
+            if profile != '':
+                profile += '\t'
+            profile += str(dist[species])
+        return profile
+
+    @property
+    def in_apis(self):
+        count = 0
+        for spec in ['Ador', 'Aflo', 'Amel']:
+            if spec in self.species:
+                count += 1
+        return count
+
+    @property
+    def in_bombus(self):
+        count = 0
+        for spec in ['Bimp', 'Bter']:
+            if spec in self.species:
+                count += 1
+        return count
+
+    @property
+    def in_apidae(self):
+        return self.in_apis + self.in_bombus
+
+    @property
+    def in_bees(self):
+        count = self.in_apidae
+        if 'Mrot' in self.species:
+            count += 1
+        return count
+
+    @property
+    def in_ants(self):
+        count = 0
+        for spec in ['Cflo', 'Hsal', 'Sinv']:
+            if spec in self.species:
+                count += 1
+        return count
+
+    @property
+    def in_outgroups(self):
+        count = 0
+        for spec in ['Dmel', 'Tcas']:
+            if spec in self.species:
+                count += 1
+        return count
+
+    @property
+    def in_hymenoptera(self):
+        count = self.in_ants + self.in_bees
+        for spec in ['Pdom', 'Nvit']:
+            if spec in self.species:
+                count += 1
+        return count
+
+    @property
     def phylo_class(self):
         if len(self.species) == 1:
-            return list(self.species)[0]
-
-        if self.species == set(['Ador', 'Aflo', 'Amel',
-                                'Bimp', 'Bter', 'Cflo',
-                                'Hsal', 'Mrot', 'Nvit',
-                                'Pdom', 'Sinv', 'Dmel',
-                                'Tcas']):
+            return 'Orphan'
+        if self.in_hymenoptera > 0 and self.in_outgroups > 0:
             return 'Insects'
+        if self.in_hymenoptera == 0 and self.in_outgroups == 2:
+            return 'NonHymenoptera'
+        assert self.in_outgroups == 0
 
-        hymdict = set(['Ador', 'Aflo', 'Amel',
-                       'Bimp', 'Bter', 'Cflo',
-                       'Hsal', 'Mrot', 'Nvit',
-                       'Pdom', 'Sinv'])
-        hymcount = 0
-        for spec in list(hymdict):
-            if spec in self.species:
-                hymcount += 1
-        if self.species == hymdict:
-            return 'Hymenoptera'
-
-        if self.species == set(['Ador', 'Aflo', 'Amel',
-                                'Bimp', 'Bter', 'Mrot']):
+        if self.in_apidae > 0 and 'Mrot' in self.species and \
+           self.in_hymenoptera == self.in_bees:
             return 'Bees'
-
-        if self.species == set(['Ador', 'Aflo', 'Amel',
-                                'Bimp', 'Bter']):
+        if self.in_apis > 1 and self.in_bombus > 0 and \
+           self.in_hymenoptera == self.in_apidae:
             return 'Apidae'
-
-        if self.species == set(['Ador', 'Aflo', 'Amel']):
+        if self.in_apis > 1 and self.in_hymenoptera == self.in_apis:
             return 'Honeybees'
-
-        if self.species == set(['Bimp', 'Bter']):
+        if self.in_bombus > 1 and self.in_hymenoptera == self.in_bombus:
             return 'Bumblebees'
+        if self.in_bees > 1 and self.in_hymenoptera == self.in_bees:
+            return 'SomeBees'
 
-        if self.species == set(['Cflo', 'Hsal', 'Sinv']):
+        if self.in_ants > 1 and self.in_hymenoptera == self.in_ants:
             return 'Ants'
+
+        if self.in_bees > 0 and self.in_ants > 0 and \
+           self.in_hymenoptera == self.in_bees + self.in_ants:
+            return 'AntsAndBees'
+
+        if self.in_bees > 0 and 'Pdom' in self.species and \
+           self.in_hymenoptera == self.in_bees + 1:
+            return 'BeesAndWasps'
+
+        if self.in_ants > 0 and 'Pdom' in self.species and \
+           self.in_hymenoptera == self.in_ants + 1:
+            return 'AntsAndWasps'
+
+        if self.in_ants > 0 and self.in_bees > 0 and \
+           ('Pdom' in self.species or 'Nvit' in self.species):
+            return 'Hymenoptera'
 
         return 'Other'
 
