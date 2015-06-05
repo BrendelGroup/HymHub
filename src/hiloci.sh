@@ -12,7 +12,7 @@ cluster_proteins()
   mkdir -p scratch/
   cat species/*/*.rep-prot.fa > scratch/Hym.rep-prot.fa
   cd-hit -i scratch/Hym.rep-prot.fa -o data/hym-prot -M 0 \
-         -T 1 -d 0 -c 0.60 -s 0.65 -p 1 -n 4 \
+         -T $NUMTHREADS -d 0 -c 0.50 -s 0.65 -p 1 -n 3 \
          > scratch/cdhit.log 2>&1
 
   python scripts/hilocus-create.py --mint="HymHubHIL${VERSION}-%06d" \

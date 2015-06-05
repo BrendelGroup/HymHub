@@ -13,4 +13,5 @@ do
   bash species/${spec}/data.sh -w species/${spec} -d -f -t -s -c
 done
 aggregate_stats
+NUMTHREADS=2
 cluster_proteins
