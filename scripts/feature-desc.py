@@ -253,11 +253,12 @@ def cds_desc(gff3, fasta):
         if "\tCDS\t" in entry:
             fields = entry.rstrip().split("\t")
             assert len(fields) == 9
+            parentid = re.search("Parent=([^;\n]+)", fields[8]).group(1)
             cdsmatch = re.search("ID=([^;\n]+)", fields[8])
-            if not cdsmatch:
-                cdsmatch = re.search("Parent=([^;\n]+)", fields[8])
-                assert cdsmatch, "unable to parse CDS ID: %s" % fields[8]
-            cdsid = cdsmatch.group(1)
+            if cdsmatch:
+                cdsid = cdsmatch.group(1)
+            else:
+                cdsid = parentid
             cdslen += int(fields[4]) - int(fields[3]) + 1
         elif "###" in entry:
             cdsseq = seqs[cdsid]
@@ -267,8 +268,8 @@ def cds_desc(gff3, fasta):
             gccontent = gc_content(cdsseq)
             gcskew = gc_skew(cdsseq)
             ncontent = n_content(cdsseq)
-            values = "%s %d %.3f %.3f %.3f" % (
-                cdsid, cdslen, gccontent, gcskew, ncontent)
+            values = "%s %s %d %.3f %.3f %.3f" % (
+                cdsid, parentid, cdslen, gccontent, gcskew, ncontent)
             cdsid = ""
             cdslen = 0
             yield values.split(" ")
@@ -566,8 +567,8 @@ if __name__ == "__main__":
         with open(a[0], "r") as gff, \
                 open(a[1], "r") as fa, \
                 open(a[2], "w") as out:
-            header = ["Species", "CdsId", "Length", "GCContent", "GCSkew",
-                      "NContent"]
+            header = ["Species", "CdsId", "MrnaId", "Length", "GCContent",
+                      "GCSkew", "NContent"]
             print >> out, "\t".join(header)
             for fields in cds_desc(gff, fa):
                 fields = [args.species] + fields

@@ -1,2 +1,6 @@
 adcf1dbd427bd7d84596b6c4a46321829a28971e  data/hym-prot.clstr
 d50f3b6835ee645202d55d8430c0e7d9ed89ff37  data/hiloci.tsv
+3bd65d880ea6874ea918e05ec8f3b72ef6ee414d  data/hilocus-reps.tsv
+6ead407c972de3f392861f6faa429125e0f207df  data/exons-hirep.tsv
+ec3cb9aaf5c2df38cde0b21a41ae8d4f2a8dfef1  data/introns-hirep.tsv
+446befb0cb2c07b01789e1b73377dfcd70c360e2  data/cds-hirep.tsv

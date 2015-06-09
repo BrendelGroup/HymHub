@@ -17,6 +17,7 @@ Usage: $0 [-d] [-f] [-t] [-s] [-l] [-c] [-h] [-p NUMTHREADS]
     -t    run datatypes task (extract features of interest and their sequences)
     -s    run statistics task (compute statistics on various features)
     -l    run clustering task (determine homology by protein clustering)
+    -L    run clustering task with pre-computed clusters
     -c    run cleanup task (remove intermediate data files
   Options:
     -h    print this help message and exit
@@ -29,9 +30,10 @@ DOFORMAT=0
 DODATATYPES=0
 DOSTATS=0
 DOCLUSTER=0
+DOPRECOMPCLUST=0
 DOCLEANUP=0
 NUMTHREADS=1
-while getopts "cdfhlp:st" OPTION
+while getopts "cdfhlLp:st" OPTION
 do
   case $OPTION in
     d) DODOWNLOAD=1 ;;
@@ -39,6 +41,7 @@ do
     t) DODATATYPES=1 ;;
     s) DOSTATS=1 ;;
     l) DOCLUSTER=1 ;;
+    L) DOPRECOMPCLUST=1 ;;
     c) DOCLEANUP=1 ;;
     h) build_print_usage; exit 0 ;;
     p) NUMTHREADS=$OPTARG ;;
@@ -104,5 +107,8 @@ if [ "$DOSTATS" == "1" ]; then
 fi
 if [ "$DOCLUSTER" == "1" ]; then
   source src/hiloci.sh
-  cluster_proteins
+  if [ "$DOPRECOMPCLUST" == "1" ]; then
+    doskip="SKIP"
+  fi
+  cluster_proteins $doskip
 fi

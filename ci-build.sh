@@ -7,11 +7,14 @@ set -eo pipefail
 source src/stats.sh
 source src/hiloci.sh
 
+if [ -f data/hym-prot.clstr.bz2 ]; then
+  bunzip2 data/hym-prot.clstr.bz2
+fi
+test -f data/hym-prot.clstr
 test/runft.sh
 for spec in Ador Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas
 do
   bash species/${spec}/data.sh -w species/${spec} -d -f -t -s -c
 done
 aggregate_stats
-NUMTHREADS=2
-cluster_proteins
+cluster_proteins SKIP
