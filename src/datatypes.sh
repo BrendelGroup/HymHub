@@ -31,7 +31,8 @@ get_iloci()
       | grep -v 'does not begin with "##gff-version"' || true
 
   echo "[HymHub: ${SPEC}] extracting iLocus representatives (longest isoforms)"
-  grep -v $'\tintron\t' ${WD}/${SPEC}.iloci.gff3 | pmrna --locus \
+  grep -v $'\tintron\t' ${WD}/${SPEC}.iloci.gff3 \
+      | pmrna --locus --map ${WD}/${SPEC}.locus-pmrnas.txt \
       | canon-gff3 --outfile ${WD}/${SPEC}.locus-pmrnas.gff3 2>&1 \
       | grep -v 'no valid mRNAs' || true
 }

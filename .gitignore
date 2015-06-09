@@ -21,6 +21,7 @@ species/*/*.protids.txt
 species/*/*.faa
 species/*/*.ul
 species/*/*.lp
+species/*/*.locus-pmrnas.txt
 *.pyc
 scratch/
 test/*-test.tsv
