@@ -139,9 +139,9 @@ def ilocus_desc(gff3, fasta):
 
 def generep_desc(gff3, fasta):
     """
-    Given gene sequences and their corresponding annotations, generate a tabular
-    record for each gene. Note: we're looking at the longest `mRNA` feature for
-    each gene, or the "gene representative".
+    Given gene sequences and their corresponding annotations, generate a
+    tabular record for each gene. Note: we're looking at the longest `mRNA`
+    feature for each gene, or the "gene representative".
     """
     seqs = {}
     for defline, seq in fasta_utils.parse_fasta(fasta):
@@ -341,8 +341,8 @@ def exon_context(exon, start, stop):
 
 def exon_desc(gff3, fasta):
     """
-    Given exon sequences and their corresponding annotations, generate a tabular
-    record for each exon.
+    Given exon sequences and their corresponding annotations, generate a
+    tabular record for each exon.
     """
     seqs = {}
     for defline, seq in fasta_utils.parse_fasta(fasta):
@@ -474,8 +474,8 @@ def intron_desc(gff3, fasta):
                     assert len(fields) == 9, \
                         "entry does not have 9 fields: %s" % intron
                     mrnaid = re.search("Parent=([^;\n]+)", fields[8]).group(1)
-                    intronpos = "%s_%s-%s%s" % (fields[0],
-                                                fields[3], fields[4], fields[6])
+                    intronpos = "%s_%s-%s%s" % (fields[0], fields[3],
+                                                fields[4], fields[6])
                     if intronpos in reported_introns:
                         continue
                     intronlength = int(fields[4]) - int(fields[3]) + 1
@@ -497,7 +497,7 @@ def intron_desc(gff3, fasta):
             continue
 
 if __name__ == "__main__":
-    desc = "Calculate descriptive statistics of genome features in tabular form"
+    desc = "Calculate descriptive statistics of genome features"
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument("--species", type=str, default="default",
                         metavar="Spec", help="specify species label")
