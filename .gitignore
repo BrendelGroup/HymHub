@@ -1,7 +1,8 @@
 *.swp
 data/*.tsv
 data/*.tsv.gz
-data/hym-prot*
+data/hym-prot
+data/hym-prot.clstr
 species/*/*.log
 species/*/*.gz
 species/*/*.gz.orig
