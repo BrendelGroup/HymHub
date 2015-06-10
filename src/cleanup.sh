@@ -12,6 +12,6 @@ data_cleanup()
       | grep -v "/${SPEC}.gdna.fa$" | grep -v "/${SPEC}.gff3$" \
       | grep -v "/excludes.txt" | grep -v ".tsv$" \
       | grep -v ".py$" | grep -v ".sh$" | grep -v "/${SPEC}.rep-prot.fa" \
-      | grep -v "/${SPEC}.protein2ilocus.txt" \
+      | grep -v "/${SPEC}.protein2ilocus.txt" | grep -v "locus-pmrnas.txt" \
       | xargs -n 1 rm -f || true
 }
