@@ -8,11 +8,8 @@ set -eo pipefail
 #-------------------------------------------------------------------------------
 FULLSPEC="Solenopsis invicta"
 SPEC=Sinv
-URLGENUS="solenopsis"
-ORIGFASTA=Sinv_1.0_scaffolds.fa.gz
-ORIGGFF3=sinv_OGSv2.2.3.gff3.gz
-ORIGPROT=sinv_OGSv2.2.3_pep.fa.gz
-MODE="hymbase"
+ORIGFASTA=13686_ref_Si_gnG_chrUn.fa.gz
+ORIGGFF3=ref_Si_gnG_top_level.gff3.gz
 
 # Procedure
 #-------------------------------------------------------------------------------
@@ -20,12 +17,12 @@ source src/data-cli.sh
 source src/filenames.sh
 
 if [ "$DODOWNLOAD" != "0" ]; then
-  source src/hymbase-download.sh
-  hymbase_download
+  source src/ncbi-download-scaffold.sh
+  ncbi_download_scaffold
 fi
 if [ "$DOFORMAT" != "0" ]; then
-  source src/hymbase-format.sh
-  hymbase_format   # NC_014672.1: not in HymBase data
+  source src/ncbi-format.sh
+  ncbi_format '-f species/Sinv/excludes.txt'
 fi
 if [ "$DODATATYPES" != "0" ]; then
   source src/datatypes.sh

@@ -8,11 +8,8 @@ set -eo pipefail
 #-------------------------------------------------------------------------------
 FULLSPEC="Camponotus floridanus"
 SPEC=Cflo
-URLGENUS="camponotus"
-ORIGFASTA=Cflo_3.3_scaffolds.fa.gz
-ORIGGFF3=cflo_OGSv3.3.gff3.gz
-ORIGPROT=cflo_OGSv3.3_pep.fa.gz
-MODE="hymbase"
+ORIGFASTA=cfl_ref_CamFlo_1.0_chrUn.fa.gz
+ORIGGFF3=ref_CamFlo_1.0_top_level.gff3.gz
 
 # Procedure
 #-------------------------------------------------------------------------------
@@ -20,12 +17,12 @@ source src/data-cli.sh
 source src/filenames.sh
 
 if [ "$DODOWNLOAD" != "0" ]; then
-  source src/hymbase-download.sh
-  hymbase_download
+  source src/ncbi-download-scaffold.sh
+  ncbi_download_scaffold
 fi
 if [ "$DOFORMAT" != "0" ]; then
-  source src/hymbase-format.sh
-  hymbase_format 'C3809596|C3873680'
+  source src/ncbi-format.sh
+  ncbi_format
 fi
 if [ "$DODATATYPES" != "0" ]; then
   source src/datatypes.sh

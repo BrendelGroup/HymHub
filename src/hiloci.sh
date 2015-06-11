@@ -13,7 +13,8 @@ cluster_proteins()
   cat species/*/*.rep-prot.fa > scratch/Hym.rep-prot.fa
   if [ "$1" != "SKIP" ]; then
     cd-hit -i scratch/Hym.rep-prot.fa -o data/hym-prot -M 0 \
-           -T 1 -d 0 -c 0.50 -s 0.65 -p 1 -n 3 \
+           -T 32 -d 0 -c 0.50 -s 0.65 -p 1 -n 3 \
+           -aL 0.75 -aS 0.85 \
            > scratch/cdhit.log 2>&1
   fi
 
@@ -30,5 +31,5 @@ cluster_proteins()
         > data/${featuretype}-hirep.tsv
   done
 
-  shasum -c data/hilocus-data.sha
+  # shasum -c data/hilocus-data.sha
 }
