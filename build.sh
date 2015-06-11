@@ -74,7 +74,7 @@ fi
 # Run functional tests before trying anything too ambitious! ;-)
 test/runft.sh
 
-SPECIES="Ador Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas"
+SPECIES="Acep Ador Aech Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas"
 if [ "$NUMTHREADS" -gt "1" ]; then
   if [ "$DODOWNLOAD" == "1" ]; then
     # Even in parallel mode, data files should be downloaded one at a time

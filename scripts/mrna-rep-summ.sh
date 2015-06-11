@@ -23,7 +23,7 @@ do
 done
 
 rm -f scratch/ants-mrnas-temp.tsv
-for spec in Cflo Hsal Sinv
+for spec in Acep Aech Cflo Hsal Sinv
 do
   scripts/selex.pl -o 1 \
       <(grep $spec scratch/hilocus-reps-temp.txt | cut -f 2) \

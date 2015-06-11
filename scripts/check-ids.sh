@@ -7,7 +7,7 @@
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
 set -eo pipefail
 
-for spec in Ador Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas
+for spec in Acep Ador Aech Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas
 do
   WD=species/${spec}
   grep -v '#' ${WD}/${spec}.gff3 | cut -f 1 | sort | uniq > ${WD}/gff3seqids

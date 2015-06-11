@@ -129,7 +129,7 @@ class hiLocus():
     @property
     def in_ants(self):
         count = 0
-        for spec in ['Cflo', 'Hsal', 'Sinv']:
+        for spec in ['Acep', 'Aech', 'Cflo', 'Hsal', 'Sinv']:
             if spec in self.species:
                 count += 1
         return count

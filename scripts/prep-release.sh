@@ -43,7 +43,7 @@ compress_dirs()
 
 # Main method
 #-------------------------------------------------------------------------------
-species="Ador Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas"
+species="Acep Ador Aech Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas"
 prep_workdir  $1
 prep_specdirs $1
 prep_datadir  $1

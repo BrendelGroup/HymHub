@@ -18,7 +18,7 @@ def in_bees(species):
 
 
 def in_ants(species):
-    return in_clade(species, ['Hsal', 'Sinv', 'Cflo'])
+    return in_clade(species, ['Acep', 'Aech', 'Hsal', 'Sinv', 'Cflo'])
 
 
 if __name__ == '__main__':
