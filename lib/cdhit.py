@@ -45,6 +45,9 @@ class ClusterSeq():
             acc = acc[:-3]
         return acc
 
+    def getlen(self):
+        return self.length
+
     def __str__(self):
         return self.rawdata
 
