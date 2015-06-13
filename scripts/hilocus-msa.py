@@ -9,23 +9,7 @@
 Compute a multiple sequence alignment for a hiLocus.
 """
 
-import subprocess
 import hilocus_utils
-
-
-def run_msa(proteinseqs, outfile=None, command='clustalo', path=None):
-    """
-    Align the specified protein sequences using clustalo.
-    """
-
-    program = command
-    if path is not None:
-        program = path + '/' + command
-    args = [program, '--seqtype=Protein', '--infile=-', '--outfmt=clustal']
-    if outfile is not None:
-        args.append('--outfile=' + outfile)
-    proc = subprocess.Popen(args, stdin=subprocess.PIPE)
-    proc.communicate(input=proteinseqs)
 
 
 if __name__ == '__main__':
@@ -55,4 +39,4 @@ if __name__ == '__main__':
                                                 rootdir=args.path)
     proteinseqs = hilocus_utils.load_proteins(protids, species,
                                               rootdir=args.path)
-    run_msa(proteinseqs, outfile=args.out, path=args.cpath)
+    hilocus_utils.run_msa(proteinseqs, outfile=args.out, path=args.cpath)

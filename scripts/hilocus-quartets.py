@@ -34,7 +34,7 @@ def in_bees(iloci):
 
 
 def in_ants(iloci):
-    return in_clade(iloci, ['Acep', 'Aech', 'Hsal', 'Sinv', 'Cflo'])
+    return in_clade(iloci, ['Acep', 'Aech', 'Hsal', 'Sinv', 'Cflo', 'Pbar'])
 
 
 def in_nvit(iloci):
@@ -79,7 +79,7 @@ if __name__ == '__main__':
             # Lack representative from one or more clade; moving on
             continue
 
-        print '%s\t%s' % (antspecies, antlocus)
-        print '%s\t%s' % (beespecies, beelocus)
-        print 'Nvit\t%s' % (nvitlocus)
-        print 'Pdom\t%s' % (pdomlocus)
+        print '%s\t%s\t%s' % (antspecies, antlocus, values[0])
+        print '%s\t%s\t%s' % (beespecies, beelocus, values[0])
+        print 'Nvit\t%s\t%s' % (nvitlocus, values[0])
+        print 'Pdom\t%s\t%s' % (pdomlocus, values[0])

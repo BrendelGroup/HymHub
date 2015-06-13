@@ -27,7 +27,7 @@ aggregate_stats()
   for feattype in iloci miloci genereps mrnas cds exons introns
   do
     cp species/Acep/Acep.${feattype}.tsv data/${feattype}.tsv
-    for spec in Ador Aech Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas
+    for spec in Ador Aech Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pbar Pdom Sinv Tcas
     do
       tail -n +2 species/${spec}/${spec}.${feattype}.tsv >> data/${feattype}.tsv
     done

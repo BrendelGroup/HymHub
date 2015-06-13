@@ -8,7 +8,7 @@
 set -eo pipefail
 
 mkdir -p scratch
-scripts/hilocus-summarize.py < data/hiloci.tsv > scratch/hilocus-reps-temp.txt
+scripts/hilocus-quartets.py data/hiloci.tsv > scratch/hilocus-reps-temp.txt
 
 rm -f scratch/bees-mrnas-temp.tsv
 for spec in Ador Aflo Amel Bimp Bter Mrot
@@ -23,7 +23,7 @@ do
 done
 
 rm -f scratch/ants-mrnas-temp.tsv
-for spec in Acep Aech Cflo Hsal Sinv
+for spec in Acep Aech Cflo Hsal Pbar Sinv
 do
   scripts/selex.pl -o 1 \
       <(grep $spec scratch/hilocus-reps-temp.txt | cut -f 2) \

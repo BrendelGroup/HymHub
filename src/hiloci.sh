@@ -31,5 +31,5 @@ cluster_proteins()
         > data/${featuretype}-hirep.tsv
   done
 
-  # shasum -c data/hilocus-data.sha
+  shasum -c data/hilocus-data.sha
 }

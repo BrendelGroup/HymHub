@@ -10,6 +10,22 @@ import subprocess
 import fasta_utils
 
 
+def run_msa(proteinseqs, outfile=None, command='clustalo', path=None,
+            outfmt='clustal'):
+    """
+    Align the specified protein sequences using clustalo.
+    """
+
+    program = command
+    if path is not None:
+        program = path + '/' + command
+    args = [program, '--seqtype=Protein', '--infile=-', '--outfmt=' + outfmt]
+    if outfile is not None:
+        args.append('--outfile=' + outfile)
+    proc = subprocess.Popen(args, stdin=subprocess.PIPE)
+    proc.communicate(input=proteinseqs)
+
+
 def retrieve_proteins(protids, specieslist, rootdir='.', suffix='rep-prot.fa'):
     """Retrieve the specified protein sequences."""
 
@@ -84,9 +100,10 @@ class hiLocus():
 
     @property
     def phylo_dist(self):
-        dist = {'Ador': 0, 'Aflo': 0, 'Amel': 0,
-                'Bimp': 0, 'Bter': 0, 'Cflo': 0,
-                'Hsal': 0, 'Mrot': 0, 'Nvit': 0,
+        dist = {'Acep': 0, 'Ador': 0, 'Aech': 0,
+                'Aflo': 0, 'Amel': 0, 'Bimp': 0,
+                'Bter': 0, 'Cflo': 0, 'Hsal': 0,
+                'Mrot': 0, 'Nvit': 0, 'Pbar': 0,
                 'Pdom': 0, 'Sinv': 0, 'Dmel': 0,
                 'Tcas': 0}
         for s in self.species:
@@ -129,7 +146,7 @@ class hiLocus():
     @property
     def in_ants(self):
         count = 0
-        for spec in ['Acep', 'Aech', 'Cflo', 'Hsal', 'Sinv']:
+        for spec in ['Acep', 'Aech', 'Cflo', 'Hsal', 'Pbar', 'Sinv']:
             if spec in self.species:
                 count += 1
         return count
