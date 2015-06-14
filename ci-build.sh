@@ -12,7 +12,7 @@ if [ -f data/hym-prot.clstr.bz2 ]; then
 fi
 test -f data/hym-prot.clstr
 test/runft.sh
-for spec in Acep Ador Aech Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pdom Sinv Tcas
+for spec in Acep Ador Aech Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pbar Pdom Sinv Tcas
 do
   bash species/${spec}/data.sh -w species/${spec} -d -f -t -s -c
 done
