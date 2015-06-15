@@ -112,3 +112,5 @@ if [ "$DOCLUSTER" == "1" ]; then
   fi
   cluster_proteins $doskip
 fi
+
+echo '[HymHub] build complete!'
