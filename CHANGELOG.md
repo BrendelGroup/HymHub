@@ -13,8 +13,10 @@ All notable changes to this project will be documented in this file.
   checksums accordingly.
 - Updated checksums to account for updates to several genome annotations.
 - Updated checksums to account for updates to AEGeAn's `tidygff3` program.
+- All ant species are now sourced from NCBI rather than HymenopteraBase.
 
 ### Added
+- New ant genome annotations.
 - Parsing of miLoci (merged iLoci), complete with functional tests.
 - A classification for each iLocus/miLocus: geneless, mRNA, tRNA, rRNA, or
   ncRNA.
@@ -25,7 +27,7 @@ All notable changes to this project will be documented in this file.
 - An ISSUES file. FAQ page on the site will continue to show the current known
   issues, but we need to have a record of issues in the version history. Thus,
   this file was born.
-- Protein clustering for hiLocus classification.
+- Protein clustering for determining homologous iLoci (hiLoci).
 
 ## [v0.0.1] - 2015-02-12
 
