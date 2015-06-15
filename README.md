@@ -1,6 +1,6 @@
 # HymHub
 
-I would like to:
+Welcome! What would you like to do?
 
 * **download the data**: data is available for download at [doi:m9.figshare.1306864][doi] courtesy of fig**share**.
 * **see the code**: the code used to generate the data files is available at [BrendelGroup/HymHub][github] courtesy of GitHub.
@@ -13,7 +13,7 @@ I would like to:
 [doi]: http://dx.doi.org/10.6084/m9.figshare.1306864
 [github]: https://github.com/BrendelGroup/HymHub
 [rpubs]: http://rpubs.com/danielstandage/hymhubdemo
-[ipynb]: http://nbviewer.ipython.org/github/BrendelGroup/HymHub/blob/master/data/HymHubDemo.ipynb
+[ipynb]: https://github.com/BrendelGroup/HymHub/blob/master/data/HymHubDemo.ipynb
 [homepage]: http://brendelgroup.github.io/HymHub
 
 ## Building HymHub yourself
