@@ -27,15 +27,13 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    for line1 in args.qfile:
-        line2 = next(args.qfile)
-        line3 = next(args.qfile)
-        line4 = next(args.qfile)
+    next(args.qfile)
+    for line in args.qfile:
+        hilocusid, ant, bee, pdom, nvit = line.rstrip().split('\t')
         species = list()
         iloci = list()
-        hilocusid = None
-        for line in [line1, line2, line3, line3]:
-            spec, ilocus, hilocusid = line.rstrip().split('\t')
+        for value in [ant, bee, pdom, nvit]:
+            spec, ilocus = value.split(':')
             species.append(spec)
             iloci.append(ilocus)
         protids = hilocus_utils.resolve_protein_ids(iloci, species,

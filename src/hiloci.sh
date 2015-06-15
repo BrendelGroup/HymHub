@@ -23,6 +23,9 @@ cluster_proteins()
                                    data/hym-prot.clstr \
                                    <(cat species/*/*.protein2ilocus.txt)
 
+  echo "[HymHub] computing Hymenoptera-conserved quartets"
+  scripts/hilocus-quartets.py data/hiloci.tsv > data/quartets.tsv
+
   echo "[HymHub] extracting hiLocus mRNA representatives"
   scripts/mrna-rep-summ.sh
   for featuretype in exons introns cds

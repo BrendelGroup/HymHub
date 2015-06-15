@@ -62,6 +62,7 @@ if __name__ == '__main__':
                         default=sys.stdin, help='hiLocus data table')
     args = parser.parse_args()
 
+    print '\t'.join(['ID', 'Ant', 'Bee', 'Vespid', 'Chalcid'])
     for line in args.hiloci:
         values = line.rstrip().split('\t')
         if values[4] not in ['Hymenoptera', 'Insects']:
@@ -70,6 +71,7 @@ if __name__ == '__main__':
         if 'Pdom' not in species or 'Nvit' not in species:
             continue
         iloci = values[5].split(',')
+        hid = values[0]
 
         antspecies, antlocus = in_ants(iloci)
         beespecies, beelocus = in_bees(iloci)
@@ -79,7 +81,6 @@ if __name__ == '__main__':
             # Lack representative from one or more clade; moving on
             continue
 
-        print '%s\t%s\t%s' % (antspecies, antlocus, values[0])
-        print '%s\t%s\t%s' % (beespecies, beelocus, values[0])
-        print 'Nvit\t%s\t%s' % (nvitlocus, values[0])
-        print 'Pdom\t%s\t%s' % (pdomlocus, values[0])
+        print '\t'.join([hid, '%s:%s' % (antspecies, antlocus),
+                         '%s:%s' % (beespecies, beelocus),
+                         'Pdom:%s' % pdomlocus, 'Nvit:%s' % nvitlocus])
