@@ -15,16 +15,19 @@ table
 
 |          Species           |   Label   |   Lineage   |         Source       |
 |:--------------------------:|:---------:|:-----------:|:--------------------:|
+|    *Atta cephalotes*       |    Acep   |    Ants     |        NCBI          |
 |     *Apis dorsata*         |    Ador   |    Bees     |        NCBI          |
+|  *Acromyrmex echinatior*   |    Aech   |    Ants     |        NCBI          |
 |     *Apis florea*          |    Aflo   |    Bees     |        NCBI          | 
 |    *Apis mellifera*        |    Amel   |    Bees     |        NCBI          | 
 |    *Bombus impatiens*      |    Bimp   |    Bees     |        NCBI          | 
 |    *Bombus terrestris*     |    Bter   |    Bees     |        NCBI          | 
-| *Camponotus floridanus*    |    Cflo   |    Ants     |     HymenopteraBase  |
+| *Camponotus floridanus*    |    Cflo   |    Ants     |        NCBI          |
 | *Drosophila melanogaster*  |    Dmel   |  Outgroup   |        NCBI          | 
 | *Harpegnathos saltator*    |    Hsal   |    Ants     |        NCBI          | 
 |   *Megachile rotundata*    |    Mrot   |    Bees     |        NCBI          | 
-|   *Nasonia vitripennis*    |    Nvit   |   Wasps     |        NCBI          | 
+|   *Nasonia vitripennis*    |    Nvit   |   Wasps     |        NCBI          |
+|  *Pogonomyrmex barbatus*   |    Pbar   |    Ants     |        NCBI          | 
 |   *Polistes dominula*      |    Pdom   |   Wasps     |      Toth Lab        | 
-|   *Solenopsis invicta*     |    Sinv   |    Ants     |     HymenopteraBase  |
+|   *Solenopsis invicta*     |    Sinv   |    Ants     |        NCBI          |
 |  *Tribolium castaneum*     |    Tcas   |  Outgroup   |        NCBI          | 

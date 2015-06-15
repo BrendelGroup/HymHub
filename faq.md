@@ -9,7 +9,8 @@ group: navigation
 ## Where does all this data come from?
 
 We have done our best to locate and incorporate as much relevant data as possible from the [NCBI FTP site](ftp://ftp.ncbi.nlm.nih.gov/genomes).
-We’ve also included some data from [HymenopteraBase](ftp://ftp.ncbi.nlm.nih.gov/genomes), as well as some unpublished data produced by our lab members and collaborators.
+Historically we’ve also included some data from [HymenopteraBase](http://hymenopteragenome.org/), but as all of those genomes are now available at NCBI we opt for the NCBI annotations.
+HymHub also includes some (as of yet) unpublished data produced by our lab members and collaborators.
 
 ## What can I do if HymHub doesn't include data for my favorite Hymenopteran?
 
@@ -20,37 +21,13 @@ Or even better, [fork](https://help.github.com/articles/fork-a-repo/) our [GitHu
 
 ## Are there any known issues with the data?
 
-Several of the raw data sets have some minor issues, which are described below.
-All of these issues are addressed in the process that builds the final HymHub sequence files, annotations, and data tables, and require no action on the part of end users.
+Several of the raw data sets have some minor issues.
+These are documented [in the source code distribution](https://github.com/BrendelGroup/HymHub/blob/master/doc/ISSUES.md) to facilitate keeping the issue descriptions in sync with the files they describe.
+All of the issues are addressed in the automated process that builds the final HymHub sequence files, annotations, and data tables, and require no action on the part of end users.
 These issues are shared on a for-your-information basis.
 
-* **Pseudogenes**: In the annotations obtained from NCBI, many pseudogenes are erroneously labeled as genes.
-  Fortunately these are easy to detect, as they typically have a ``pseudo=true`` attribute in the 9th column.
-  To avoid misinterpretation of the data, our build process corrects any pseudogenes incorrectly labeled as genes with the correct Sequenc Ontology feature type (`pseudogene`).
-  
-  This issue has not yet been reported to NCBI, but presumably this should be addressed with a bug fix to the ``annotwriter`` program in the NCBI C++ Toolkit.
-
-* **Ribosomal slippage**: The ornithine decarboxylase antizyme in *Drosophila* and *Tribolium* has a ribosomal slippage anomaly that introduces a 2bp gap in the coding sequence.
-  This gene is discarded when calculating exon-level statistics, but is included in all other calculations.
-
-* **_Camponotus floridanus_**: Two sequence IDs in the *Camponotus floridanus* data set appear in the GFF3 annotation but not in the genome Fasta file.
-  These IDs are ``C3809596`` and ``C3873680``.
-  This issue was reported the HymenopteraBase by email in February 2013.
-  A week later, HymenopteraBase acknowledged the report and indicated they would respond soon, but as of today we have received no response.
-  As it turns out, there is only 1 single-exon gene associated with each of these scaffolds, so we addressed this issue by simply removing these features from the annotation.
-
-  The *C. floridanus* annotation also includes several duplicated features: coding exons with exactly the same coordinates and ```Parent``` relationships.
-  This issue has not been reported to HymenopteraBase, and we addressed it by removing the duplicated features.
-
-* **_Drosophila melanogaster_**: The NCBI's annotation of tRNAs in *D. melanogaster* is a bit odd.
-  In many (most?) cases, a gene feature corresponding to the tRNA is reported explicitly, but the relationship between the tRNA and its gene parent is not properly defined using GFF3's ``ID/Parent`` mechanism.
-  Luckily, other contextual information in the feature attributes makes it possible to resolve the relationships, which we do with a Python script included in the HymHub source code distribution.
-  
-  The *D. melanogaster* annotation also includes several trans-spliced genes.
-  The way these genes are encoded does not follow the GFF3 spec and is not handled correctly by the GenomeTools GFF3 parser, so these genes are discarded during the build process.
-
-* **_Harpegnathos saltator_**: The NCBI annotation for *H. saltator* includes a few "uncharacterized transcription/translation discrepancies"--genome edits that result in unusual annotation artifacts.
-  For now we have elected to discard these features, although we may try to incorporate them in the future.
+Did we miss something?
+Feel free to let us know by opening up a ticket on [HymHub's GitHub issue tracker](https://github.com/BrendelGroup/HymHub/issues).
 
 ## Why make this data resource available online?
 
