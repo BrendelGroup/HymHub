@@ -28,6 +28,9 @@ All notable changes to this project will be documented in this file.
   issues, but we need to have a record of issues in the version history. Thus,
   this file was born.
 - Protein clustering for determining homologous iLoci (hiLoci).
+- Scripts for identifying hiLoci with representatives from all 4 major lineages
+  (ants, bees, vespid wasps, parasitic wasps), and extracting the protein
+  quartets associated with these hiLoci.
 
 ## [v0.0.1] - 2015-02-12
 
