@@ -1,5 +1,8 @@
 
 sudo: false
+branches:
+  except:
+    - py
 before_install:
   - mkdir ${HOME}/local/
   - export LD_LIBRARY_PATH=${HOME}/local/lib:$LD_LIBRARY_PATH
