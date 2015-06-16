@@ -10,7 +10,7 @@ Welcome! What would you like to do?
   * [Python (IPython Notebook) demo][ipynb]
 * **read more about HymHub**: check out [our homepage][homepage].
 
-[doi]: http://dx.doi.org/10.6084/m9.figshare.1306864
+[doi]: http://dx.doi.org/10.6084/m9.figshare.1450783
 [github]: https://github.com/BrendelGroup/HymHub
 [rpubs]: http://rpubs.com/danielstandage/hymhubdemo
 [ipynb]: https://github.com/BrendelGroup/HymHub/blob/master/data/HymHubDemo.ipynb

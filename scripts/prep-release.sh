@@ -24,7 +24,7 @@ prep_specdirs()
   cp -r species/* $WD/.
   rm -f $WD/*/*.gz $WD/*/*.log $WD/*/*.temp $WD/*/data.sh $WD/*/excludes.txt \
         $WD/*/*.py $WD/*/N?_??????.*
-  ls $WD/*/*.fa | grep -v '.gdna.fa' | grep -v '.iloci.fa' | xargs rm
+  ls $WD/*/*.fa | grep -v '\.gdna\.fa' | grep -v '\.iloci\.fa' | xargs rm
 }
 
 prep_datadir()
