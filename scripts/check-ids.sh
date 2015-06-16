@@ -26,4 +26,6 @@ do
   echo -n "    GFF3 only: "
   comm -23 ${WD}/gff3seqids ${WD}/faseqids > ${WD}/comm23
   wc -l < ${WD}/comm23
+
+  rm ${WD}/faseqids ${WD}/gff3seqids ${WD}/comm??
 done

@@ -22,13 +22,16 @@ prep_specdirs()
   local WD=$1
 
   cp -r species/* $WD/.
-  rm -f $WD/*/*.gz $WD/*/*.log $WD/*/*.temp $WD/*/data.sh
+  rm -f $WD/*/*.gz $WD/*/*.log $WD/*/*.temp $WD/*/data.sh $WD/*/excludes.txt \
+        $WD/*/*.py $WD/*/N?_??????.*
+  ls $WD/*/*.fa | grep -v '.gdna.fa' | grep -v '.iloci.fa' | xargs rm
 }
 
 prep_datadir()
 {
   local WD=$1
   cp -r data $WD/summary-stats
+  rm $WD/summary-stats/HymHubDemo*
 }
 
 compress_dirs()
