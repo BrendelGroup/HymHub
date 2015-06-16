@@ -2,17 +2,18 @@
 sudo: false
 before_install:
   - mkdir ${HOME}/local/
-  - git clone http://github.com/genometools/genometools.git
-  - cd genometools && make -j2 prefix=${HOME}/local install && cd -
-  - git clone http://github.com/standage/AEGeAn.git
-  - export LD_LIBRARY_PATH=${HOME}/local/lib:$LD_LIBRARY_PATH
-  - cd AEGeAn && make prefix=${HOME}/local test install install-scripts && cd -
-#  - wget https://github.com/weizhongli/cdhit/archive/V4.6.1.tar.gz
-#  - tar xzf V4.6.1.tar.gz
-#  - cd cdhit-4.6.1/
-#  - make openmp=yes
-#  - cp cd-hit ${HOME}/local/bin
-#  - cd -
+  # Install Genometools
+  - wget http://genometools.org/pub/genometools-1.5.5.tar.gz
+  - tar xzf genometools-1.5.5.tar.gz
+  - cd genometools-1.5.5/ && make -j2 prefix=${HOME}/local install && cd -
+  # Install AEGeAn
+  - wget https://github.com/standage/AEGeAn/archive/v0.13.0.tar.gz
+  - tar xzf v0.13.0.tar.gz
+  - cd AEGeAn-0.13.0/ && make prefix=${HOME}/local test install install-scripts && cd -
+  # Install CD-HIT (disabled for now)
+  # - wget https://github.com/weizhongli/cdhit/archive/V4.6.1.tar.gz
+  # - tar xzf V4.6.1.tar.gz
+  # - cd cdhit-4.6.1/ && make openmp=yes && cp cd-hit ${HOME}/local/bin/ && cd -
 script:
   - export LD_LIBRARY_PATH=${HOME}/local/lib:$LD_LIBRARY_PATH
   - export PATH=${HOME}/local/bin:$PATH
