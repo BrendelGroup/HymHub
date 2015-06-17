@@ -16,6 +16,7 @@ of real and bogus data configurations.
 import gzip
 import pycurl
 import sys
+import yaml
 
 ncbibase = 'ftp://ftp.ncbi.nih.gov/genomes'
 
@@ -113,6 +114,7 @@ def download_proteins(config, rootdir='.', logstream=sys.stderr,
     else:
         download(url, outfile)
 
+
 def download_flybase(config, rootdir='.', logstream=sys.stderr, dryrun=False):
     assert config['source'] == 'ncbi_flybase'
     species = config['species'].replace(' ', '_')
@@ -128,10 +130,9 @@ def download_flybase(config, rootdir='.', logstream=sys.stderr, dryrun=False):
                                               config['label'])
     annout = '%s/species/%s/%s' % (rootdir, config['label'],
                                    config['annotfile'])
-    prtout = '%s/species/%s/protein.fa.gz' % (rootdir, config['label'],
-                                              config['label'])
-    for acc in config['accesions']:
-        base = '%s/%s/%s' % (ncbibase, config['prefix'], acc)
+    prtout = '%s/species/%s/protein.fa.gz' % (rootdir, config['label'])
+    for acc in config['accessions']:
+        base = '%s/%s/%s/%s' % (ncbibase, species, config['prefix'], acc)
         chrs.append(base + '.fna')
         anns.append(base + '.gff')
         prts.append(base + '.faa')
@@ -168,7 +169,6 @@ def download_flybase(config, rootdir='.', logstream=sys.stderr, dryrun=False):
 
 def get_configs():
     """Unit test fixture."""
-    import yaml
 
     configs = list()
 
@@ -318,4 +318,21 @@ def test_proteins():
             'protein.fa.gz',
             './species/Bvul/protein.fa.gz')
     cmd = download_proteins(config, logstream=None, dryrun=True)
+    assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
+
+
+def test_flybase():
+    """NCBI FlyBase data download"""
+    config = yaml.load(open('species/Dmel/data.yml', 'r'))
+    bases = ['CHR_X/NC_004354', 'CHR_2/NT_033778', 'CHR_2/NT_033779',
+             'CHR_3/NT_033777', 'CHR_3/NT_037436', 'CHR_4/NC_004353']
+    prefix = ('ftp://ftp.ncbi.nih.gov/genomes/Drosophila_melanogaster/'
+              'RELEASE_5_48/')
+    chrs = [prefix + x + '.fna' for x in bases]
+    anns = [prefix + x + '.gff' for x in bases]
+    prts = [prefix + x + '.faa' for x in bases]
+    test = (chrs, anns, prts, './species/Dmel/Dmel.orig.fa.gz',
+            './species/Dmel/dmel-5.48-ncbi.gff3.gz',
+            './species/Dmel/protein.fa.gz')
+    cmd = download_flybase(config, logstream=None, dryrun=True)
     assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)

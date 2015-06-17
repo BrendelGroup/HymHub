@@ -66,25 +66,25 @@ def main(args=get_args()):
 
     if args.download:
         for species in args.species_list:
-            dnasource = configs[species]['genomeseq']['source']
-            assert dnasource in ['ncbi_scaffolds', 'ncbi_chromosomes']
-            if dnasource == 'ncbi_scaffolds':
-                dnafunc = ncbi.download_scaffolds
-            elif dnasource == 'ncbi_chromosomes':
-                dnafunc = ncbi.download_chromosomes
-            dnafunc(configs[species], rootdir=args.root, logstream=args.logfile)
+            source = configs[species]['source']
+            assert source in ['ncbi', 'ncbi_flybase']
 
-            annotsource = configs[species]['genomeannot']['source']
-            assert annotsource in ['ncbi']
-            if annotsource == 'ncbi':
+            if source == 'ncbi':
+                gdnatype = configs[species]['genomeseq']['type']
+                if gdnatype == 'scaffolds':
+                    dnafunc = ncbi.download_scaffolds
+                elif gdnatype == 'chromosomes':
+                    dnafunc = ncbi.download_chromosomes
+                dnafunc(configs[species], rootdir=args.root, logstream=args.logfile)
+
                 ncbi.download_annotation(configs[species], rootdir=args.root,
                                          logstream=args.logfile)
-
-            proteinsource = configs[species]['proteinseq']['source']
-            assert proteinsource in ['ncbi']
-            if proteinsource == 'ncbi':
                 ncbi.download_proteins(configs[species], rootdir=args.root,
                                        logstream=args.logfile)
+
+            elif source == 'ncbi_flybase':
+                ncbi.download_flybase(configs[species], rootdir=args.root,
+                                      logstream=args.logfile)
 
     for species in args.species_list:
         pass
