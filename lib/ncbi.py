@@ -14,37 +14,12 @@ of real and bogus data configurations.
 """
 
 import gzip
-import pycurl
+import subprocess
 import sys
 import yaml
+import download
 
 ncbibase = 'ftp://ftp.ncbi.nih.gov/genomes'
-
-
-def url_download(urldata, localpath, compress=False):
-    """
-    Helper function for downloading remote data files with PycURL.
-
-    The first argument can be either a string (single URL) or a list (multiple
-    URLs). The second argument is the path to which the downloaded data will
-    be written, overwriting the existing file if present. The final argument
-    indicates whether the incoming data stream should be encoded.
-    """
-    urls = urldata
-    if not isinstance(urldata, list):
-        urls = [urldata]
-
-    openfunc = open
-    if compress is True:
-        openfunc = gzip.open
-
-    with openfunc(localpath, 'wb') as out:
-        for url in urls:
-            c = pycurl.Curl()
-            c.setopt(c.URL, url)
-            c.setopt(c.WRITEDATA, out)
-            c.perform()
-            c.close()
 
 
 def download_chromosomes(config, rootdir='.', logstream=sys.stderr,
@@ -68,7 +43,7 @@ def download_chromosomes(config, rootdir='.', logstream=sys.stderr,
     if dryrun is True:  # pragma: no cover
         return urls, outfile
     else:
-        url_download(urls, outfile, compress=True)
+        download.url_download(urls, outfile)
 
 
 def download_scaffolds(config, rootdir='.', logstream=sys.stderr,
@@ -88,7 +63,7 @@ def download_scaffolds(config, rootdir='.', logstream=sys.stderr,
     if dryrun is True:  # pragma: no cover
         return url, outfile
     else:
-        url_download(url, outfile)
+        download.url_download(url, outfile)
 
 
 def download_annotation(config, rootdir='.', logstream=sys.stderr,
@@ -107,7 +82,7 @@ def download_annotation(config, rootdir='.', logstream=sys.stderr,
     if dryrun is True:  # pragma: no cover
         return url, outfile
     else:
-        url_download(url, outfile)
+        download.url_download(url, outfile)
 
 
 def download_proteins(config, rootdir='.', logstream=sys.stderr,
@@ -126,7 +101,7 @@ def download_proteins(config, rootdir='.', logstream=sys.stderr,
     if dryrun is True:  # pragma: no cover
         return url, outfile
     else:
-        url_download(url, outfile)
+        download.url_download(url, outfile)
 
 
 def download_flybase(config, rootdir='.', logstream=sys.stderr, dryrun=False):
@@ -145,23 +120,32 @@ def download_flybase(config, rootdir='.', logstream=sys.stderr, dryrun=False):
     if logstream is not None:  # pragma: no cover
         print >> logstream, logmsg
 
-    chrs, anns, prts = list(), list(), list()
+    chrs, anns, tmps, prts = list(), list(), list(), list()
     chrout = '%s/species/%s/%s.orig.fa.gz' % (rootdir, config['label'],
                                               config['label'])
+    prtout = '%s/species/%s/protein.fa.gz' % (rootdir, config['label'])
     annout = '%s/species/%s/%s' % (rootdir, config['label'],
                                    config['annotfile'])
-    prtout = '%s/species/%s/protein.fa.gz' % (rootdir, config['label'])
     for acc in config['accessions']:
         base = '%s/%s/%s/%s' % (ncbibase, species, config['prefix'], acc)
         chrs.append(base + '.fna')
-        anns.append(base + '.gff')
         prts.append(base + '.faa')
+        anns.append(base + '.gff')
+        tmps.append('%s/species/%s/%s.gff.gz' % (rootdir, config['label'],
+                    acc.split('/')[1]))
     if dryrun is True:  # pragma: no cover
         return (chrs, anns, prts, chrout, annout, prtout)
     else:
-        url_download(chrs, chrout, compress=True)
-        url_download(anns, annout, compress=True)
-        url_download(prts, prtout, compress=True)
+        download.url_download(chrs, chrout, compress=True)
+        download.url_download(prts, prtout, compress=True)
+        for annremote, annlocal in zip(anns, tmps):
+            download.url_download(annremote, annlocal, compress=True)
+
+        with gzip.open(annout, 'wb') as outfile:
+            cmd = 'gt gff3 -sort -tidy ' + ' '.join(tmps)
+            proc = subprocess.Popen(cmd.split(' '), stdout=subprocess.PIPE)
+            for line in proc.stdout:
+                outfile.write(line)
 
 
 # -----------------------------------------------------------------------------

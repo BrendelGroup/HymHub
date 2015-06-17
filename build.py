@@ -10,6 +10,7 @@ import argparse
 import sys
 import yaml
 import ncbi
+import pdom
 
 def get_args():
     desc = 'Execute the main HymHub build process'
@@ -67,7 +68,7 @@ def main(args=get_args()):
     if args.download:
         for species in args.species_list:
             source = configs[species]['source']
-            assert source in ['ncbi', 'ncbi_flybase']
+            assert source in ['ncbi', 'ncbi_flybase', 'custom']
 
             if source == 'ncbi':
                 gdnatype = configs[species]['genomeseq']['type']
@@ -85,6 +86,14 @@ def main(args=get_args()):
             elif source == 'ncbi_flybase':
                 ncbi.download_flybase(configs[species], rootdir=args.root,
                                       logstream=args.logfile)
+
+            elif source == 'custom':
+                handler = configs[species]['download_handler']
+                # Add to this list if more custom handlers are needed
+                assert handler in ['download_pdom']
+                if handler == 'download_pdom':
+                    pdom.download(configs[species], rootdir=args.root,
+                                  logstream=args.logfile)
 
     for species in args.species_list:
         pass

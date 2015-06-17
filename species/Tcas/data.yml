@@ -1,0 +1,20 @@
+species: 'Tribolium castaneum'
+label: 'Tcas'
+source: 'ncbi'
+genomeseq:
+    type: 'chromosomes'
+    prefix: 'Assembled_chromosomes/seq'
+    files:
+        - 'tca_ref_Tcas_3.0_unplaced.fa.gz'
+        - 'tca_ref_Tcas_3.0_chrLG1=X.fa.gz'
+        - 'tca_ref_Tcas_3.0_chrLG2.fa.gz'
+        - 'tca_ref_Tcas_3.0_chrLG3.fa.gz'
+        - 'tca_ref_Tcas_3.0_chrLG4.fa.gz'
+        - 'tca_ref_Tcas_3.0_chrLG5.fa.gz'
+        - 'tca_ref_Tcas_3.0_chrLG6.fa.gz'
+        - 'tca_ref_Tcas_3.0_chrLG7.fa.gz'
+        - 'tca_ref_Tcas_3.0_chrLG8.fa.gz'
+        - 'tca_ref_Tcas_3.0_chrLG9.fa.gz'
+        - 'tca_ref_Tcas_3.0_chrLG10.fa.gz'
+genomeannot:
+    filename: 'ref_Tcas_3.0_top_level.gff3.gz' 

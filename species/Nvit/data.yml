@@ -1,0 +1,16 @@
+species: 'Nasonia vitripennis'
+label: 'Nvit'
+source: 'ncbi'
+genomeseq:
+    type: 'chromosomes'
+    prefix: 'Assembled_chromosomes/seq'
+    files:
+        - 'nvi_ref_Nvit_2.1_chr1.fa.gz'
+        - 'nvi_ref_Nvit_2.1_chr2.fa.gz'
+        - 'nvi_ref_Nvit_2.1_chr3.fa.gz'
+        - 'nvi_ref_Nvit_2.1_chr4.fa.gz'
+        - 'nvi_ref_Nvit_2.1_chr5.fa.gz'
+        - 'nvi_ref_Nvit_2.1_unlocalized.fa.gz'
+        - 'nvi_ref_Nvit_2.1_unplaced.fa.gz'
+genomeannot:
+    filename: 'ref_Nvit_2.1_top_level.gff3.gz' 
