@@ -1,0 +1,12 @@
+species: 'Drosophila melanogaster'
+label: 'Dmel'
+source: 'ncbi_flybase'
+prefix: 'RELEASE_5_48'
+annotfile: 'dmel-5.48-ncbi.gff3.gz'
+accessions:
+    - 'CHR_X/NC_004354.fna'
+    - 'CHR_2/NT_033778.fna'
+    - 'CHR_2/NT_033779.fna'
+    - 'CHR_3/NT_033777.fna'
+    - 'CHR_3/NT_037436.fna'
+    - 'CHR_4/NC_004353.fna'

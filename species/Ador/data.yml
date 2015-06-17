@@ -1,10 +1,8 @@
 species: 'Apis dorsata'
 label: 'Ador'
+source: 'ncbi'
 genomeseq:
+    type: 'scaffolds'
     filename: 'ado_ref_Apis_dorsata_1.3_chrUn.fa.gz'
-    source: 'ncbi_scaffolds'
 genomeannot:
     filename: 'ref_Apis_dorsata_1.3_top_level.gff3.gz'
-    source: 'ncbi'
-proteinseq:
-    source: 'ncbi'

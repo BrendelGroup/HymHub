@@ -31,7 +31,8 @@ def download(url, localpath):
 
 def download_chromosomes(config, rootdir='.', logstream=sys.stderr,
                          dryrun=False):
-    assert config['genomeseq']['source'] == 'ncbi_chromosomes'
+    assert config['source'] == 'ncbi' and \
+           config['genomeseq']['type'] == 'chromosomes'
     species = config['species'].replace(' ', '_')
 
     logmsg = '[HymHub: %s] download genome from NCBI' % config['species']
@@ -60,7 +61,8 @@ def download_chromosomes(config, rootdir='.', logstream=sys.stderr,
 
 def download_scaffolds(config, rootdir='.', logstream=sys.stderr,
                        dryrun=False):
-    assert config['genomeseq']['source'] == 'ncbi_scaffolds'
+    assert config['source'] == 'ncbi' and \
+           config['genomeseq']['type'] == 'scaffolds'
     species = config['species'].replace(' ', '_')
 
     logmsg = '[HymHub: %s] download genome from NCBI' % config['species']
@@ -78,7 +80,7 @@ def download_scaffolds(config, rootdir='.', logstream=sys.stderr,
 
 def download_annotation(config, rootdir='.', logstream=sys.stderr,
                         dryrun=False):
-    assert config['genomeannot']['source'] == 'ncbi'
+    assert config['source'] == 'ncbi'
     species = config['species'].replace(' ', '_')
 
     logmsg = '[HymHub: %s] download annotation from NCBI' % config['species']
@@ -96,7 +98,7 @@ def download_annotation(config, rootdir='.', logstream=sys.stderr,
 
 def download_proteins(config, rootdir='.', logstream=sys.stderr,
                       dryrun=False):
-    assert config['proteinseq']['source'] == 'ncbi'
+    assert config['source'] == 'ncbi'
     species = config['species'].replace(' ', '_')
 
     logmsg = ('[HymHub: %s] download protein sequences from NCBI' %
@@ -111,6 +113,53 @@ def download_proteins(config, rootdir='.', logstream=sys.stderr,
     else:
         download(url, outfile)
 
+def download_flybase(config, rootdir='.', logstream=sys.stderr, dryrun=False):
+    assert config['source'] == 'ncbi_flybase'
+    species = config['species'].replace(' ', '_')
+
+    logmsg = '[HymHub: %s] download genome data from NCBI' % config['species']
+    if logstream is not None:  # pragma: no cover
+        print >> logstream, logmsg
+
+    chrs = list()
+    anns = list()
+    prts = list()
+    chrout = '%s/species/%s/%s.orig.fa.gz' % (rootdir, config['label'],
+                                              config['label'])
+    annout = '%s/species/%s/%s' % (rootdir, config['label'],
+                                   config['annotfile'])
+    prtout = '%s/species/%s/protein.fa.gz' % (rootdir, config['label'],
+                                              config['label'])
+    for acc in config['accesions']:
+        base = '%s/%s/%s' % (ncbibase, config['prefix'], acc)
+        chrs.append(base + '.fna')
+        anns.append(base + '.gff')
+        prts.append(base + '.faa')
+    if dryrun is True:  # pragma: no cover
+        return (chrs, anns, prts, chrout, annout, prtout)
+    else:
+        with gzip.open(chrout, 'wb') as out:
+            for url in chrs:
+                c = pycurl.Curl()
+                c.setopt(c.URL, url)
+                c.setopt(c.WRITEDATA, out)
+                c.perform()
+                c.close()
+        with gzip.open(annout, 'wb') as out:
+            for url in anns:
+                c = pycurl.Curl()
+                c.setopt(c.URL, url)
+                c.setopt(c.WRITEDATA, out)
+                c.perform()
+                c.close()
+        with gzip.open(prtout, 'wb') as out:
+            for url in prts:
+                c = pycurl.Curl()
+                c.setopt(c.URL, url)
+                c.setopt(c.WRITEDATA, out)
+                c.perform()
+                c.close()
+
 
 # -----------------------------------------------------------------------------
 # Unit tests
@@ -124,53 +173,47 @@ def get_configs():
     configs = list()
 
     cfgstr = """
-    species: Draconis occidentalis
-    label: Docc
+    species: 'Draconis occidentalis'
+    label: 'Docc'
+    source: 'ncbi'
     genomeseq:
-        source: 'ncbi_chromosomes'
+        type: 'chromosomes'
         prefix: 'Assembled_chromosomes/seq'
         files:
-            - docc_ref_1.6_1.fa.gz
-            - docc_ref_1.6_2.fa.gz
-            - docc_ref_1.6_3.fa.gz
-            - docc_ref_1.6_4.fa.gz
-            - docc_ref_1.6_5.fa.gz
-            - docc_ref_1.6_6.fa.gz
-            - docc_ref_1.6_7.fa.gz
-            - docc_ref_1.6_8.fa.gz
+            - 'docc_ref_1.6_1.fa.gz'
+            - 'docc_ref_1.6_2.fa.gz'
+            - 'docc_ref_1.6_3.fa.gz'
+            - 'docc_ref_1.6_4.fa.gz'
+            - 'docc_ref_1.6_5.fa.gz'
+            - 'docc_ref_1.6_6.fa.gz'
+            - 'docc_ref_1.6_7.fa.gz'
+            - 'docc_ref_1.6_8.fa.gz'
     genomeannot:
         filename: 'ref_Draconis_occidentalis_1.6_top_level.gff3.gz'
-        source: 'ncbi'
-    proteinseq:
-        source: 'ncbi'
     """
     configs.append(yaml.load(cfgstr))
 
     cfgstr = """
     species: 'Basiliscus vulgaris'
     label: 'Bvul'
+    source: 'ncbi'
     genomeseq:
+        type: 'scaffolds'
         filename: 'bv_ref_1.1_chrUn.fa.gz'
-        source: 'ncbi_scaffolds'
     genomeannot:
         filename: 'ref_Basiliscus_vulgaris_1.1_top_level.gff3.gz'
-        source: 'ncbi'
-    proteinseq:
-        source: 'ncbi'
     """
     configs.append(yaml.load(cfgstr))
 
     cfgstr = """
     species: 'Equus monoceros'
     label: 'Emon'
+    source: 'ncbi'
     genomeseq:
+        type: 'scaffolds'
         filename: 'emon_ref_3.4_chrUn.fa.gz'
-        source: 'ncbi_scaffolds'
     genomeannot:
         filename: 'ref_Equus_monoceros_3.4_top_level.gff3.gz'
-        source: 'ncbi'
-    proteinseq:
-        source: 'ncbi'
     """
     configs.append(yaml.load(cfgstr))
 

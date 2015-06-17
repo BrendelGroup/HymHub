@@ -1,7 +1,8 @@
 species: 'Bombus terrestris'
 label: 'Bter'
+source: 'ncbi'
 genomeseq:
-    source: 'ncbi_chromosomes'
+    type: 'chromosomes'
     prefix: 'Assembled_chromosomes/seq'
     files:
         - 'bte_ref_Bter_1.0_unplaced.fa.gz'
@@ -25,6 +26,3 @@ genomeseq:
         - 'bte_ref_Bter_1.0_chrLG_B18.fa.gz'
 genomeannot:
     filename: 'ref_Bter_1.0_top_level.gff3.gz' 
-    source: 'ncbi'
-proteinseq:
-    source: 'ncbi'
