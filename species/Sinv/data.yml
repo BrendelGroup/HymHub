@@ -1,0 +1,8 @@
+species: 'Solenopsis invicta'
+label: 'Sinv'
+source: 'ncbi'
+genomeseq:
+    type: 'scaffolds'
+    filename: '13686_ref_Si_gnG_chrUn.fa.gz'
+genomeannot:
+    filename: 'ref_Si_gnG_top_level.gff3.gz'

@@ -1,0 +1,8 @@
+species: 'Bombus impatiens'
+label: 'Bimp'
+source: 'ncbi'
+genomeseq:
+    type: 'scaffolds'
+    filename: 'bim_ref_BIMP_2.0_chrUn.fa.gz'
+genomeannot:
+    filename: 'ref_BIMP_2.0_top_level.gff3.gz'

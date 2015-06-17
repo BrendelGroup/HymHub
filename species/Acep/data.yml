@@ -1,0 +1,8 @@
+species: 'Atta cephalotes'
+label: 'Acep'
+source: 'ncbi'
+genomeseq:
+    type: 'scaffolds'
+    filename: 'acp_ref_Attacep1.0_chrUn.fa.gz'
+genomeannot:
+    filename: 'ref_Attacep1.0_top_level.gff3.gz'

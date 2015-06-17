@@ -1,0 +1,8 @@
+species: 'Megachile rotundata'
+label: 'Mrot'
+source: 'ncbi'
+genomeseq:
+    type: 'scaffolds'
+    filename: 'mro_ref_MROT_1.0_chrUn.fa.gz'
+genomeannot:
+    filename: 'ref_MROT_1.0_top_level.gff3.gz'

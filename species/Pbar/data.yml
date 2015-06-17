@@ -1,0 +1,8 @@
+species: 'Pogonomyrmex barbatus'
+label: 'Pbar'
+source: 'ncbi'
+genomeseq:
+    type: 'scaffolds'
+    filename: '144034_ref_Pbar_UMD_V03_chrUn.fa.gz'
+genomeannot:
+    filename: 'ref_Pbar_UMD_V03_top_level.gff3.gz'

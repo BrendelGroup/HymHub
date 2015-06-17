@@ -1,0 +1,8 @@
+species: 'Acromyrmex echinatior'
+label: 'Aech'
+source: 'ncbi'
+genomeseq:
+    type: 'scaffolds'
+    filename: '103372_ref_Aech_3.9_chrUn.fa.gz'
+genomeannot:
+    filename: 'ref_Aech_3.9_top_level.gff3.gz'
