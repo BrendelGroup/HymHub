@@ -21,19 +21,37 @@ import yaml
 ncbibase = 'ftp://ftp.ncbi.nih.gov/genomes'
 
 
-def download(url, localpath):
-    with open(localpath, 'wb') as out:
-        c = pycurl.Curl()
-        c.setopt(c.URL, url)
-        c.setopt(c.WRITEDATA, out)
-        c.perform()
-        c.close()
+def url_download(urldata, localpath, compress=False):
+    """
+    Helper function for downloading remote data files with PycURL.
+
+    The first argument can be either a string (single URL) or a list (multiple
+    URLs). The second argument is the path to which the downloaded data will
+    be written, overwriting the existing file if present. The final argument
+    indicates whether the incoming data stream should be encoded.
+    """
+    urls = urldata
+    if not isinstance(urldata, list):
+        urls = [urldata]
+
+    openfunc = open
+    if compress is True:
+        openfunc = gzip.open
+
+    with openfunc(localpath, 'wb') as out:
+        for url in urls:
+            c = pycurl.Curl()
+            c.setopt(c.URL, url)
+            c.setopt(c.WRITEDATA, out)
+            c.perform()
+            c.close()
 
 
 def download_chromosomes(config, rootdir='.', logstream=sys.stderr,
                          dryrun=False):
+    """Download chromosome-based genome sequences from NCBI."""
     assert config['source'] == 'ncbi' and \
-           config['genomeseq']['type'] == 'chromosomes'
+        config['genomeseq']['type'] == 'chromosomes'
     species = config['species'].replace(' ', '_')
 
     logmsg = '[HymHub: %s] download genome from NCBI' % config['species']
@@ -50,20 +68,14 @@ def download_chromosomes(config, rootdir='.', logstream=sys.stderr,
     if dryrun is True:  # pragma: no cover
         return urls, outfile
     else:
-        with open(outfile, 'wb') as out:
-            for url in urls:
-                c = pycurl.Curl()
-                c.setopt(c.ENCODING, 'gzip')
-                c.setopt(c.URL, url)
-                c.setopt(c.WRITEDATA, out)
-                c.perform()
-                c.close()
+        url_download(urls, outfile, compress=True)
 
 
 def download_scaffolds(config, rootdir='.', logstream=sys.stderr,
                        dryrun=False):
+    """Download scaffold-based genome sequences from NCBI."""
     assert config['source'] == 'ncbi' and \
-           config['genomeseq']['type'] == 'scaffolds'
+        config['genomeseq']['type'] == 'scaffolds'
     species = config['species'].replace(' ', '_')
 
     logmsg = '[HymHub: %s] download genome from NCBI' % config['species']
@@ -76,11 +88,12 @@ def download_scaffolds(config, rootdir='.', logstream=sys.stderr,
     if dryrun is True:  # pragma: no cover
         return url, outfile
     else:
-        download(url, outfile)
+        url_download(url, outfile)
 
 
 def download_annotation(config, rootdir='.', logstream=sys.stderr,
                         dryrun=False):
+    """Download genome annotation from NCBI."""
     assert config['source'] == 'ncbi'
     species = config['species'].replace(' ', '_')
 
@@ -94,11 +107,12 @@ def download_annotation(config, rootdir='.', logstream=sys.stderr,
     if dryrun is True:  # pragma: no cover
         return url, outfile
     else:
-        download(url, outfile)
+        url_download(url, outfile)
 
 
 def download_proteins(config, rootdir='.', logstream=sys.stderr,
                       dryrun=False):
+    """Download protein sequences from NCBI."""
     assert config['source'] == 'ncbi'
     species = config['species'].replace(' ', '_')
 
@@ -112,10 +126,18 @@ def download_proteins(config, rootdir='.', logstream=sys.stderr,
     if dryrun is True:  # pragma: no cover
         return url, outfile
     else:
-        download(url, outfile)
+        url_download(url, outfile)
 
 
 def download_flybase(config, rootdir='.', logstream=sys.stderr, dryrun=False):
+    """
+    Download Drosophila data from NCBI.
+
+    Genome sequences and annotations for Drosophila melanogaster in NCBI are
+    organized differently than for most other species, presumably since they
+    are sourced from FlyBase. This function downloads all of the genome
+    sequences, annotations, and protein sequences for Dmel.
+    """
     assert config['source'] == 'ncbi_flybase'
     species = config['species'].replace(' ', '_')
 
@@ -123,9 +145,7 @@ def download_flybase(config, rootdir='.', logstream=sys.stderr, dryrun=False):
     if logstream is not None:  # pragma: no cover
         print >> logstream, logmsg
 
-    chrs = list()
-    anns = list()
-    prts = list()
+    chrs, anns, prts = list(), list(), list()
     chrout = '%s/species/%s/%s.orig.fa.gz' % (rootdir, config['label'],
                                               config['label'])
     annout = '%s/species/%s/%s' % (rootdir, config['label'],
@@ -139,27 +159,9 @@ def download_flybase(config, rootdir='.', logstream=sys.stderr, dryrun=False):
     if dryrun is True:  # pragma: no cover
         return (chrs, anns, prts, chrout, annout, prtout)
     else:
-        with gzip.open(chrout, 'wb') as out:
-            for url in chrs:
-                c = pycurl.Curl()
-                c.setopt(c.URL, url)
-                c.setopt(c.WRITEDATA, out)
-                c.perform()
-                c.close()
-        with gzip.open(annout, 'wb') as out:
-            for url in anns:
-                c = pycurl.Curl()
-                c.setopt(c.URL, url)
-                c.setopt(c.WRITEDATA, out)
-                c.perform()
-                c.close()
-        with gzip.open(prtout, 'wb') as out:
-            for url in prts:
-                c = pycurl.Curl()
-                c.setopt(c.URL, url)
-                c.setopt(c.WRITEDATA, out)
-                c.perform()
-                c.close()
+        url_download(chrs, chrout, compress=True)
+        url_download(anns, annout, compress=True)
+        url_download(prts, prtout, compress=True)
 
 
 # -----------------------------------------------------------------------------
@@ -167,80 +169,16 @@ def download_flybase(config, rootdir='.', logstream=sys.stderr, dryrun=False):
 # -----------------------------------------------------------------------------
 
 
-def get_configs():
-    """Unit test fixture."""
-
-    configs = list()
-
-    cfgstr = """
-    species: 'Draconis occidentalis'
-    label: 'Docc'
-    source: 'ncbi'
-    genomeseq:
-        type: 'chromosomes'
-        prefix: 'Assembled_chromosomes/seq'
-        files:
-            - 'docc_ref_1.6_1.fa.gz'
-            - 'docc_ref_1.6_2.fa.gz'
-            - 'docc_ref_1.6_3.fa.gz'
-            - 'docc_ref_1.6_4.fa.gz'
-            - 'docc_ref_1.6_5.fa.gz'
-            - 'docc_ref_1.6_6.fa.gz'
-            - 'docc_ref_1.6_7.fa.gz'
-            - 'docc_ref_1.6_8.fa.gz'
-    genomeannot:
-        filename: 'ref_Draconis_occidentalis_1.6_top_level.gff3.gz'
-    """
-    configs.append(yaml.load(cfgstr))
-
-    cfgstr = """
-    species: 'Basiliscus vulgaris'
-    label: 'Bvul'
-    source: 'ncbi'
-    genomeseq:
-        type: 'scaffolds'
-        filename: 'bv_ref_1.1_chrUn.fa.gz'
-    genomeannot:
-        filename: 'ref_Basiliscus_vulgaris_1.1_top_level.gff3.gz'
-    """
-    configs.append(yaml.load(cfgstr))
-
-    cfgstr = """
-    species: 'Equus monoceros'
-    label: 'Emon'
-    source: 'ncbi'
-    genomeseq:
-        type: 'scaffolds'
-        filename: 'emon_ref_3.4_chrUn.fa.gz'
-    genomeannot:
-        filename: 'ref_Equus_monoceros_3.4_top_level.gff3.gz'
-    """
-    configs.append(yaml.load(cfgstr))
-
-    configs.append(yaml.load(open('species/Ador/data.yml', 'r')))
-
-    return configs
-
-
 def test_scaffolds():
     """NCBI scaffolds download"""
-    configs = get_configs()
-
-    config = configs.pop()
-    test = ('ftp://ftp.ncbi.nih.gov/genomes/Apis_dorsata/CHR_Un/'
-            'ado_ref_Apis_dorsata_1.3_chrUn.fa.gz',
-            './species/Ador/ado_ref_Apis_dorsata_1.3_chrUn.fa.gz')
-    cmd = download_scaffolds(config, logstream=None, dryrun=True)
-    assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
-
-    config = configs.pop()
+    config = config = yaml.load(open('test/Emon.yml', 'r'))
     test = ('ftp://ftp.ncbi.nih.gov/genomes/Equus_monoceros/CHR_Un/'
             'emon_ref_3.4_chrUn.fa.gz',
             './species/Emon/emon_ref_3.4_chrUn.fa.gz')
     cmd = download_scaffolds(config, logstream=None, dryrun=True)
     assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
 
-    config = configs.pop()
+    config = config = yaml.load(open('test/Bvul.yml', 'r'))
     test = ('ftp://ftp.ncbi.nih.gov/genomes/Basiliscus_vulgaris/CHR_Un/'
             'bv_ref_1.1_chrUn.fa.gz',
             '/some/path/species/Bvul/bv_ref_1.1_chrUn.fa.gz')
@@ -248,12 +186,17 @@ def test_scaffolds():
                              dryrun=True)
     assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
 
+    config = config = yaml.load(open('species/Ador/data.yml', 'r'))
+    test = ('ftp://ftp.ncbi.nih.gov/genomes/Apis_dorsata/CHR_Un/'
+            'ado_ref_Apis_dorsata_1.3_chrUn.fa.gz',
+            './species/Ador/ado_ref_Apis_dorsata_1.3_chrUn.fa.gz')
+    cmd = download_scaffolds(config, logstream=None, dryrun=True)
+    assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
+
 
 def test_chromosomes():
     """NCBI chromosome download"""
-    configs = get_configs()
-
-    config = configs[0]
+    config = config = yaml.load(open('test/Docc.yml', 'r'))
     urls = ['docc_ref_1.6_1.fa.gz', 'docc_ref_1.6_2.fa.gz',
             'docc_ref_1.6_3.fa.gz', 'docc_ref_1.6_4.fa.gz',
             'docc_ref_1.6_5.fa.gz', 'docc_ref_1.6_6.fa.gz',
@@ -265,26 +208,24 @@ def test_chromosomes():
     cmd = download_chromosomes(config, logstream=None, dryrun=True)
     assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
 
+    config = config = yaml.load(open('test/Epeg.yml', 'r'))
+    urls = ['epeg_reg_Epe_2.1_01.fa.gz', 'epeg_reg_Epe_2.1_02.fa.gz',
+            'epeg_reg_Epe_2.1_03.fa.gz', 'epeg_reg_Epe_2.1_04.fa.gz',
+            'epeg_reg_Epe_2.1_05.fa.gz', 'epeg_reg_Epe_2.1_06.fa.gz',
+            'epeg_reg_Epe_2.1_07.fa.gz', 'epeg_reg_Epe_2.1_08.fa.gz',
+            'epeg_reg_Epe_2.1_09.fa.gz', 'epeg_reg_Epe_2.1_10.fa.gz',
+            'epeg_reg_Epe_2.1_11.fa.gz', 'epeg_reg_Epe_2.1_12.fa.gz']
+    prefix = ('ftp://ftp.ncbi.nih.gov/genomes/Equus_pegasus/'
+              'Assembled_chromosomes/seq/')
+    urls = [prefix + x for x in urls]
+    test = (urls, './species/Epeg/Epeg.orig.fa.gz')
+    cmd = download_chromosomes(config, logstream=None, dryrun=True)
+    assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
+
 
 def test_annot():
     """NCBI annotation download"""
-    configs = get_configs()
-
-    config = configs.pop()
-    test = ('ftp://ftp.ncbi.nih.gov/genomes/Apis_dorsata/GFF/'
-            'ref_Apis_dorsata_1.3_top_level.gff3.gz',
-            './species/Ador/ref_Apis_dorsata_1.3_top_level.gff3.gz')
-    cmd = download_annotation(config, logstream=None, dryrun=True)
-    assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
-
-    config = configs.pop()
-    test = ('ftp://ftp.ncbi.nih.gov/genomes/Equus_monoceros/GFF/'
-            'ref_Equus_monoceros_3.4_top_level.gff3.gz',
-            './species/Emon/ref_Equus_monoceros_3.4_top_level.gff3.gz')
-    cmd = download_annotation(config, logstream=None, dryrun=True)
-    assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
-
-    config = configs.pop()
+    config = config = yaml.load(open('test/Bvul.yml', 'r'))
     test = ('ftp://ftp.ncbi.nih.gov/genomes/Basiliscus_vulgaris/GFF/'
             'ref_Basiliscus_vulgaris_1.1_top_level.gff3.gz',
             '/another/path//species/Bvul/'
@@ -293,31 +234,43 @@ def test_annot():
                               dryrun=True)
     assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
 
+    config = config = yaml.load(open('test/Epeg.yml', 'r'))
+    test = ('ftp://ftp.ncbi.nih.gov/genomes/Equus_pegasus/GFF/'
+            'ref_EPEG_2.1_top_level.gff3.gz',
+            './species/Epeg/ref_EPEG_2.1_top_level.gff3.gz')
+    cmd = download_annotation(config, logstream=None, dryrun=True)
+    assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
+
+    config = config = yaml.load(open('species/Ador/data.yml', 'r'))
+    test = ('ftp://ftp.ncbi.nih.gov/genomes/Apis_dorsata/GFF/'
+            'ref_Apis_dorsata_1.3_top_level.gff3.gz',
+            './species/Ador/ref_Apis_dorsata_1.3_top_level.gff3.gz')
+    cmd = download_annotation(config, logstream=None, dryrun=True)
+    assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
+
 
 def test_proteins():
     """NCBI protein download"""
-    configs = get_configs()
-
-    config = configs.pop()
-    test = ('ftp://ftp.ncbi.nih.gov/genomes/Apis_dorsata/protein/'
-            'protein.fa.gz',
-            '/home/gandalf/HymHub/species/Ador/protein.fa.gz')
-    cmd = download_proteins(config, rootdir='/home/gandalf/HymHub',
-                            logstream=None, dryrun=True)
-    assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
-
-    config = configs.pop()
+    config = config = yaml.load(open('test/Emon.yml', 'r'))
     test = ('ftp://ftp.ncbi.nih.gov/genomes/Equus_monoceros/protein/'
             'protein.fa.gz',
             './species/Emon/protein.fa.gz')
     cmd = download_proteins(config, logstream=None, dryrun=True)
     assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
 
-    config = configs.pop()
+    config = config = yaml.load(open('test/Bvul.yml', 'r'))
     test = ('ftp://ftp.ncbi.nih.gov/genomes/Basiliscus_vulgaris/protein/'
             'protein.fa.gz',
             './species/Bvul/protein.fa.gz')
     cmd = download_proteins(config, logstream=None, dryrun=True)
+    assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
+
+    config = yaml.load(open('species/Ador/data.yml', 'r'))
+    test = ('ftp://ftp.ncbi.nih.gov/genomes/Apis_dorsata/protein/'
+            'protein.fa.gz',
+            '/home/gandalf/HymHub/species/Ador/protein.fa.gz')
+    cmd = download_proteins(config, rootdir='/home/gandalf/HymHub',
+                            logstream=None, dryrun=True)
     assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
 
 

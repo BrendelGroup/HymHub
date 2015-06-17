@@ -1,0 +1,17 @@
+species: 'Draconis occidentalis'
+label: 'Docc'
+source: 'ncbi'
+genomeseq:
+    type: 'chromosomes'
+    prefix: 'Assembled_chromosomes/seq'
+    files:
+        - 'docc_ref_1.6_1.fa.gz'
+        - 'docc_ref_1.6_2.fa.gz'
+        - 'docc_ref_1.6_3.fa.gz'
+        - 'docc_ref_1.6_4.fa.gz'
+        - 'docc_ref_1.6_5.fa.gz'
+        - 'docc_ref_1.6_6.fa.gz'
+        - 'docc_ref_1.6_7.fa.gz'
+        - 'docc_ref_1.6_8.fa.gz'
+genomeannot:
+    filename: 'ref_Draconis_occidentalis_1.6_top_level.gff3.gz'

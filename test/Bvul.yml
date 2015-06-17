@@ -1,0 +1,8 @@
+species: 'Basiliscus vulgaris'
+label: 'Bvul'
+source: 'ncbi'
+genomeseq:
+    type: 'scaffolds'
+    filename: 'bv_ref_1.1_chrUn.fa.gz'
+genomeannot:
+    filename: 'ref_Basiliscus_vulgaris_1.1_top_level.gff3.gz'
