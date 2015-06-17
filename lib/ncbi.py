@@ -13,6 +13,7 @@ NCBI's FTP site. The unit tests validate the behavior of this module with a mix
 of real and bogus data configurations.
 """
 
+import gzip
 import pycurl
 import sys
 
@@ -26,6 +27,35 @@ def download(url, localpath):
         c.setopt(c.WRITEDATA, out)
         c.perform()
         c.close()
+
+
+def download_chromosomes(config, rootdir='.', logstream=sys.stderr,
+                         dryrun=False):
+    assert config['genomeseq']['source'] == 'ncbi_chromosomes'
+    species = config['species'].replace(' ', '_')
+
+    logmsg = '[HymHub: %s] download genome from NCBI' % config['species']
+    if logstream is not None:  # pragma: no cover
+        print >> logstream, logmsg
+
+    urls = list()
+    prefix = config['genomeseq']['prefix']
+    for remotefile in config['genomeseq']['files']:
+        url = '%s/%s/%s/%s' % (ncbibase, species, prefix, remotefile)
+        urls.append(url)
+    outfile = '%s/species/%s/%s.orig.fa.gz' % (rootdir, config['label'],
+                                               config['label'])
+    if dryrun is True:  # pragma: no cover
+        return urls, outfile
+    else:
+        with open(outfile, 'wb') as out:
+            for url in urls:
+                c = pycurl.Curl()
+                c.setopt(c.ENCODING, 'gzip')
+                c.setopt(c.URL, url)
+                c.setopt(c.WRITEDATA, out)
+                c.perform()
+                c.close()
 
 
 def download_scaffolds(config, rootdir='.', logstream=sys.stderr,
@@ -94,6 +124,29 @@ def get_configs():
     configs = list()
 
     cfgstr = """
+    species: Draconis occidentalis
+    label: Docc
+    genomeseq:
+        source: 'ncbi_chromosomes'
+        prefix: 'Assembled_chromosomes/seq'
+        files:
+            - docc_ref_1.6_1.fa.gz
+            - docc_ref_1.6_2.fa.gz
+            - docc_ref_1.6_3.fa.gz
+            - docc_ref_1.6_4.fa.gz
+            - docc_ref_1.6_5.fa.gz
+            - docc_ref_1.6_6.fa.gz
+            - docc_ref_1.6_7.fa.gz
+            - docc_ref_1.6_8.fa.gz
+    genomeannot:
+        filename: 'ref_Draconis_occidentalis_1.6_top_level.gff3.gz'
+        source: 'ncbi'
+    proteinseq:
+        source: 'ncbi'
+    """
+    configs.append(yaml.load(cfgstr))
+
+    cfgstr = """
     species: 'Basiliscus vulgaris'
     label: 'Bvul'
     genomeseq:
@@ -150,6 +203,23 @@ def test_scaffolds():
             '/some/path/species/Bvul/bv_ref_1.1_chrUn.fa.gz')
     cmd = download_scaffolds(config, rootdir='/some/path', logstream=None,
                              dryrun=True)
+    assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
+
+
+def test_chromosomes():
+    """NCBI chromosome download"""
+    configs = get_configs()
+
+    config = configs[0]
+    urls = ['docc_ref_1.6_1.fa.gz', 'docc_ref_1.6_2.fa.gz',
+            'docc_ref_1.6_3.fa.gz', 'docc_ref_1.6_4.fa.gz',
+            'docc_ref_1.6_5.fa.gz', 'docc_ref_1.6_6.fa.gz',
+            'docc_ref_1.6_7.fa.gz', 'docc_ref_1.6_8.fa.gz']
+    prefix = ('ftp://ftp.ncbi.nih.gov/genomes/Draconis_occidentalis/'
+              'Assembled_chromosomes/seq/')
+    urls = [prefix + x for x in urls]
+    test = (urls, './species/Docc/Docc.orig.fa.gz')
+    cmd = download_chromosomes(config, logstream=None, dryrun=True)
     assert cmd == test, 'filenames do not match\n%s\n%s\n' % (test, cmd)
 
 

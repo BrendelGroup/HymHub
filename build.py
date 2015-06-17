@@ -67,10 +67,12 @@ def main(args=get_args()):
     if args.download:
         for species in args.species_list:
             dnasource = configs[species]['genomeseq']['source']
-            assert dnasource in ['ncbi_scaffolds']
+            assert dnasource in ['ncbi_scaffolds', 'ncbi_chromosomes']
             if dnasource == 'ncbi_scaffolds':
-                ncbi.download_scaffolds(configs[species], rootdir=args.root,
-                                        logstream=args.logfile)
+                dnafunc = ncbi.download_scaffolds
+            elif dnasource == 'ncbi_chromosomes':
+                dnafunc = ncbi.download_chromosomes
+            dnafunc(configs[species], rootdir=args.root, logstream=args.logfile)
 
             annotsource = configs[species]['genomeannot']['source']
             assert annotsource in ['ncbi']
