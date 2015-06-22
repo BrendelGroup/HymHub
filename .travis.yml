@@ -7,9 +7,9 @@ before_install:
   - mkdir ${HOME}/local/
   - export LD_LIBRARY_PATH=${HOME}/local/lib:$LD_LIBRARY_PATH
   # Install Genometools
-  - wget http://genometools.org/pub/genometools-1.5.5.tar.gz
-  - tar xzf genometools-1.5.5.tar.gz
-  - cd genometools-1.5.5/ && make -j2 prefix=${HOME}/local install && cd -
+  - wget http://genometools.org/pub/genometools-1.5.6.tar.gz
+  - tar xzf genometools-1.5.6.tar.gz
+  - cd genometools-1.5.6/ && make -j2 prefix=${HOME}/local install && cd -
   # Install AEGeAn
   - wget https://github.com/standage/AEGeAn/archive/v0.13.0.tar.gz
   - tar xzf v0.13.0.tar.gz
