@@ -6,8 +6,37 @@
 # 'LICENSE' file in the HymHub code distribution or online at
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
 
+import os
+import re
 import subprocess
 import fasta_utils
+
+
+def prep_phylo(outdir, quartetfile, rootdir='.'):
+    os.makedirs(outdir)
+    next(quartetfile)
+    for line in quartetfile:
+        hilocusid, ant, bee, pdom, nvit = line.rstrip().split('\t')
+        species = list()
+        iloci = list()
+        for value in [ant, bee, pdom, nvit]:
+            spec, ilocus = value.split(':')
+            species.append(spec)
+            iloci.append(ilocus)
+        protids = resolve_protein_ids(iloci, species, rootdir=rootdir)
+        proteinseqs = load_proteins(protids, species, rootdir=rootdir)
+        proteinseqs = re.sub(r'>(gnl\|(Acep|Aech|Cflo|Hsal|Pbar|Sinv)\|[^\n])+',
+                             r'>ant \1', proteinseqs)
+        proteinseqs = re.sub(r'>(gnl\|(Ador|Aflo|Amel|Bimp|Bter|Mrot)\|[^\n])+',
+                             r'>bee \1', proteinseqs)
+        proteinseqs = re.sub(r'(>gnl\|Pdom\|[^\n])+', r'>vespid \1',
+                             proteinseqs)
+        proteinseqs = re.sub(r'(>gnl\|Nvit\|[^\n])+', r'>chalcid \1',
+                             proteinseqs)
+        os.makedirs(outdir + '/' + hilocusid)
+        seqfile = '%s/%s/%s.faa' % (outdir, hilocusid, hilocusid)
+        with open(seqfile, 'w') as outstream:
+            print >> outstream, proteinseqs
 
 
 def run_msa(proteinseqs, outfile=None, command='clustalo', path=None,

@@ -26,20 +26,4 @@ if __name__ == '__main__':
                         'is stdin')
 
     args = parser.parse_args()
-
-    next(args.qfile)
-    for line in args.qfile:
-        hilocusid, ant, bee, pdom, nvit = line.rstrip().split('\t')
-        species = list()
-        iloci = list()
-        for value in [ant, bee, pdom, nvit]:
-            spec, ilocus = value.split(':')
-            species.append(spec)
-            iloci.append(ilocus)
-        protids = hilocus_utils.resolve_protein_ids(iloci, species,
-                                                    rootdir=args.path)
-        proteinseqs = hilocus_utils.load_proteins(protids, species,
-                                                  rootdir=args.path)
-        outfile = args.workdir + '/' + hilocusid + '.msa'
-        hilocus_utils.run_msa(proteinseqs, outfile=outfile, outfmt='phylip',
-                              path=args.cpath)
+    hilocus_utils.prep_phylo(args.workdir, args.qfile)
