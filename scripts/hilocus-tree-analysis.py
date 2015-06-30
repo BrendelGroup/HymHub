@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+
+# Copyright (c) 2015, Daniel S. Standage and CONTRIBUTORS
+#
+# HymHub is distributed under the CC BY 4.0 License. See the
+# 'LICENSE' file in the HymHub code distribution or online at
+# https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
+
+import argparse
+import glob
+from Bio import Phylo
+
+
+def visit(clade, depth, depths, parents):
+    for subclade in clade:
+        if len(subclade) == 0:
+            assert subclade.name in ['ant', 'bee', 'vespid', 'chalcid']
+            depths[subclade.name] = depth
+            parents[subclade.name] = clade
+        else:
+            visit(subclade, depth + 1, depths, parents)
+
+
+def classify(depths, parents):
+    for otu in ['ant', 'bee', 'vespid', 'chalcid']:
+        assert otu in depths
+        assert otu in parents
+    if parents['ant'] == parents['bee'] == parents['vespid']:
+        return 'ABV'
+    elif parents['ant'] == parents['bee']:
+        return 'AB'
+    elif parents['ant'] == parents['vespid']:
+        return 'AV'
+    elif parents['bee'] == parents['vespid']:
+        return 'BV'
+    raise Exception('sanity check failed!')
+
+
+def get_args():
+    desc = 'Assess relationship of bees, ants, and wasps in gene trees'
+    parser = argparse.ArgumentParser(description=desc)
+    parser.add_argument('-w', '--workdir', metavar='WD', default='.',
+                        help='workdir (see hilocus-phylo.py); default is '
+                        'current directory')
+    return parser.parse_args()
+
+
+def main(args=get_args()):
+    pattern = '%s/*/outtree' % args.workdir
+    files = glob.glob(pattern)
+    for filename in files:
+        tree = Phylo.parse(filename, 'newick').next()
+        otu_depths = dict()
+        otu_parents = dict()
+        visit(tree.root, 1, otu_depths, otu_parents)
+        cls = classify(otu_depths, otu_parents)
+        print '%s\t%s' % (filename, cls)
+
+
+if __name__ == '__main__':
+    main()
