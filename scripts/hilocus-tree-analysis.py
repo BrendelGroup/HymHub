@@ -12,6 +12,10 @@ from Bio import Phylo
 
 
 def visit(clade, depth, depths, parents):
+    """
+    Recursive function to determine the depth and grouping of OTUs in the
+    phylogeny.
+    """
     for subclade in clade:
         if len(subclade) == 0:
             assert subclade.name in ['ant', 'bee', 'vespid', 'chalcid']
@@ -22,6 +26,10 @@ def visit(clade, depth, depths, parents):
 
 
 def classify(depths, parents):
+    """
+    Determine which of the ants, bees, and vespid wasps are grouped most
+    closely together from the given tree data.
+    """
     for otu in ['ant', 'bee', 'vespid', 'chalcid']:
         assert otu in depths
         assert otu in parents
@@ -37,6 +45,7 @@ def classify(depths, parents):
 
 
 def get_args():
+    """Parse command-line arguments"""
     desc = 'Assess relationship of bees, ants, and wasps in gene trees'
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument('-w', '--workdir', metavar='WD', default='.',

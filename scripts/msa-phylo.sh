@@ -14,5 +14,14 @@ which clustalo
 which proml
 
 cd $1
+
+# Multiple sequence alignment with Clustal Omega
 cat $1.faa | clustalo --seqtype=Protein --infile=- --outfmt=phylip > infile
+
+# Phylogeny inference with PHYLIP
+#   uses default input file `infile`
+#
+#   O 4: root tree with sequence 4 (Nasonia) as outgroup
+#   S:   disable speedy/rough mode
+#   Y:   accept parameters and launch
 echo $'O\n4\nS\nY' | proml
