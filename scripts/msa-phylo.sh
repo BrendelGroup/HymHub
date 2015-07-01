@@ -14,9 +14,10 @@ which clustalo
 which proml
 
 cd $1
+prefix=$(basename $1)
 
 # Multiple sequence alignment with Clustal Omega
-cat $1.faa | clustalo --seqtype=Protein --infile=- --outfmt=phylip > infile
+cat ${prefix}.faa | clustalo --seqtype=Protein --infile=- --outfmt=phylip > infile
 
 # Phylogeny inference with PHYLIP
 #   uses default input file `infile`

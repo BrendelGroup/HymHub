@@ -34,13 +34,13 @@ def classify(depths, parents):
         assert otu in depths
         assert otu in parents
     if parents['ant'] == parents['bee'] == parents['vespid']:
-        return 'ABV'
+        return 'AntBeePdom'
     elif parents['ant'] == parents['bee']:
-        return 'AB'
+        return 'AntBee'
     elif parents['ant'] == parents['vespid']:
-        return 'AV'
+        return 'AntPdom'
     elif parents['bee'] == parents['vespid']:
-        return 'BV'
+        return 'BeePdom'
     raise Exception('sanity check failed!')
 
 
