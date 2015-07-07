@@ -30,6 +30,8 @@ if __name__ == '__main__':
                         default='.', help='path to HymHub root directory')
     parser.add_argument('-o', '--out', default=None,
                         help='output file; default is terminal (stdout)')
+    parser.add_argument('-M', action='store_true', help='Throw out any protein'
+                        ' sequences that do not begin with a methionine (M)')
     parser.add_argument(default=None, dest='hid',
                         help='ID of the hiLocus for which protein MSA will '
                         'be generated')
@@ -42,7 +44,12 @@ if __name__ == '__main__':
 
     protids = hilocus_utils.resolve_protein_ids(iloci, species,
                                                 rootdir=args.path)
-    proteinseqs = hilocus_utils.load_proteins(protids, species,
-                                              rootdir=args.path)
+    seqdata = list()
+    for defline, seq in hilocus_utils.retrieve_proteins(protids, species,
+                                                        rootdir=args.path):
+        if args.M and not seq.startswith('M'):
+            continue
+        seqdata.extend((defline, seq))
+    proteinseqs = '\n'.join(seqdata)
     hilocus_utils.run_msa(proteinseqs, outfile=args.out, path=args.cpath,
                           outfmt=args.outfmt, refmt=args.refmt)

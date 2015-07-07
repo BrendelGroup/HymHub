@@ -16,6 +16,8 @@ if __name__ == '__main__':
 
     desc = 'Use hiLocus protein quartets to infer gene phylogenies'
     parser = argparse.ArgumentParser(description=desc)
+    parser.add_argument('-d', '--debug', action='store_true', help='print '
+                        'debugging messages')
     parser.add_argument('-j', '--jobs', type=int, default=1,
                         help='number of concurrent processes to run while '
                         'performing multiple sequence alignment and phylogeny '
@@ -33,6 +35,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if not args.skip_prep:
         hilocus_utils.prep_phylo(args.workdir, args.qfile, rootdir=args.path)
+    if args.debug:
+        print >> sys.stderr, 'prep_phylo done!'
     phyloscript = args.path + '/scripts/msa-phylo.sh'
     dirs = glob.glob(args.workdir + '/*')
     cmdargs = ['parallel', '--gnu', '--jobs', str(args.jobs), phyloscript, '{}',

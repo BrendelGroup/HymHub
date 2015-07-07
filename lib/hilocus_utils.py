@@ -24,19 +24,25 @@ def prep_phylo(outdir, quartetfile, rootdir='.'):
             species.append(spec)
             iloci.append(ilocus)
         protids = resolve_protein_ids(iloci, species, rootdir=rootdir)
-        proteinseqs = load_proteins(protids, species, rootdir=rootdir)
-        proteinseqs = re.sub(r'>(gnl\|(Acep|Aech|Cflo|Hsal|Pbar|Sinv)\|[^\n])+',
-                             r'>ant \1', proteinseqs)
-        proteinseqs = re.sub(r'>(gnl\|(Ador|Aflo|Amel|Bimp|Bter|Mrot)\|[^\n])+',
-                             r'>bee \1', proteinseqs)
-        proteinseqs = re.sub(r'>(gnl\|Pdom\|[^\n])+', r'>vespid \1',
-                             proteinseqs)
-        proteinseqs = re.sub(r'>(gnl\|Nvit\|[^\n])+', r'>chalcid \1',
-                             proteinseqs)
+        protseqs = list()
+        for defline, protseq in retrieve_proteins(protids, species,
+                                                  rootdir=rootdir):
+            if not protseq.startswith('M'):
+                continue
+            defline = re.sub(r'>(gnl\|(Acep|Aech|Cflo|Hsal|Pbar|Sinv)\|[^\n])+',
+                             r'>ant \1', defline)
+            defline = re.sub(r'>(gnl\|(Ador|Aflo|Amel|Bimp|Bter|Mrot)\|[^\n])+',
+                             r'>bee \1', defline)
+            defline = re.sub(r'>(gnl\|Pdom\|[^\n])+', r'>vespid \1', defline)
+            defline = re.sub(r'>(gnl\|Nvit\|[^\n])+', r'>chalcid \1', defline)
+            protseqs.extend((defline, protseq))
+        if len(protseqs) != 8:  # 4 sequences * 2 values (defline + sequence)
+            continue
+
         os.makedirs(outdir + '/' + hilocusid)
         seqfile = '%s/%s/%s.faa' % (outdir, hilocusid, hilocusid)
         with open(seqfile, 'w') as outstream:
-            print >> outstream, proteinseqs
+            print >> outstream, '\n'.join(protseqs)
 
 
 def run_msa(proteinseqs, outfile=None, command='clustalo', path=None,

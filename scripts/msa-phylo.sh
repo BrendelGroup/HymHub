@@ -26,3 +26,17 @@ cat ${prefix}.faa | clustalo --seqtype=Protein --infile=- --outfmt=phylip > infi
 #   S:   disable speedy/rough mode
 #   Y:   accept parameters and launch
 echo $'O\n4\nS\nY' | proml
+
+# Drawing phylogenetic tree
+echo "outtree" >> tmp-drawtree.par
+echo "/usr/local/src/PHY-DIR/PHYLIP/phylip-3.69/src/font1" >> tmp-drawtree.par
+echo "V" >> tmp-drawtree.par
+echo "N" >> tmp-drawtree.par
+echo "L" >> tmp-drawtree.par
+echo "R" >> tmp-drawtree.par
+echo "D" >> tmp-drawtree.par
+echo "Y" >> tmp-drawtree.par
+cat tmp-drawtree.par | drawtree
+mv plotfile ${hid}.ps
+rm tmp-drawtree.par
+ps2pdf ${hid}.ps
