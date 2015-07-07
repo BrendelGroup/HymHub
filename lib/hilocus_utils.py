@@ -29,9 +29,9 @@ def prep_phylo(outdir, quartetfile, rootdir='.'):
                              r'>ant \1', proteinseqs)
         proteinseqs = re.sub(r'>(gnl\|(Ador|Aflo|Amel|Bimp|Bter|Mrot)\|[^\n])+',
                              r'>bee \1', proteinseqs)
-        proteinseqs = re.sub(r'(>gnl\|Pdom\|[^\n])+', r'>vespid \1',
+        proteinseqs = re.sub(r'>(gnl\|Pdom\|[^\n])+', r'>vespid \1',
                              proteinseqs)
-        proteinseqs = re.sub(r'(>gnl\|Nvit\|[^\n])+', r'>chalcid \1',
+        proteinseqs = re.sub(r'>(gnl\|Nvit\|[^\n])+', r'>chalcid \1',
                              proteinseqs)
         os.makedirs(outdir + '/' + hilocusid)
         seqfile = '%s/%s/%s.faa' % (outdir, hilocusid, hilocusid)
@@ -40,11 +40,13 @@ def prep_phylo(outdir, quartetfile, rootdir='.'):
 
 
 def run_msa(proteinseqs, outfile=None, command='clustalo', path=None,
-            outfmt='clustal'):
+            outfmt='clustal', refmt=False):
     """
     Align the specified protein sequences using clustalo.
     """
 
+    if refmt:
+        proteinseqs = re.sub(r'>(gnl\|(....)\|\S+)', r'>\2 \1', proteinseqs)
     program = command
     if path is not None:
         program = path + '/' + command

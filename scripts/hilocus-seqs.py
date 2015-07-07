@@ -5,30 +5,22 @@
 # HymHub is distributed under the CC BY 4.0 License. See the
 # 'LICENSE' file in the HymHub code distribution or online at
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
-"""
-Compute a multiple sequence alignment for a hiLocus.
-"""
+"""Grab protein sequences for a hiLocus"""
 
 import hilocus_utils
 
 
 if __name__ == '__main__':
     import argparse
+    import re
     import sys
 
-    desc = 'Align proteins corresponding to a hiLocus'
+    desc = 'Grab protein sequences a hiLocus'
     parser = argparse.ArgumentParser(description=desc)
-    parser.add_argument('-c', '--cpath', default=None,
-                        help='path to dir containing clustalo program (if not '
-                        'in $PATH)')
-    parser.add_argument('-f', '--outfmt', default='clustal', metavar='FMT',
-                        help='output format; default is clustal')
-    parser.add_argument('-r', '--refmt', action='store_true',
-                        help='reformat seqids so that they are short and '
-                        'manageable (replace ID with species label)')
     parser.add_argument('-p', '--path',
                         default='.', help='path to HymHub root directory')
-    parser.add_argument('-o', '--out', default=None,
+    parser.add_argument('-o', '--out', default=sys.stdout,
+                        type=argparse.FileType('w'),
                         help='output file; default is terminal (stdout)')
     parser.add_argument(default=None, dest='hid',
                         help='ID of the hiLocus for which protein MSA will '
@@ -44,5 +36,5 @@ if __name__ == '__main__':
                                                 rootdir=args.path)
     proteinseqs = hilocus_utils.load_proteins(protids, species,
                                               rootdir=args.path)
-    hilocus_utils.run_msa(proteinseqs, outfile=args.out, path=args.cpath,
-                          outfmt=args.outfmt, refmt=args.refmt)
+    proteinseqs = re.sub(r'>(gnl\|(....)\|\S+)', r'>\2 \1', proteinseqs)
+    print >> args.out, proteinseqs
