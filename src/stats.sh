@@ -35,14 +35,14 @@ aggregate_stats()
   shasum -c data/checksums.sha
 }
 
-aggregate_stats_source()
+aggregate_stats_diffsrc()
 {
   for feattype in iloci miloci pre-mrnas mrnas cds exons introns
   do
-    cp species/Acep/Acep.${feattype}.tsv data/${feattype}.tsv
+    cp species/Acep/Acep.${feattype}.tsv data/${feattype}-diffsrc.tsv
     for spec in Amel Am32 Bter Cflo Cfhb Dmel Hsal Nvit Pdom Sinv Sihb
     do
-      tail -n +2 species/${spec}/${spec}.${feattype}.tsv >> data/${feattype}.tsv
+      tail -n +2 species/${spec}/${spec}.${feattype}.tsv >> data/${feattype}-diffsrc.tsv
     done
   done
 }
