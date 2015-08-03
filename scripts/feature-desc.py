@@ -137,11 +137,10 @@ def ilocus_desc(gff3, fasta):
         yield values.split(" ")
 
 
-def generep_desc(gff3, fasta):
+def premrna_desc(gff3, fasta):
     """
-    Given gene sequences and their corresponding annotations, generate a
-    tabular record for each gene. Note: we're looking at the longest `mRNA`
-    feature for each gene, or the "gene representative".
+    Given pre-mRNA sequences and corresponding annotations, generate a tabular
+    record for each.
     """
     seqs = {}
     for defline, seq in fasta_utils.parse_fasta(fasta):
@@ -196,6 +195,7 @@ def generep_desc(gff3, fasta):
             gcskew = 0.0
             ncontent = 0.0
             exoncount = 0
+            exonlen = 0
             introncount = 0
             utr5plen = 0
             utr3plen = 0
@@ -221,6 +221,10 @@ def mrna_desc(gff3, fasta):
             assert len(fields) == 9
             mrnaid = re.search("ID=([^;\n]+)", fields[8]).group(1)
             mrnalen += int(fields[4]) - int(fields[3]) + 1
+        # elif "\texon\t" in entry:
+        #     fields = entry.rstrip().split("\t")
+        #     assert len(fields) == 9
+        #     mrnalen += int(fields[4]) - int(fields[3]) + 1
         elif "###" in entry:
             mrnaseq = seqs[mrnaid]
             assert len(mrnaseq) == mrnalen, \
@@ -504,12 +508,12 @@ if __name__ == "__main__":
     parser.add_argument("--iloci", type=str, nargs=3,
                         metavar=("gff", "fa", "out"),
                         help="compute iLocus statistics")
-    parser.add_argument("--gnreps", type=str, nargs=3,
+    parser.add_argument("--prnas", type=str, nargs=3,
                         metavar=("gff", "fa", "out"),
-                        help="compute stats on longest isoform of each gene")
+                        help="compute stats on pre-mRNAs")
     parser.add_argument("--mrnas", type=str, nargs=3,
                         metavar=("gff", "fa", "out"),
-                        help="compute mature mRNA statistics")
+                        help="compute stats on mature mRNAs")
     parser.add_argument("--cds", type=str, nargs=3,
                         metavar=("gff", "fa", "out"),
                         help="compute CDS statistics")
@@ -534,9 +538,9 @@ if __name__ == "__main__":
                 fields = [args.species] + fields
                 print >> out, "\t".join(fields)
 
-    # Process gene reps
-    if args.gnreps:
-        a = args.gnreps
+    # Process pre-mRNAs
+    if args.prnas:
+        a = args.prnas
         with open(a[0], "r") as gff, \
                 open(a[1], "r") as fa,  \
                 open(a[2], "w") as out:
@@ -544,7 +548,7 @@ if __name__ == "__main__":
                       "GCSkew", "NContent", "ExonCount", "IntronCount",
                       "5pUTRlen", "3pUTRlen"]
             print >> out, "\t".join(header)
-            for fields in generep_desc(gff, fa):
+            for fields in premrna_desc(gff, fa):
                 fields = [args.species] + fields
                 print >> out, "\t".join(fields)
 

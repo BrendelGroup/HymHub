@@ -30,11 +30,12 @@ get_iloci()
       | grep -v 'has not been previously introduced' \
       | grep -v 'does not begin with "##gff-version"' || true
 
-  echo "[HymHub: ${SPEC}] extracting iLocus representatives (longest isoforms)"
+  echo "[HymHub: ${SPEC}] identifying iLocus representatives (longest isoforms)"
   grep -v $'\tintron\t' ${WD}/${SPEC}.iloci.gff3 \
-      | pmrna --locus --map ${WD}/${SPEC}.locus-pmrnas.txt \
-      | canon-gff3 --outfile ${WD}/${SPEC}.locus-pmrnas.gff3 2>&1 \
+      | pmrna --locus --map ${WD}/${SPEC}.ilocus.mrnas.txt \
+      | canon-gff3 --outfile ${WD}/${SPEC}.ilocus.mrnas.gff3 2>&1 \
       | grep -v 'no valid mRNAs' || true
+  cut -f 2 ${WD}/${SPEC}.ilocus.mrnas.txt > ${WD}/${SPEC}.mrnas.txt
 }
 
 get_genes()
@@ -44,17 +45,14 @@ get_genes()
 
   echo "[HymHub: ${SPEC}] extracting gene sequences"
   xtractore --type=gene ${WD}/${SPEC}.gff3 ${WD}/${SPEC}.gdna.fa \
-      > ${WD}/${SPEC}.genes.fa
+      > ${WD}/${SPEC}.all.genes.fa
 
-  echo "[HymHub: ${SPEC}] extracting gene representatives (longest isoforms)"
-  grep -v $'\tintron\t' ${WD}/${SPEC}.gff3 | pmrna \
-      | canon-gff3 --outfile ${WD}/${SPEC}.pmrnas.gff3 2>&1 \
+  echo "[HymHub: ${SPEC}] identifying gene representatives (longest isoforms)"
+  grep -v $'\tintron\t' ${WD}/${SPEC}.gff3 \
+      | pmrna --map ${WD}/${SPEC}.mrna2gene.txt \
+      | canon-gff3 --outfile ${WD}/${SPEC}.gene.mrnas.gff3 2>&1 \
       | grep -v 'no valid mRNAs' || true
-  xtractore --type=mRNA ${WD}/${SPEC}.pmrnas.gff3 ${WD}/${SPEC}.gdna.fa \
-      > ${WD}/${SPEC}.genereps.fa
-  perl -ne 'm/^>(\S+)/ and print "$1\n"' \
-      < ${WD}/${SPEC}.genereps.fa \
-      > ${WD}/${SPEC}.generepids.txt
+  cut -f 2 ${WD}/${SPEC}.mrna2gene.txt > ${WD}/${SPEC}.gene.mrnas.txt
 }
 
 get_proteins()
@@ -68,13 +66,13 @@ get_proteins()
 
   echo "[HymHub: ${SPEC}] extracting protein sequences"
   if [ "$specmode" == "hymbase" ]; then
-    grep $'\tmRNA\t' ${WD}/${SPEC}.locus-pmrnas.gff3 \
+    grep $'\tmRNA\t' ${WD}/${SPEC}.ilocus.mrnas.gff3 \
         | perl -ne 'm/Name=([^;\n]++)/ and print "$1\n"' \
         | perl -ne 's/-R/-P/; print' \
         | sort | uniq \
         > ${WD}/${SPEC}.protids.txt
   else
-    grep $'\tCDS\t' ${WD}/${SPEC}.locus-pmrnas.gff3 \
+    grep $'\tCDS\t' ${WD}/${SPEC}.ilocus.mrnas.gff3 \
         | perl -ne 'm/protein_id=([^;\n]++)/ and print "$1\n"' \
         | sort | uniq \
         > ${WD}/${SPEC}.protids.txt
@@ -82,9 +80,9 @@ get_proteins()
   python scripts/protein-ilocus-mapping.py --mode $specmode \
       ${WD}/${SPEC}.iloci.gff3 \
       > ${WD}/${SPEC}.protein2ilocus.txt
-  perl scripts/select-seq.py ${WD}/${SPEC}.protids.txt $protfa \
+  python scripts/select-seq.py ${WD}/${SPEC}.protids.txt $protfa \
       | sed "s/>/>gnl|$SPEC|/" \
-      > ${WD}/${SPEC}.rep-prot.fa
+      > ${WD}/${SPEC}.prot.fa
 }
 
 get_mmrnas()
@@ -92,16 +90,34 @@ get_mmrnas()
   local SPEC=$1
   local WD=species/${SPEC}
 
+  echo "[HymHub: ${SPEC}] extracting pre-mRNA sequences"
+  xtractore --type=mRNA ${WD}/${SPEC}.gff3 ${WD}/${SPEC}.gdna.fa \
+      > ${WD}/${SPEC}.all.pre-mrnas.fa
+
   echo "[HymHub: ${SPEC}] extracting mature mRNA sequences"
   python scripts/mrna-exons.py --convert \
-      < ${WD}/${SPEC}.pmrnas.gff3 \
-      > ${WD}/${SPEC}.maturemrnas.temp
-  gt gff3 -retainids -sort -tidy -force -o ${WD}/${SPEC}.maturemrnas.gff3 \
-          ${WD}/${SPEC}.maturemrnas.temp 2>&1 \
+      < ${WD}/${SPEC}.gff3 \
+      > ${WD}/${SPEC}.mrnas.temp
+  gt gff3 -retainids -sort -tidy -force -o ${WD}/${SPEC}.all.mrnas.gff3 \
+          ${WD}/${SPEC}.mrnas.temp 2>&1 \
       | grep -v 'has not been previously introduced' \
       | grep -v 'does not begin with "##gff-version"' || true
-  xtractore --type=mRNA --outfile=${WD}/${SPEC}.maturemrnas.fa \
-            ${WD}/${SPEC}.maturemrnas.gff3 ${WD}/${SPEC}.gdna.fa
+  xtractore --type=mRNA --outfile=${WD}/${SPEC}.all.mrnas.fa \
+            ${WD}/${SPEC}.all.mrnas.gff3 ${WD}/${SPEC}.gdna.fa
+
+  python scripts/mrna-exons.py --convert \
+      < ${WD}/${SPEC}.ilocus.mrnas.gff3 \
+      > ${WD}/${SPEC}.mrnas.temp
+  gt gff3 -retainids -sort -tidy -force -o ${WD}/${SPEC}.mrnas.gff3 \
+          ${WD}/${SPEC}.mrnas.temp 2>&1 \
+      | grep -v 'has not been previously introduced' \
+      | grep -v 'does not begin with "##gff-version"' || true
+
+  echo "[HymHub: ${SPEC}] selecting representative mRNAs"
+  python scripts/select-seq.py ${WD}/${SPEC}.mrnas.txt ${WD}/${SPEC}.all.pre-mrnas.fa > ${WD}/${SPEC}.pre-mrnas.fa
+  python scripts/select-seq.py ${WD}/${SPEC}.gene.mrnas.txt ${WD}/${SPEC}.all.pre-mrnas.fa > ${WD}/${SPEC}.gene.pre-mrnas.fa
+  python scripts/select-seq.py ${WD}/${SPEC}.mrnas.txt ${WD}/${SPEC}.all.mrnas.fa > ${WD}/${SPEC}.mrnas.fa
+  python scripts/select-seq.py ${WD}/${SPEC}.gene.mrnas.txt ${WD}/${SPEC}.all.mrnas.fa > ${WD}/${SPEC}.gene.mrnas.fa
 }
 
 get_cds()
@@ -110,8 +126,12 @@ get_cds()
   local WD=species/${SPEC}
 
   echo "[HymHub: ${SPEC}] extracting coding sequences"
+  xtractore --type=CDS --outfile=${WD}/${SPEC}.all.cds.fa \
+            ${WD}/${SPEC}.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
+      | grep -v 'has not been previously introduced' \
+      | grep -v 'does not begin with "##gff-version"' || true
   xtractore --type=CDS --outfile=${WD}/${SPEC}.cds.fa \
-            ${WD}/${SPEC}.pmrnas.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
+            ${WD}/${SPEC}.ilocus.mrnas.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
       | grep -v 'has not been previously introduced' \
       | grep -v 'does not begin with "##gff-version"' || true
 }
@@ -122,16 +142,23 @@ get_exons()
   local WD=species/${SPEC}
 
   echo "[HymHub: ${SPEC}] extracting exons"
-  xtractore --type=exon --outfile=${WD}/${SPEC}.exons.fa \
-            ${WD}/${SPEC}.pmrnas.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
+  xtractore --type=exon --outfile=${WD}/${SPEC}.all.exons.fa \
+            ${WD}/${SPEC}.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
       | grep -v 'has not been previously introduced' \
       | grep -v 'does not begin with "##gff-version"' || true
+  python scripts/select-seq.py ${WD}/${SPEC}.gene.mrnas.txt ${WD}/${SPEC}.all.exons.fa > ${WD}/${SPEC}.gene.exons.fa
+  python scripts/select-seq.py ${WD}/${SPEC}.mrnas.txt ${WD}/${SPEC}.all.exons.fa > ${WD}/${SPEC}.exons.fa
 
   echo "[HymHub: ${SPEC}] extracting introns"
-  xtractore --type=intron --outfile=${WD}/${SPEC}.introns.fa \
-            ${WD}/${SPEC}.pmrnas.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
+  canon-gff3 --outfile ${WD}/${SPEC}-withintrons.gff3 ${WD}/${SPEC}.ilocus.mrnas.gff3 \
+      | grep -v 'no valid mRNAs' || true
+  xtractore --type=intron --outfile=${WD}/${SPEC}.all.introns.fa \
+            ${WD}/${SPEC}-withintrons.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
       | grep -v 'has not been previously introduced' \
       | grep -v 'does not begin with "##gff-version"' || true
+  python scripts/select-seq.py ${WD}/${SPEC}.gene.mrnas.txt ${WD}/${SPEC}.all.introns.fa > ${WD}/${SPEC}.gene.introns.fa
+  python scripts/select-seq.py ${WD}/${SPEC}.mrnas.txt ${WD}/${SPEC}.all.introns.fa > ${WD}/${SPEC}.introns.fa
+  rm ${WD}/${SPEC}-withintrons.gff3
 }
 
 get_datatypes()

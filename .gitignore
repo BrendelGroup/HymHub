@@ -1,8 +1,10 @@
-*.swp
+# Large data files
 data/*.tsv
 data/*.tsv.gz
 data/hym-prot
 data/hym-prot.clstr
+
+# Various species-specific intermediate files
 species/*/*.log
 species/*/*.gz
 species/*/*.gz.orig
@@ -23,10 +25,19 @@ species/*/*.faa
 species/*/*.ul
 species/*/*.lp
 species/*/*.locus-pmrnas.txt
-*.pyc
+species/*/*.mrnas.txt
+species/*/*.mrna2gene.txt
+
+# Sandbox directory
 scratch/
+
+# Test files
 test/*-test.tsv
+
+# Miscellaneous
+*.pyc
 .ipynb_checkpoints
 _site
 _posts
 .coverage
+*.swp

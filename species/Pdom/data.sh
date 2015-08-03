@@ -37,7 +37,7 @@ if [ "$DOFORMAT" != "0" ]; then
   echo "[HymHub: $FULLSPEC] renaming data files"
   cp ${WD}/pdom-scaffolds-unmasked-r1.2.fa.gz ${WD}/Pdom.gdna.fa.gz
   gunzip -f ${WD}/Pdom.gdna.fa.gz
-  gunzip -c ${WD}/protein.fa.gz > ${WD}/Pdom.prot.fa
+  gunzip -c ${WD}/protein.fa.gz > ${WD}/Pdom.all.prot.fa
 
   cp ${WD}/pdom-annot-r1.2.gff3 ${WD}/Pdom.gff3
 

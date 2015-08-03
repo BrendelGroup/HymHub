@@ -10,9 +10,9 @@ cluster_proteins()
   local VERSION=$(cat VERSION)
   echo "[HymHub] computing homologous iLoci"
   mkdir -p scratch/
-  cat species/*/*.rep-prot.fa > scratch/Hym.rep-prot.fa
+  cat species/????/????.prot.fa > scratch/Hym.prot.fa
   if [ "$1" != "SKIP" ]; then
-    cd-hit -i scratch/Hym.rep-prot.fa -o data/hym-prot -M 0 \
+    cd-hit -i scratch/Hym.prot.fa -o data/hym-prot -M 0 \
            -T 1 -d 0 -c 0.50 -s 0.65 -p 1 -n 3 \
            -aL 0.75 -aS 0.85 \
            > scratch/cdhit.log 2>&1

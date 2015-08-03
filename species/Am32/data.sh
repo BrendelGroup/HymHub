@@ -11,6 +11,8 @@ SPEC=Am32
 URLGENUS="beebase"
 ORIGFASTA=Amel_4.5_scaffolds.fa.gz
 ORIGGFF3=amel_OGSv3.2.gff3.gz
+ORIGPROT=amel_OGSv3.2_pep.fa.gz
+MODE=hymbase
 
 # Procedure
 #-------------------------------------------------------------------------------
@@ -25,6 +27,10 @@ if [ "$DODOWNLOAD" != "0" ]; then
   
   echo "[HymHub: $FULLSPEC] download annotation from HymenopteraBase"
   curl ${HYMBASE}/consortium_data/${ORIGGFF3} > $refrgff3 2> ${refrgff3}.log
+
+  echo "[HymHub: $FULLSPEC] download protein sequences from HymenopteraBase"
+  curl ${HYMBASE}/consortium_data/${ORIGPROT} > ${WD}/protein.fa.gz \
+      2> ${WD}/protein.log
 fi
 if [ "$DOFORMAT" != "0" ]; then
   source src/hymbase-format.sh

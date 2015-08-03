@@ -8,7 +8,7 @@ set -eo pipefail
 echo "[HymHub] running functional tests"
 python scripts/feature-desc.py \
     --iloci test/ftest-iloci.gff3 test/ftest-iloci.fa test/iloci-test.tsv \
-    --gnreps test/ftest-genereps.gff3 test/ftest-genereps.fa test/genereps-test.tsv \
+    --prnas test/ftest-prnas.gff3 test/ftest-prnas.fa test/prnas-test.tsv \
     --mrnas test/ftest-mrnas.gff3 test/ftest-mrnas.fa test/mrnas-test.tsv \
     --cds test/ftest-cds.gff3 test/ftest-cds.fa test/cds-test.tsv \
     --exons test/ftest-exons.gff3 test/ftest-exons.fa test/exons-pre-test.tsv \
@@ -27,7 +27,7 @@ grep 'NW_006263543.1_1250931-1251032' test/introns-pre-test.tsv >> test/introns-
 grep 'NC_007416.2_8179063-8179106' test/introns-pre-test.tsv >> test/introns-test.tsv
 grep 'NC_007419.1_6956030-6957921' test/introns-pre-test.tsv >> test/introns-test.tsv
 
-for ftype in iloci miloci genereps mrnas cds exons introns
+for ftype in iloci miloci prnas mrnas cds exons introns
 do
   echo -n "[HymHub]     $ftype functional test..."
   diff -q test/ftest-${ftype}.tsv test/${ftype}-test.tsv
