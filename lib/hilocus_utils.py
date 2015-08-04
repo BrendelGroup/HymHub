@@ -7,12 +7,92 @@
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
 
 import os
+import random
 import re
 import subprocess
 import fasta_utils
 
 
-def prep_phylo(outdir, quartetfile, rootdir='.'):
+def iloci_by_species(iloci):
+    """
+    Index iLocus IDs by species.
+
+    Given a list of iLocus IDs associated with a hiLocus, create a dictionary
+    of lists: keys are species labels, and values are lists of iLocus IDs
+    (strings).
+    """
+    idx = dict()
+    for locus in iloci:
+        species = locus[6:10]
+        if species not in idx:
+            idx[species] = list()
+        idx[species].append(locus)
+    return idx
+
+
+def in_clade(iloci, clade_list, require_single_copy=True,
+             as_list=False, lineage=None):
+    """
+    Determine whether the hiLocus is represented in the specified clade.
+
+    - iloci: list of iLocus IDs associated with the hiLocus
+    - clade_list: list of species labels representing the clade of interest
+    - require_single_copy: boolean indicating whether species with multiple
+                           copies of a gene should be discarded
+    - as_list: boolean indicating whether all qualifying iLoci should be
+               returned as a list, or a single representative should be
+               chosen at random
+    """
+    idx = iloci_by_species(iloci)
+    choices = list()
+
+    for species in clade_list:
+        if species in idx:
+            copynumber = len(idx[species])
+            assert copynumber > 0
+            if require_single_copy is True:
+                if copynumber > 1:
+                    continue
+                random.shuffle(idx[species])
+            choices.append((species, idx[species][0], lineage))
+
+    if len(choices) == 0:
+        if as_list:
+            return None
+        else:
+            return None, None, None
+    else:
+        if as_list:
+            return choices
+        else:
+            return random.choice(choices)
+
+
+def in_bees(iloci, as_list=False):
+    return in_clade(iloci, ['Amel', 'Aflo', 'Bter', 'Bimp', 'Ador', 'Mrot'],
+                    as_list=as_list, lineage='Bees')
+
+
+def in_ants(iloci, as_list=False):
+    return in_clade(iloci, ['Acep', 'Aech', 'Hsal', 'Sinv', 'Cflo', 'Pbar'],
+                    as_list=as_list, lineage='Ants')
+
+
+def in_nvit(iloci, as_list=False):
+    return in_clade(iloci, ['Nvit'], as_list=as_list, lineage='Nvit')
+
+
+def in_pdom(iloci, as_list=False):
+    return in_clade(iloci, ['Pdom'], as_list=as_list, lineage='Pdom')
+
+
+def prep_phylo(outdir, quartetfile, mstart=False, rootdir='.'):
+    """
+    Prepare hiLocus data for phylogenetic analysis.
+
+    Prepare sequence files of hiLocus quartets to facilitate multiple sequence
+    alignment and phylogeny inference.
+    """
     os.makedirs(outdir)
     next(quartetfile)
     for line in quartetfile:
@@ -27,7 +107,7 @@ def prep_phylo(outdir, quartetfile, rootdir='.'):
         protseqs = list()
         for defline, protseq in retrieve_proteins(protids, species,
                                                   rootdir=rootdir):
-            if not protseq.startswith('M'):
+            if not protseq.startswith('M') and mstart:
                 continue
             defline = re.sub(r'>(gnl\|(Acep|Aech|Cflo|Hsal|Pbar|Sinv)\|[^\n])+',
                              r'>ant \1', defline)
@@ -47,9 +127,7 @@ def prep_phylo(outdir, quartetfile, rootdir='.'):
 
 def run_msa(proteinseqs, outfile=None, command='clustalo', path=None,
             outfmt='clustal', refmt=False):
-    """
-    Align the specified protein sequences using clustalo.
-    """
+    """Align the specified protein sequences using clustal."""
 
     if refmt:
         proteinseqs = re.sub(r'>(gnl\|(....)\|\S+)', r'>\2 \1', proteinseqs)
