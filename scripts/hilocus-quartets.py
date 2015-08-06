@@ -6,26 +6,20 @@
 
 import random
 import sys
-import hilocus_utils
 
 
 if __name__ == '__main__':
     import argparse
     import sys
 
-    desc = ('Select hiLoci with single-copy orthologs from the main '
-            'Hymenopteran lineages: bees, ants, vespid wasps, and parasitic '
-            'wasps')
+    desc = ('For each hiLocus conserved in the four main hymenopteran '
+            'lineages, select a representative quartet of iLoci (one per '
+            'lineage)')
     parser = argparse.ArgumentParser(description=desc)
-    parser.add_argument('-m', '--multiple', action='store_true',
-                        help='if all four lineages are represented in a '
-                        'hiLocus but not in single copies, choose a '
-                        'representative copy rather than discarding the '
-                        'hiLocus')
     parser.add_argument('-s', '--seed', type=int, help='set seed for random '
                         'number generator')
     parser.add_argument('hiloci', type=argparse.FileType('r'),
-                        default=sys.stdin, help='hiLocus data table')
+                        default=sys.stdin, help='conserved hiLocus table')
     args = parser.parse_args()
 
     if not args.seed:
@@ -34,24 +28,20 @@ if __name__ == '__main__':
     print >> sys.stderr, 'Random seed: %d' % args.seed
 
     print '\t'.join(['ID', 'Ant', 'Bee', 'Vespid', 'Chalcid'])
+
+    next(args.hiloci)
+    iloci = dict()
     for line in args.hiloci:
-        values = line.rstrip().split('\t')
-        if values[4] not in ['Hymenoptera', 'Insects']:
-            continue
-        species = values[6].split(',')
-        if 'Pdom' not in species or 'Nvit' not in species:
-            continue
-        iloci = values[5].split(',')
-        hid = values[0]
+        hid, iid, species, lineage, mrna, protein = line.split()
+        if hid not in iloci:
+            iloci[hid] = dict()
+        if lineage not in iloci[hid]:
+            iloci[hid][lineage] = list()
+        iloci[hid][lineage].append((species, iid))
 
-        antspecies, antlocus = hilocus_utils.in_ants(iloci)
-        beespecies, beelocus = hilocus_utils.in_bees(iloci)
-        _, pdomlocus = hilocus_utils.in_pdom(iloci)
-        _, nvitlocus = hilocus_utils.in_nvit(iloci)
-        if None in [antlocus, beelocus, pdomlocus, nvitlocus]:
-            # Lack representative from one or more clade; moving on
-            continue
-
-        print '\t'.join([hid, '%s:%s' % (antspecies, antlocus),
-                         '%s:%s' % (beespecies, beelocus),
-                         'Pdom:%s' % pdomlocus, 'Nvit:%s' % nvitlocus])
+    for hid in sorted(iloci):
+        values = [hid]
+        for lineage in ['Ants', 'Bees', 'Pdom', 'Nvit']:
+            random.shuffle(iloci[hid][lineage])
+            values.append('%s:%s' % (iloci[hid][lineage][0]))
+        print '\t'.join(values)

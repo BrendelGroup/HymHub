@@ -23,15 +23,24 @@ cluster_proteins()
                                    data/hym-prot.clstr \
                                    <(cat species/*/*.protein2ilocus.txt)
 
-  echo "[HymHub] computing Hymenoptera-conserved quartets"
-  scripts/hilocus-quartets.py data/hiloci.tsv > data/quartets.tsv
+  echo "[HymHub] computing Hymenoptera-conserved hiLoci"
+  scripts/hilocus-conserved.py data/hiloci.tsv > data/hiloci-conserved.tsv 
 
-  echo "[HymHub] extracting hiLocus mRNA representatives"
-  scripts/mrna-rep-summ.sh
+  echo "[HymHub] computing representative quartets of conserved hiLoci"
+  scripts/hilocus-quartets.py --seed 2466724 \
+      data/hiloci-conserved.tsv \
+      > data/quartets.tsv
+
+  echo "[HymHub] extracting computed features for conserved hiLoci"
+  scripts/mrna-feat-subset.py -M 2 data/hiloci-conserved.tsv \
+      data/mrnas.tsv \
+      > data/mrnas-hicons.tsv
   for featuretype in exons introns cds
   do
-    scripts/mrna-feat-subset.py data/${featuretype}.tsv \
-        > data/${featuretype}-hirep.tsv
+    scripts/mrna-feat-subset.py \
+        data/hiloci-conserved.tsv \
+        data/${featuretype}.tsv \
+        > data/${featuretype}-hicons.tsv
   done
 
   shasum -c data/hilocus-data.sha

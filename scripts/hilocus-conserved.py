@@ -4,12 +4,18 @@
 # 'LICENSE' file in the HymHub code distribution or online at
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
 
-import random
 import sys
 import hilocus_utils
 
 
 def ilocus_isoforms(rootdir='.'):
+    """
+    Determine the mapping of iLocus IDs to mRNA and protein IDs.
+
+    Given the HymHub root directory, mine the relevant data files for mappings
+    of iLocus IDs to mRNA and protein IDs. Create and return a dictionary with
+    iLocus IDs as keys and tuples of mRNA IDs and protein IDs as values.
+    """
     ilocus2mrna = dict()
     mapping = dict()
     for species in ['Acep', 'Ador', 'Aech', 'Aflo', 'Amel', 'Bimp', 'Bter',
@@ -35,15 +41,11 @@ if __name__ == '__main__':
     import argparse
     import sys
 
-    desc = ('Select hiLoci with single-copy orthologs from the main '
-            'Hymenopteran lineages: bees, ants, vespid wasps, and parasitic '
-            'wasps')
+    desc = ('Select hiLoci that are well conserved in the main hymenopteran '
+            'lineages--specifically those with single-copy orthologs from at '
+            'least one ant, at least one be, vespid wasps (Polistes), and '
+            'parasitic wasps (Nasonia)')
     parser = argparse.ArgumentParser(description=desc)
-    parser.add_argument('-m', '--multiple', action='store_true',
-                        help='if all four lineages are represented in a '
-                        'hiLocus but not in single copies, choose a '
-                        'representative copy rather than discarding the '
-                        'hiLocus')
     parser.add_argument('-r', '--rootdir', default='.',
                         help='path to HymHub root directory; default is '
                         'current directory')
