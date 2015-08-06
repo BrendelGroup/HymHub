@@ -1,6 +1,8 @@
 # Large data files
 data/*.tsv
 data/*.tsv.gz
+data/Hym.prot.fa
+data/cdhit.log
 data/hym-prot
 data/hym-prot.clstr
 

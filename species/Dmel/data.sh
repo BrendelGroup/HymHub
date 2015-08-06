@@ -19,7 +19,7 @@ refrfasta=${WD}/${ORIGFASTA}
 refrgff3=${WD}/${ORIGGFF3}
 fasta=${WD}/${SPEC}.gdna.fa
 gff3=${WD}/${SPEC}.gff3
-protfa=${WD}/${SPEC}.prot.fa
+protfa=${WD}/${SPEC}.all.prot.fa
 
 if [ "$DODOWNLOAD" != "0" ]; then
   echo "[HymHub: $FULLSPEC] download genome and annotations from NCBI"

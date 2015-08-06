@@ -10,12 +10,17 @@ cluster_proteins()
   local VERSION=$(cat VERSION)
   echo "[HymHub] computing homologous iLoci"
   mkdir -p scratch/
-  cat species/????/????.prot.fa > scratch/Hym.prot.fa
   if [ "$1" != "SKIP" ]; then
-    cd-hit -i scratch/Hym.prot.fa -o data/hym-prot -M 0 \
+    rm -f data/Hym.prot.fa
+    for species in Acep Ador Aech Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot \
+                   Nvit Pbar Pdom Sinv Tcas
+    do
+      cat species/${species}/${species}.prot.fa >> data/Hym.prot.fa
+    done
+    cd-hit -i data/Hym.prot.fa -o data/hym-prot -M 0 \
            -T 1 -d 0 -c 0.50 -s 0.65 -p 1 -n 3 \
            -aL 0.75 -aS 0.85 \
-           > scratch/cdhit.log 2>&1
+           > data/cdhit.log 2>&1
   fi
 
   python scripts/hilocus-create.py --mint="HymHubHIL${VERSION}-%06d" \
