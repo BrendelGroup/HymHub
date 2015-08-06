@@ -20,6 +20,7 @@ def mrna_exons(fp, convert=False, keepMrnas=False):
             continue
         if fields[2] == "mRNA":
             mrnaid = re.search("ID=([^;\n]+)", fields[8]).group(1)
+            mrnaacc = re.search("Name=([^;\n]+)", fields[8]).group(1)
             mrnaids[mrnaid] = 1
             if not convert and keepMrnas:
                 fields[8] = re.sub("Parent=[^;\n]+;*", "", fields[8])
@@ -31,6 +32,7 @@ def mrna_exons(fp, convert=False, keepMrnas=False):
                     fields[2] = "mRNA"
                     fields[8] = re.sub("ID=[^;\n]+;*", "", fields[8])
                     fields[8] = fields[8].replace("Parent=", "ID=")
+                    fields[8] += ';Name=' + mrnaacc
                 else:
                     if not keepMrnas:
                         fields[8] = re.sub("Parent=[^;\n]+;*", "", fields[8])
