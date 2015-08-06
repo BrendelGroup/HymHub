@@ -13,9 +13,7 @@ import fasta_utils
 
 
 def gc_content(dna):
-    """
-    Calculate the %GC content of a nucleotide sequence.
-    """
+    """Calculate the %GC content of a nucleotide sequence."""
     seqlength = len(dna)
 
     # Count A and T nucleotides, including the W ambiguity base representing
@@ -44,7 +42,9 @@ def gc_content(dna):
 
 def gc_skew(dna):
     """
-    Calculate the GC skew of a nucleotide sequence: s = (G - C) / (G + C)
+    Calculate the GC skew of a nucleotide sequence.
+
+    s = (G - C) / (G + C)
     """
     gcount = dna.count("G") + dna.count("g")
     ccount = dna.count("C") + dna.count("c")
@@ -54,9 +54,7 @@ def gc_skew(dna):
 
 
 def n_content(dna):
-    """
-    Calculate the proportion of fully ambigious nucleotides in a DNA sequence.
-    """
+    """Calculate the proportion of ambigious nucleotides in a DNA sequence."""
     ncount = dna.count("N") + dna.count("n") + \
         dna.count("X") + dna.count("x")
     if ncount == 0:
@@ -65,9 +63,7 @@ def n_content(dna):
 
 
 def ilocus_classify(ilocus):
-    """
-    Determine the type of gene(s), if any, encoded in this iLocus.
-    """
+    """Determine the type of gene(s), if any, encoded in this iLocus."""
     fields = ilocus.split("\t")
     assert len(fields) == 9
     attrs = fields[8]
@@ -93,8 +89,10 @@ def ilocus_classify(ilocus):
 
 def ilocus_desc(gff3, fasta):
     """
-    Given iLocus sequences and their corresponding annotations, generate a
-    tabular record for each iLocus.
+    Generate a tabular record for each iLocus in the input.
+
+    - gff3: file handle to a GFF3 file containing iLocus annotations
+    - fasta: file handle to a Fasta file containing iLocus sequences
     """
     seqs = {}
     for defline, seq in fasta_utils.parse_fasta(fasta):
@@ -107,7 +105,8 @@ def ilocus_desc(gff3, fasta):
             continue
         fields = entry.rstrip().split("\t")
         assert len(fields) == 9
-        locusid = "%s_%s-%s" % (fields[0], fields[3], fields[4])
+        locuspos = "%s_%s-%s" % (fields[0], fields[3], fields[4])
+        locusid = locuspos
         locusidmatch = re.search("ID=([^;\n]+)", fields[8])
         if locusidmatch:
             locusid = locusidmatch.group(1)
@@ -131,9 +130,9 @@ def ilocus_desc(gff3, fasta):
             gmatch = re.search("gene=(\d+)", attrs)
             assert gmatch
             genecount = int(gmatch.group(1))
-        values = "%s %d %.3f %.3f %.3f %s %d %r" % (
-            locusid, locuslen, gccontent, gcskew, ncontent, locusclass,
-            genecount, unannot)
+        values = "%s %s %d %.3f %.3f %.3f %s %d %r" % (
+            locusid, locuspos, locuslen, gccontent, gcskew, ncontent,
+            locusclass, genecount, unannot)
         yield values.split(" ")
 
 
@@ -214,6 +213,7 @@ def mrna_desc(gff3, fasta):
         seqs[seqid] = seq
 
     mrnaid = ""
+    mrnaacc = ""
     mrnalen = 0
     for entry in gff3:
         if "\tmRNA\t" in entry:
@@ -221,10 +221,7 @@ def mrna_desc(gff3, fasta):
             assert len(fields) == 9
             mrnaid = re.search("ID=([^;\n]+)", fields[8]).group(1)
             mrnalen += int(fields[4]) - int(fields[3]) + 1
-        # elif "\texon\t" in entry:
-        #     fields = entry.rstrip().split("\t")
-        #     assert len(fields) == 9
-        #     mrnalen += int(fields[4]) - int(fields[3]) + 1
+            mrnaacc = re.search("Name=([^;\n]+)", fields[8]).group(1)
         elif "###" in entry:
             mrnaseq = seqs[mrnaid]
             assert len(mrnaseq) == mrnalen, \
@@ -233,9 +230,10 @@ def mrna_desc(gff3, fasta):
             gccontent = gc_content(mrnaseq)
             gcskew = gc_skew(mrnaseq)
             ncontent = n_content(mrnaseq)
-            values = "%s %d %.3f %.3f %.3f" % (
-                mrnaid, mrnalen, gccontent, gcskew, ncontent)
+            values = "%s %s %d %.3f %.3f %.3f" % (
+                mrnaid, mrnaacc, mrnalen, gccontent, gcskew, ncontent)
             mrnaid = ""
+            mrnaacc = ""
             mrnalen = 0
             yield values.split(" ")
 
@@ -531,8 +529,9 @@ if __name__ == "__main__":
         with open(a[0], "r") as gff, \
                 open(a[1], "r") as fa,  \
                 open(a[2], "w") as out:
-            header = ["Species", "LocusId", "Length", "GCContent", "GCSkew",
-                      "NContent", "LocusClass", "GeneCount", "SeqUnannot"]
+            header = ["Species", "LocusId", "LocusPos", "Length", "GCContent",
+                      "GCSkew", "NContent", "LocusClass", "GeneCount",
+                      "SeqUnannot"]
             print >> out, "\t".join(header)
             for fields in ilocus_desc(gff, fa):
                 fields = [args.species] + fields
@@ -558,8 +557,8 @@ if __name__ == "__main__":
         with open(a[0], "r") as gff, \
                 open(a[1], "r") as fa, \
                 open(a[2], "w") as out:
-            header = ["Species", "MrnaId", "Length", "GCContent", "GCSkew",
-                      "NContent"]
+            header = ["Species", "MrnaId", "Accession", "Length", "GCContent",
+                      "GCSkew", "NContent"]
             print >> out, "\t".join(header)
             for fields in mrna_desc(gff, fa):
                 fields = [args.species] + fields
