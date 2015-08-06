@@ -1,7 +1,7 @@
 66aea1bce0b50b1cad845f60999a3a873209d809  data/hym-prot.clstr
 0184c46bc2bc7b84ac1ae253f0706712ac8080b2  data/hiloci.tsv
-7a1778ba3fa3c9a7e5e7b5191aa0044729b54421  data/hilocus-reps.tsv
-97fedf8bc6266b896d4fb28eb06e3ca5657b87dc  data/exons-hirep.tsv
-4173c25932898873a4d8438de8b4ba96a507d823  data/introns-hirep.tsv
-22015460cad24d7e9f52e69d54f272600065fa20  data/cds-hirep.tsv
-27718bb23bc5660ba710a8aa5d67769b7391088e  data/quartets.tsv
+616576c38a39f3d46aed0f54e0b2e042bd1e7567  data/hiloci-conserved.tsv
+e505671515dafb25bdcf0c782f9b8ee79c67d426  data/quartets.tsv
+8554bd3ff9200c8ce8d6a08b8fb6ca2f2681e7de  data/exons-hicons.tsv
+8541f484e9e4093515d9c44d1305701890cd854d  data/introns-hicons.tsv
+a5b6ac7bb9b6939b54292afd8cb054a2b46c8042  data/cds-hicons.tsv
