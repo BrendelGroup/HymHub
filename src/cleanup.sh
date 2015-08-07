@@ -13,5 +13,6 @@ data_cleanup()
       | grep -v "/excludes.txt" | grep -v ".tsv$" \
       | grep -v ".py$" | grep -v ".sh$" | grep -v "/${SPEC}.rep-prot.fa" \
       | grep -v "/${SPEC}.protein2ilocus.txt" | grep -v "locus-pmrnas.txt" \
+      | grep -v "ilocus.mrnas.txt" \ 
       | xargs -n 1 rm -f || true
 }
