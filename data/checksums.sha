@@ -1,7 +1,6 @@
-8595615c283b09bcf807cf191f96f47c37f6b723  data/iloci.tsv
-30a775c485d84c3fe6a2fc34baf04f5e6bba27cb  data/miloci.tsv
-da141c4f7881e66f86b1721712710bcf03d65e39  data/genereps.tsv
-c64fbcb036109b00775c9f1b549fbbed3e67810f  data/mrnas.tsv
+68ec871d7f3b0b5025623b34b291faf492e04924  data/iloci.tsv
+779647948b4ad52ae3aa9ee64c3c9234e6eabd0d  data/miloci.tsv
+bb9134309c48b8430cf0cc6a7f182636d888cbf3  data/mrnas.tsv
 4416858f6094d5022331acd34294a0f208b73a53  data/cds.tsv
 a3eed7afd928f0c333c3360f8dad823d1fd01989  data/exons.tsv
 a3a6a7ce80ba26df0c8ff3969773d512143eb48f  data/introns.tsv
