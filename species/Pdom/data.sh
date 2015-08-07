@@ -18,18 +18,18 @@ source src/filenames.sh
 if [ "$DODOWNLOAD" != "0" ]; then
   echo "[HymHub: $FULLSPEC] download genome assembly"
   seqfile=pdom-scaffolds-unmasked-r1.2.fa.gz
-  curl ${IPLNT}/53B7319E-3201-4087-9607-2D541FF34DD0/${seqfile} \
+  curl -L ${IPLNT}/53B7319E-3201-4087-9607-2D541FF34DD0/${seqfile} \
       > ${WD}/${seqfile} 2> ${WD}/${seqfile}.log
 
   echo "[HymHub: $FULLSPEC] download protein sequences"
   protfile=pdom-annot-r1.2-proteins.fa
-  curl ${IPLNT}/ACD29139-6619-48DF-A9F2-F75CA382E248/${protfile} \
+  curl -L ${IPLNT}/ACD29139-6619-48DF-A9F2-F75CA382E248/${protfile} \
       2> ${WD}/protein.log \
       | gzip -c > ${WD}/protein.fa.gz
 
   echo "[HymHub: $FULLSPEC] downloading genome annotation"
   featfile=pdom-annot-r1.2.gff3
-  curl ${IPLNT}/E4944CBB-7DE4-4CA1-A889-3D2A5D2E8696/${featfile} \
+  curl -L ${IPLNT}/E4944CBB-7DE4-4CA1-A889-3D2A5D2E8696/${featfile} \
       > ${WD}/${featfile} 2> ${WD}/${featfile}.log
 fi
 
