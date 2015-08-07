@@ -141,7 +141,7 @@ def run_msa(proteinseqs, outfile=None, command='clustalo', path=None,
     proc.communicate(input=proteinseqs)
 
 
-def retrieve_proteins(protids, specieslist, rootdir='.', suffix='rep-prot.fa'):
+def retrieve_proteins(protids, specieslist, rootdir='.', suffix='prot.fa'):
     """Retrieve the specified protein sequences."""
 
     proteinseqs = ''
@@ -153,7 +153,7 @@ def retrieve_proteins(protids, specieslist, rootdir='.', suffix='rep-prot.fa'):
                 yield defline, seq
 
 
-def load_proteins(protids, specieslist, rootdir='.', suffix='rep-prot.fa'):
+def load_proteins(protids, specieslist, rootdir='.', suffix='prot.fa'):
     """Load the specified protein sequences into memory."""
 
     proteinseqs = ''
