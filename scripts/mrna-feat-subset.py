@@ -27,7 +27,7 @@ parser.add_argument('-M', metavar='int', type=int, default=3,
                     help='column in feature file containing mRNA ID; default '
                     'is 3')
 parser.add_argument('hiloci', type=argparse.FileType('r'),
-                    default='data/hilocus-all.tsv',
+                    default='data/hiloci-conserved.tsv',
                     help='hiLocus mRNA data table')
 parser.add_argument('featfile', type=argparse.FileType('r'),
                     help='mRNA feature data table')
