@@ -29,6 +29,11 @@ get_iloci()
       3>&1 1>&2 2>&3 > ${WD}/${SPEC}.miloci.fa \
       | grep -v 'has not been previously introduced' \
       | grep -v 'does not begin with "##gff-version"' || true
+  grep $'\tlocus\t' ${WD}/${SPEC}.iloci.gff3 \
+      | grep 'mRNA=' \
+      | grep 'gene=1' \
+      | perl -ne 'm/ID=([^;\n]+)/ and print "$1\n"' \
+      > ${WD}/${SPEC}.simple-iloci.txt
 
   echo "[HymHub: ${SPEC}] identifying iLocus representatives (longest isoforms)"
   grep -v $'\tintron\t' ${WD}/${SPEC}.iloci.gff3 \

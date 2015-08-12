@@ -13,6 +13,18 @@ import subprocess
 import fasta_utils
 
 
+def load_simple_iloci(rootdir='.', suffix='simple-iloci.txt'):
+    iloci = dict()
+    for species in ['Acep', 'Ador', 'Aech', 'Aflo', 'Amel', 'Bimp', 'Bter',
+                    'Cflo', 'Dmel', 'Hsal', 'Mrot', 'Nvit', 'Pbar', 'Pdom',
+                    'Sinv', 'Tcas']:
+        filename = '%s/species/%s/%s.%s' % (rootdir, species, species, suffix)
+        for line in open(filename, 'r'):
+            ilocus_id = line.rstrip()
+            iloci[ilocus_id] = True
+    return iloci
+
+
 def iloci_by_species(iloci):
     """
     Index iLocus IDs by species.
@@ -30,8 +42,8 @@ def iloci_by_species(iloci):
     return idx
 
 
-def in_clade(iloci, clade_list, require_single_copy=True,
-             as_list=False, lineage=None):
+def in_clade(iloci, clade_list, require_single_copy=True, as_list=False,
+             require_simple=True, lineage=None, simple_iloci=None):
     """
     Determine whether the hiLocus is represented in the specified clade.
 
@@ -39,6 +51,8 @@ def in_clade(iloci, clade_list, require_single_copy=True,
     - clade_list: list of species labels representing the clade of interest
     - require_single_copy: boolean indicating whether species with multiple
                            copies of a gene should be discarded
+    - require_simple: boolean indicating whether to discard iLoci containing
+                      multiple protein-coding genes
     - as_list: boolean indicating whether all qualifying iLoci should be
                returned as a list, or a single representative should be
                chosen at random
@@ -50,11 +64,17 @@ def in_clade(iloci, clade_list, require_single_copy=True,
         if species in idx:
             copynumber = len(idx[species])
             assert copynumber > 0
-            if require_single_copy is True:
-                if copynumber > 1:
+            if copynumber > 1:
+                if require_single_copy is True:
                     continue
                 random.shuffle(idx[species])
-            choices.append((species, idx[species][0], lineage))
+            if require_simple:
+                assert simple_iloci, 'Please provide simple_iloci'
+                for ilocus in idx[species]:
+                    if ilocus in simple_iloci:
+                        choices.append((species, ilocus, lineage))
+            else:
+                choices.append((species, idx[species][0], lineage))
 
     if len(choices) == 0:
         if as_list:
@@ -68,22 +88,24 @@ def in_clade(iloci, clade_list, require_single_copy=True,
             return random.choice(choices)
 
 
-def in_bees(iloci, as_list=False):
+def in_bees(iloci, as_list=False, simple_iloci=None):
     return in_clade(iloci, ['Amel', 'Aflo', 'Bter', 'Bimp', 'Ador', 'Mrot'],
-                    as_list=as_list, lineage='Bees')
+                    as_list=as_list, lineage='Bees', simple_iloci=simple_iloci)
 
 
-def in_ants(iloci, as_list=False):
+def in_ants(iloci, as_list=False, simple_iloci=None):
     return in_clade(iloci, ['Acep', 'Aech', 'Hsal', 'Sinv', 'Cflo', 'Pbar'],
-                    as_list=as_list, lineage='Ants')
+                    as_list=as_list, lineage='Ants', simple_iloci=simple_iloci)
 
 
-def in_nvit(iloci, as_list=False):
-    return in_clade(iloci, ['Nvit'], as_list=as_list, lineage='Nvit')
+def in_nvit(iloci, as_list=False, simple_iloci=None):
+    return in_clade(iloci, ['Nvit'], as_list=as_list, lineage='Nvit',
+                    simple_iloci=simple_iloci)
 
 
-def in_pdom(iloci, as_list=False):
-    return in_clade(iloci, ['Pdom'], as_list=as_list, lineage='Pdom')
+def in_pdom(iloci, as_list=False, simple_iloci=None):
+    return in_clade(iloci, ['Pdom'], as_list=as_list, lineage='Pdom',
+                    simple_iloci=simple_iloci)
 
 
 def prep_phylo(outdir, quartetfile, mstart=False, rootdir='.'):

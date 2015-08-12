@@ -54,6 +54,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     ilocus_mapping = ilocus_isoforms(rootdir=args.rootdir)
+    simple = hilocus_utils.load_simple_iloci(args.rootdir)
 
     print '\t'.join(['hiLocus', 'iLocus', 'Species', 'Lineage', 'Mrna',
                      'Protein'])
@@ -67,10 +68,10 @@ if __name__ == '__main__':
         iloci = values[5].split(',')
         hid = values[0]
 
-        ants = hilocus_utils.in_ants(iloci, as_list=True)
-        bees = hilocus_utils.in_bees(iloci, as_list=True)
-        pdom = hilocus_utils.in_pdom(iloci, as_list=True)
-        nvit = hilocus_utils.in_nvit(iloci, as_list=True)
+        ants = hilocus_utils.in_ants(iloci, as_list=True, simple_iloci=simple)
+        bees = hilocus_utils.in_bees(iloci, as_list=True, simple_iloci=simple)
+        pdom = hilocus_utils.in_pdom(iloci, as_list=True, simple_iloci=simple)
+        nvit = hilocus_utils.in_nvit(iloci, as_list=True, simple_iloci=simple)
         if None in [ants, bees, pdom, nvit]:
             # Lack representative from one or more clades; moving on
             continue

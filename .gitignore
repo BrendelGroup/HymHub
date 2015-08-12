@@ -29,6 +29,7 @@ species/*/*.lp
 species/*/*.locus-pmrnas.txt
 species/*/*.mrnas.txt
 species/*/*.mrna2gene.txt
+species/*/*.simple-iloci.txt
 
 # Sandbox directory
 scratch/
