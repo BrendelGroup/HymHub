@@ -68,6 +68,10 @@ if __name__ == '__main__':
         ilcid = values[1]
         ilclass = values[7]
         genecount = int(values[8])
+        fragment = values[9]
+        if args.skip_fragments and fragment == 'True':
+            continue
+
         if species not in breakdown:
             breakdown[species] = dict((col, list()) for col in outcols)
 
