@@ -59,10 +59,14 @@ def parse_ncbi(filehandle):
                 'Unable to parse protein and mRNA IDs: %s' % fields[8]
             mrnaid = idmatch.group(1)
             proteinid = idmatch.group(2)
-            if proteinid not in proteins:
+            if proteinid in proteins:
+                if proteins[proteinid] != mrnaid:
+                    print >> sys.stderr, 'duplicate protein %s' % proteinid
+                pass
+            else:
                 geneid = mrna2gene[mrnaid]
                 ilocusid = gene2loci[geneid]
-                proteins[proteinid] = 1
+                proteins[proteinid] = mrnaid
                 yield proteinid, ilocusid
 
 

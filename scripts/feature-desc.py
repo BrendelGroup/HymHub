@@ -71,7 +71,8 @@ def ilocus_classify(ilocus):
     counts = {}
     for keyvaluepair in attrs.split(";"):
         key, value = keyvaluepair.split("=")
-        if key not in ["ID", "fragment", "unannot", "merged", "gene"]:
+        if key not in ["ID", "fragment", "unannot", "merged", "gene",
+                       "left_overlap", "right_overlap"]:
             counts[key] = 1
 
     if len(counts) == 0:
@@ -118,6 +119,14 @@ def ilocus_desc(gff3, fasta):
         gccontent = gc_content(locusseq)
         gcskew = gc_skew(locusseq)
         ncontent = n_content(locusseq)
+        left_overlap = 0
+        lomatch = re.search("left_overlap=(\d+)", fields[8])
+        if lomatch:
+            left_overlap = int(lomatch.group(1))
+        right_overlap = 0
+        romatch = re.search("right_overlap=(\d+)", fields[8])
+        if romatch:
+            right_overlap = int(romatch.group(1))
 
         locusclass = ilocus_classify(entry.rstrip())
         genecount = 0
@@ -130,9 +139,9 @@ def ilocus_desc(gff3, fasta):
             gmatch = re.search("gene=(\d+)", attrs)
             assert gmatch
             genecount = int(gmatch.group(1))
-        values = "%s %s %d %.3f %.3f %.3f %s %d %r" % (
+        values = "%s %s %d %.3f %.3f %.3f %s %d %r %d %d" % (
             locusid, locuspos, locuslen, gccontent, gcskew, ncontent,
-            locusclass, genecount, unannot)
+            locusclass, genecount, unannot, left_overlap, right_overlap)
         yield values.split(" ")
 
 
@@ -531,7 +540,7 @@ if __name__ == "__main__":
                 open(a[2], "w") as out:
             header = ["Species", "LocusId", "LocusPos", "Length", "GCContent",
                       "GCSkew", "NContent", "LocusClass", "GeneCount",
-                      "SeqUnannot"]
+                      "SeqUnannot", "LeftOverlap", "RightOverlap"]
             print >> out, "\t".join(header)
             for fields in ilocus_desc(gff, fa):
                 fields = [args.species] + fields

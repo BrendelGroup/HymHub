@@ -15,7 +15,7 @@ python scripts/feature-desc.py \
     --introns test/ftest-introns.gff3 test/ftest-introns.fa test/introns-pre-test.tsv
 
 python scripts/feature-desc.py \
-    --iloci test/ftest-miloci.gff3 test/ftest-miloci.fa test/miloci-test.tsv
+    --iloci test/ftest-miloci.gff3 test/ftest-miloci.fa >(cut -f 1-10 > test/miloci-test.tsv)
 
 head -n 1 test/exons-pre-test.tsv > test/exons-test.tsv
 grep 'NT_033778.3_19722259-19722625' test/exons-pre-test.tsv >> test/exons-test.tsv
