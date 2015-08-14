@@ -19,7 +19,7 @@ get_stats()
       --exons ${PRFX}.ilocus.mrnas.gff3 ${PRFX}.exons.fa ${PRFX}.exons.tsv \
       --introns ${PRFX}.ilocus.mrnas.gff3 ${PRFX}.introns.fa ${PRFX}.introns.tsv
   python scripts/feature-desc.py --species ${SPEC} \
-      --iloci ${PRFX}.miloci.gff3 ${PRFX}.miloci.fa >(cut -f 1-10 > ${PRFX}.miloci.tsv)
+      --iloci ${PRFX}.miloci.gff3 ${PRFX}.miloci.fa >(cut -f 1-11 > ${PRFX}.miloci.tsv)
 }
 
 aggregate_stats()

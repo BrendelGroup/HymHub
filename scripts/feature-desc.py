@@ -130,18 +130,18 @@ def ilocus_desc(gff3, fasta):
 
         locusclass = ilocus_classify(entry.rstrip())
         genecount = 0
-        unannot = False
         attrs = fields[8]
-        if "fragment=true" in attrs:
-            unannot = "unannot=true" in attrs
-        elif "gene=" in attrs:
+        fragment = "fragment=true" in attrs
+        unannot = "unannot=true" in attrs
+        if "gene=" in attrs:
             locustype = "gene"
             gmatch = re.search("gene=(\d+)", attrs)
             assert gmatch
             genecount = int(gmatch.group(1))
-        values = "%s %s %d %.3f %.3f %.3f %s %d %r %d %d" % (
+        values = "%s %s %d %.3f %.3f %.3f %s %d %r %r %d %d" % (
             locusid, locuspos, locuslen, gccontent, gcskew, ncontent,
-            locusclass, genecount, unannot, left_overlap, right_overlap)
+            locusclass, genecount, fragment, unannot, left_overlap,
+            right_overlap)
         yield values.split(" ")
 
 
@@ -540,7 +540,7 @@ if __name__ == "__main__":
                 open(a[2], "w") as out:
             header = ["Species", "LocusId", "LocusPos", "Length", "GCContent",
                       "GCSkew", "NContent", "LocusClass", "GeneCount",
-                      "SeqUnannot", "LeftOverlap", "RightOverlap"]
+                      "Fragment", "SeqUnannot", "LeftOverlap", "RightOverlap"]
             print >> out, "\t".join(header)
             for fields in ilocus_desc(gff, fa):
                 fields = [args.species] + fields

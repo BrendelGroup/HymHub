@@ -9,12 +9,40 @@ import sys
 import hilocus_utils
 
 
+def load_hilocus_data(infile):
+    """Load phyloclass for each iLocus from hiLocus data table."""
+    ilocus_class = dict()
+    next(infile)
+    for line in args.hiloci:
+        values = line.rstrip().split('\t')
+        phyloclass = values[4]
+        iloci = values[5].split(',')
+        for ilocus in iloci:
+            ilocus_class[ilocus] = phyloclass
+    return ilocus_class
+
+
+def load_conserved_iloci(infile):
+    """Load iLoci from conserved hiLocus data table."""
+    hicons = dict()
+    next(args.hicons)
+    for line in args.hicons:
+        values = line.split('\t')
+        hicons[values[1]] = values[0]
+    return hicons
+
+
 if __name__ == '__main__':
     import argparse
     import sys
 
     desc = ('Use iLocus information to provide a breakdown of genome content')
     parser = argparse.ArgumentParser(description=desc)
+    parser.add_argument('-c', '--counts', action='store_true',
+                        help='report iLocus counts for each category; default '
+                        'is to report total bp occupied')
+    parser.add_argument('-f', '--skip_fragments', action='store_true',
+                        help='ignore fragment iLoci')
     parser.add_argument('-r', '--rootdir', default='.',
                         help='path to HymHub root directory; default is '
                         'current directory')
@@ -26,26 +54,9 @@ if __name__ == '__main__':
                         default=sys.stdin, help='conserved hiLocus data table')
     args = parser.parse_args()
 
-    # ilocus_mapping = ilocus_isoforms(rootdir=args.rootdir)
     simple = hilocus_utils.load_simple_iloci(args.rootdir)
-
-    ilocus_class = dict()
-    ilocus_hilocus = dict()
-    next(args.hiloci)
-    for line in args.hiloci:
-        values = line.rstrip().split('\t')
-        hilocusid = values[0]
-        phyloclass = values[4]
-        iloci = values[5].split(',')
-        for ilocus in iloci:
-            ilocus_class[ilocus] = phyloclass
-            ilocus_hilocus[ilocus] = hilocusid
-
-    hicons = dict()
-    next(args.hicons)
-    for line in args.hicons:
-        values = line.split('\t')
-        hicons[values[1]] = values[0]
+    ilocus_class = load_hilocus_data(args.hiloci)
+    hicons = load_conserved_iloci(args.hicons)
 
     outcols = ['HymCons', 'Conserved', 'Orphan', 'Complex', 'ncRNA',
                'Intergenic']
@@ -81,6 +92,9 @@ if __name__ == '__main__':
         print(species, end='', sep='')
         for col in outcols:
             iloci = breakdown[species][col]
-            cumlength = sum([int(x[3]) - int(x[11]) for x in iloci])
-            print('\t%d' % cumlength, end='', sep='')
+            if args.counts:
+                print('\t%d' % len(iloci), end='', sep='')
+            else:
+                cumlength = sum([int(x[3]) - int(x[11]) for x in iloci])
+                print('\t%d' % cumlength, end='', sep='')
         print('\n', end='')
