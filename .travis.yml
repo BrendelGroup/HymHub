@@ -11,9 +11,8 @@ before_install:
   - tar xzf genometools-1.5.6.tar.gz
   - cd genometools-1.5.6/ && make -j2 prefix=${HOME}/local install && cd -
   # Install AEGeAn
-  - wget https://github.com/standage/AEGeAn/archive/v0.13.0.tar.gz
-  - tar xzf v0.13.0.tar.gz
-  - cd AEGeAn-0.13.0/ && make prefix=${HOME}/local test install install-scripts && cd -
+  - git clone https://github.com/standage/AEGeAn.git
+  - cd AEGeAn && make prefix=${HOME}/local test install install-scripts && cd -
   # Install CD-HIT (disabled for now)
   # - wget https://github.com/weizhongli/cdhit/archive/V4.6.1.tar.gz
   # - tar xzf V4.6.1.tar.gz

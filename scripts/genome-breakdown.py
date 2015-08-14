@@ -4,6 +4,7 @@
 # 'LICENSE' file in the HymHub code distribution or online at
 # https://github.com/BrendelGroup/HymHub/blob/master/LICENSE.
 
+from __future__ import print_function
 import sys
 import hilocus_utils
 
@@ -46,7 +47,7 @@ if __name__ == '__main__':
         values = line.split('\t')
         hicons[values[1]] = values[0]
 
-    outcols = ['HymCons', 'Conserved', 'Orphan', 'ncRNA', 'Complex',
+    outcols = ['HymCons', 'Conserved', 'Orphan', 'Complex', 'ncRNA',
                'Intergenic']
     breakdown = dict()
     next(args.iloci)
@@ -75,11 +76,11 @@ if __name__ == '__main__':
             else:
                 breakdown[species]['Conserved'].append(values)
 
-    print '\t'.join(['Species'] + outcols)
+    print('\t'.join(['Species'] + outcols))
     for species in sorted(breakdown):
-        print species,
+        print(species, end='', sep='')
         for col in outcols:
             iloci = breakdown[species][col]
             cumlength = sum([int(x[3]) - int(x[11]) for x in iloci])
-            print '\t%d' % cumlength,
-        print '\n',
+            print('\t%d' % cumlength, end='', sep='')
+        print('\n', end='')
