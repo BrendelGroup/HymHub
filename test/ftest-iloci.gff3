@@ -2,7 +2,7 @@
 ##sequence-region   NC_007418.2 8522509 8530684
 ##sequence-region   NC_015868.2 15753180 15761729
 ##sequence-region   scaffold916 1 16131
-NC_007418.2	AEGeAn::LocusPocus	locus	8522509	8530684	.	.	.	ID=HymHubTcasILCv0.0.1-03043;gene=1;mRNA=1
+NC_007418.2	AEGeAn::LocusPocus	locus	8522509	8530684	.	.	.	ID=HymHubTcasILCv0.0.1-03043;iLocus_type=piLocus;gene=1;mRNA=1;effective_length=8176
 NC_007418.2	Gnomon	gene	8522791	8530184	.	-	.	ID=gene2627;Parent=HymHubTcasILCv0.0.1-03043;Dbxref=GeneID:664197;Name=LOC664197;gbkey=Gene;gene=LOC664197
 NC_007418.2	Gnomon	mRNA	8522791	8530184	.	-	.	ID=mRNA3730;Parent=gene2627;Dbxref=GeneID:664197,Genbank:XM_008192785.1;Name=XM_008192785.1;gbkey=mRNA;gene=LOC664197;product=protein cueball;transcript_id=XM_008192785.1
 NC_007418.2	Gnomon	exon	8522791	8523660	.	-	.	Parent=mRNA3730;Dbxref=GeneID:664197,Genbank:XM_008192785.1;gbkey=mRNA;gene=LOC664197;product=protein cueball;transcript_id=XM_008192785.1
@@ -18,9 +18,9 @@ NC_007418.2	Gnomon	CDS	8527179	8527408	.	-	2	ID=CDS3502;Parent=mRNA3730;Dbxref=G
 NC_007418.2	Gnomon	CDS	8530034	8530106	.	-	0	ID=CDS3502;Parent=mRNA3730;Dbxref=GeneID:664197,Genbank:XP_008191007.1;Name=XP_008191007.1;gbkey=CDS;gene=LOC664197;product=protein cueball;protein_id=XP_008191007.1
 NC_007418.2	Gnomon	exon	8530034	8530184	.	-	.	Parent=mRNA3730;Dbxref=GeneID:664197,Genbank:XM_008192785.1;gbkey=mRNA;gene=LOC664197;product=protein cueball;transcript_id=XM_008192785.1
 ###
-NC_015868.2	AEGeAn::LocusPocus	locus	15753180	15759619	.	.	.	ID=HymHubNvitILCv0.0.1-03989
+NC_015868.2	AEGeAn::LocusPocus	locus	15753180	15759619	.	.	.	ID=HymHubNvitILCv0.0.1-03989;iLocus_type=iiLocus;effective_length=6440
 ###
-scaffold916	AEGeAn::LocusPocus	locus	1	16131	.	.	.	ID=HymHubCfloILCv0.0.1-48614;gene=1;mRNA=1
+scaffold916	AEGeAn::LocusPocus	locus	1	16131	.	.	.	ID=HymHubCfloILCv0.0.1-48614;iLocus_type=piLocus;gene=1;mRNA=1;effective_length=16131
 scaffold916	cflo_OGSv3.3	gene	823	15821	0.623	+	.	ID=gene15187;Parent=HymHubCfloILCv0.0.1-48614;Name=CFLO22419
 scaffold916	cflo_OGSv3.3	mRNA	823	15821	0.623	+	.	ID=mRNA15232;Parent=gene15187;Name=CFLO22419-RA;Alias=Cflo_12744--XP_624545.2_APIME
 scaffold916	cflo_OGSv3.3	CDS	823	1653	.	+	0	Parent=mRNA15232

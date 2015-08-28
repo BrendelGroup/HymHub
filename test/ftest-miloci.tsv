@@ -1,4 +1,4 @@
-Species	LocusId	LocusPos	Length	GCContent	GCSkew	NContent	LocusClass	GeneCount	Fragment	SeqUnannot
-default	NT_177092.1_204599-205560	NT_177092.1_204599-205560	962	0.253	0.193	0.000	geneless	0	False	False
-default	NW_003789385.1_3710728-3716614	NW_003789385.1_3710728-3716614	5887	0.444	-0.038	0.000	ncRNA	1	False	False
-default	NW_006265157.1_1-227	NW_006265157.1_1-227	227	0.150	0.118	0.000	geneless	0	True	True
+Species	LocusId	LocusPos	Length	EffectiveLength	GCContent	GCSkew	NContent	LocusClass	GeneCount	Fragment	SeqUnannot
+default	NT_177092.1_204599-205560	NT_177092.1_204599-205560	962	0	0.253	0.193	0.000	iiLocus	0	False	False
+default	NW_003789385.1_3710728-3716614	NW_003789385.1_3710728-3716614	5887	0	0.444	-0.038	0.000	niLocus	1	False	False
+default	NW_006265157.1_1-227	NW_006265157.1_1-227	227	0	0.150	0.118	0.000	iiLocus	0	True	True

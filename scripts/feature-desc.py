@@ -122,29 +122,26 @@ def ilocus_desc(gff3, fasta):
         gccontent = gc_content(locusseq)
         gcskew = gc_skew(locusseq)
         ncontent = n_content(locusseq)
-        left_overlap = 0
-        lomatch = re.search("left_overlap=(\d+)", fields[8])
-        if lomatch:
-            left_overlap = int(lomatch.group(1))
-        right_overlap = 0
-        romatch = re.search("right_overlap=(\d+)", fields[8])
-        if romatch:
-            right_overlap = int(romatch.group(1))
 
-        locusclass = ilocus_classify(entry.rstrip())
+        classmatch = re.search("iLocus_type=([^;\n]+)", fields[8])
+        assert(classmatch), fields[8]
+        locusclass = classmatch.group(1)
         genecount = 0
         attrs = fields[8]
         fragment = "fragment=true" in attrs
         unannot = "unannot=true" in attrs
+        efflen = 0
+        efflenmatch = re.search("effective_length=(\d+)", attrs)
+        if efflenmatch:
+            efflen = int(efflenmatch.group(1))
         if "gene=" in attrs:
             locustype = "gene"
             gmatch = re.search("gene=(\d+)", attrs)
             assert gmatch
             genecount = int(gmatch.group(1))
-        values = "%s %s %d %.3f %.3f %.3f %s %d %r %r %d %d" % (
-            locusid, locuspos, locuslen, gccontent, gcskew, ncontent,
-            locusclass, genecount, fragment, unannot, left_overlap,
-            right_overlap)
+        values = "%s %s %d %d %.3f %.3f %.3f %s %d %r %r" % (
+            locusid, locuspos, locuslen, efflen, gccontent, gcskew, ncontent,
+            locusclass, genecount, fragment, unannot)
         yield values.split(" ")
 
 
@@ -541,9 +538,9 @@ if __name__ == "__main__":
         with open(a[0], "r") as gff, \
                 open(a[1], "r") as fa,  \
                 open(a[2], "w") as out:
-            header = ["Species", "LocusId", "LocusPos", "Length", "GCContent",
-                      "GCSkew", "NContent", "LocusClass", "GeneCount",
-                      "Fragment", "SeqUnannot", "LeftOverlap", "RightOverlap"]
+            header = ["Species", "LocusId", "LocusPos", "Length",
+                      "EffectiveLength", "GCContent", "GCSkew", "NContent",
+                      "LocusClass", "GeneCount", "Fragment", "SeqUnannot"]
             print >> out, "\t".join(header)
             for fields in ilocus_desc(gff, fa):
                 fields = [args.species] + fields
