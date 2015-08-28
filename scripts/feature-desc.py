@@ -72,8 +72,11 @@ def ilocus_classify(ilocus):
     for keyvaluepair in attrs.split(";"):
         key, value = keyvaluepair.split("=")
         if key not in ["ID", "fragment", "unannot", "merged", "gene",
-                       "left_overlap", "right_overlap"]:
+                       "left_overlap", "right_overlap", "intron_gene"]:
             counts[key] = 1
+
+    if "intron_gene" in attrs:
+        return "intron_gene"
 
     if len(counts) == 0:
         return "geneless"

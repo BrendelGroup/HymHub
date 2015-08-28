@@ -58,7 +58,7 @@ if __name__ == '__main__':
     ilocus_class = load_hilocus_data(args.hiloci)
     hicons = load_conserved_iloci(args.hicons)
 
-    outcols = ['HymCons', 'Conserved', 'Orphan', 'Complex', 'ncRNA',
+    outcols = ['Conserved', 'Matched', 'Orphan', 'Complex', 'ncRNA',
                'Intergenic']
     breakdown = dict()
     next(args.iloci)
@@ -75,7 +75,13 @@ if __name__ == '__main__':
         if species not in breakdown:
             breakdown[species] = dict((col, list()) for col in outcols)
 
-        if ilclass == 'geneless':
+        if ilclass == 'intron_gene':
+            pass
+        elif ilcid in hicons:
+            assert genecount == 1, ilcid
+            assert ilclass in ['mRNA', 'mixed'], ilcid
+            breakdown[species]['Conserved'].append(values)
+        elif ilclass == 'geneless':
             assert genecount == 0
             breakdown[species]['Intergenic'].append(values)
         elif ilclass == 'ncRNA' or ilclass == 'tRNA':
@@ -86,10 +92,9 @@ if __name__ == '__main__':
             assert genecount == 1
             if ilocus_class[ilcid] == 'Orphan':
                 breakdown[species]['Orphan'].append(values)
-            elif ilcid in hicons:
-                breakdown[species]['HymCons'].append(values)
             else:
-                breakdown[species]['Conserved'].append(values)
+                # print('DEBUG matched: %s' % ilcid)
+                breakdown[species]['Matched'].append(values)
 
     print('\t'.join(['Species'] + outcols))
     for species in sorted(breakdown):

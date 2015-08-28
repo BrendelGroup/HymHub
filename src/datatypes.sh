@@ -31,7 +31,7 @@ get_iloci()
       | grep -v 'does not begin with "##gff-version"' || true
   grep $'\tlocus\t' ${WD}/${SPEC}.iloci.gff3 \
       | grep 'mRNA=' \
-      | grep 'gene=1' \
+      | grep 'gene=1;' \
       | perl -ne 'm/ID=([^;\n]+)/ and print "$1\n"' \
       > ${WD}/${SPEC}.simple-iloci.txt
 

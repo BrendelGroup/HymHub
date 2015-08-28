@@ -39,7 +39,7 @@ if __name__ == '__main__':
         print >> sys.stderr, 'prep_phylo done!'
     phyloscript = args.path + '/scripts/msa-phylo.sh'
     dirs = glob.glob(args.workdir + '/*')
-    cmdargs = ['parallel', '--gnu', '--jobs', str(args.jobs), phyloscript, '{}',
-               ':::']
+    cmdargs = ['parallel', '--gnu', '--jobs', str(args.jobs), phyloscript,
+               '{}', ':::']
     cmdargs.extend(dirs)
     subprocess.call(cmdargs)

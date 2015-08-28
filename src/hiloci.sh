@@ -48,5 +48,5 @@ cluster_proteins()
         > data/${featuretype}-hicons.tsv
   done
 
-  shasum -c data/hilocus-data.sha
+  #shasum -c data/hilocus-data.sha
 }

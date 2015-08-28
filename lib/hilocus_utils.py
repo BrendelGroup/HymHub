@@ -70,9 +70,9 @@ def in_clade(iloci, clade_list, require_single_copy=True, as_list=False,
                 random.shuffle(idx[species])
             if require_simple:
                 assert simple_iloci, 'Please provide simple_iloci'
-                for ilocus in idx[species]:
-                    if ilocus in simple_iloci:
-                        choices.append((species, ilocus, lineage))
+                ilocus = idx[species][0]
+                if ilocus in simple_iloci:
+                    choices.append((species, ilocus, lineage))
             else:
                 choices.append((species, idx[species][0], lineage))
 
@@ -106,6 +106,21 @@ def in_nvit(iloci, as_list=False, simple_iloci=None):
 def in_pdom(iloci, as_list=False, simple_iloci=None):
     return in_clade(iloci, ['Pdom'], as_list=as_list, lineage='Pdom',
                     simple_iloci=simple_iloci)
+
+
+def in_six(iloci, as_list=False, simple_iloci=None):
+    return in_clade(iloci, ['Amel', 'Bter', 'Cflo', 'Hsal', 'Pdom', 'Nvit'],
+                    lineage='Six', as_list=as_list, simple_iloci=simple_iloci)
+
+
+def in_four(iloci, as_list=False, simple_iloci=None):
+    return in_clade(iloci, ['Amel', 'Hsal', 'Pdom', 'Nvit'],
+                    lineage='Four', as_list=as_list, simple_iloci=simple_iloci)
+
+
+def in_two(iloci, as_list=False, simple_iloci=None):
+    return in_clade(iloci, ['Amel', 'Pdom'],
+                    lineage='Two', as_list=as_list, simple_iloci=simple_iloci)
 
 
 def prep_phylo(outdir, quartetfile, mstart=False, rootdir='.'):
