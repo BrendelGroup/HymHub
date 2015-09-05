@@ -37,6 +37,6 @@ echo "R" >> tmp-drawtree.par
 echo "D" >> tmp-drawtree.par
 echo "Y" >> tmp-drawtree.par
 cat tmp-drawtree.par | drawtree
-mv plotfile ${hid}.ps
+mv plotfile ${prefix}.ps
 rm tmp-drawtree.par
-ps2pdf ${hid}.ps
+ps2pdf ${prefix}.ps
