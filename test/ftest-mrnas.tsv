@@ -1,4 +1,4 @@
-Species	MrnaId	Accession	Length	GCContent	GCSkew	NContent
-default	mRNA6484	XM_003696020.1	525	0.465	0.016	0.000
-default	mRNA9962	XM_006617018.1	1955	0.515	0.042	0.000
-default	mRNA14616	SINV11243-RA	288	0.340	0.061	0.000
+Species	Accession	Length	GCContent	GCSkew	NContent
+default	XM_003696020.1	525	0.465	0.016	0.000
+default	XM_006617018.1	1955	0.515	0.042	0.000
+default	SINV11243-RA	288	0.340	0.061	0.000

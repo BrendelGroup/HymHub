@@ -2,49 +2,49 @@
 ##sequence-region   NC_015770.1 1083792 1085065
 ##sequence-region   NW_003789385.1 4744618 4746240
 ##sequence-region   PdomSCFr1.2-0173 67861 68495
-NC_015770.1	RefSeq	gene	1083792	1085065	.	+	.	ID=gene4218;Name=LOC100643733;Dbxref=GeneID:100643733;gbkey=Gene;gene=LOC100643733
-NC_015770.1	RefSeq	mRNA	1083792	1085065	.	+	.	ID=mRNA4590;Parent=gene4218;Name=XM_003397400.1;Dbxref=GeneID:100643733,Genbank:XM_003397400.1;gbkey=mRNA;gene=LOC100643733;product=60S ribosomal protein L14-like;transcript_id=XM_003397400.1
+NC_015770.1	RefSeq	gene	1083792	1085065	.	+	.	ID=gene4218;Name=LOC100643733;Dbxref=GeneID:100643733;gbkey=Gene;gene=LOC100643733;accession=100643733
+NC_015770.1	RefSeq	mRNA	1083792	1085065	.	+	.	ID=mRNA4590;Parent=gene4218;Name=XM_003397400.1;Dbxref=GeneID:100643733,Genbank:XM_003397400.1;gbkey=mRNA;gene=LOC100643733;product=60S ribosomal protein L14-like;transcript_id=XM_003397400.1;accession=XM_003397400.1
 NC_015770.1	.	five_prime_UTR	1083792	1083912	.	+	.	Parent=mRNA4590
 NC_015770.1	RefSeq	exon	1083792	1083915	.	+	.	Parent=mRNA4590;Dbxref=GeneID:100643733,Genbank:XM_003397400.1;gbkey=mRNA;gene=LOC100643733;product=60S ribosomal protein L14-like;transcript_id=XM_003397400.1
-NC_015770.1	RefSeq	CDS	1083913	1083915	.	+	0	ID=CDS4389;Parent=mRNA4590;Name=XP_003397448.1;Dbxref=GeneID:100643733,Genbank:XP_003397448.1;gbkey=CDS;product=60S ribosomal protein L14-like;protein_id=XP_003397448.1
+NC_015770.1	RefSeq	CDS	1083913	1083915	.	+	0	ID=CDS4389;Parent=mRNA4590;Name=XP_003397448.1;Dbxref=GeneID:100643733,Genbank:XP_003397448.1;gbkey=CDS;product=60S ribosomal protein L14-like;protein_id=XP_003397448.1;accession=XM_003397400.1
 NC_015770.1	.	start_codon	1083913	1083915	.	+	.	Parent=mRNA4590
 NC_015770.1	.	intron	1083916	1084244	.	+	.	Parent=mRNA4590
 NC_015770.1	RefSeq	exon	1084245	1084346	.	+	.	Parent=mRNA4590;Dbxref=GeneID:100643733,Genbank:XM_003397400.1;gbkey=mRNA;gene=LOC100643733;product=60S ribosomal protein L14-like;transcript_id=XM_003397400.1
-NC_015770.1	RefSeq	CDS	1084245	1084346	.	+	0	ID=CDS4389;Parent=mRNA4590;Name=XP_003397448.1;Dbxref=GeneID:100643733,Genbank:XP_003397448.1;gbkey=CDS;product=60S ribosomal protein L14-like;protein_id=XP_003397448.1
+NC_015770.1	RefSeq	CDS	1084245	1084346	.	+	0	ID=CDS4389;Parent=mRNA4590;Name=XP_003397448.1;Dbxref=GeneID:100643733,Genbank:XP_003397448.1;gbkey=CDS;product=60S ribosomal protein L14-like;protein_id=XP_003397448.1;accession=XM_003397400.1
 NC_015770.1	.	intron	1084347	1084589	.	+	.	Parent=mRNA4590
 NC_015770.1	RefSeq	exon	1084590	1084784	.	+	.	Parent=mRNA4590;Dbxref=GeneID:100643733,Genbank:XM_003397400.1;gbkey=mRNA;gene=LOC100643733;product=60S ribosomal protein L14-like;transcript_id=XM_003397400.1
-NC_015770.1	RefSeq	CDS	1084590	1084784	.	+	0	ID=CDS4389;Parent=mRNA4590;Name=XP_003397448.1;Dbxref=GeneID:100643733,Genbank:XP_003397448.1;gbkey=CDS;product=60S ribosomal protein L14-like;protein_id=XP_003397448.1
+NC_015770.1	RefSeq	CDS	1084590	1084784	.	+	0	ID=CDS4389;Parent=mRNA4590;Name=XP_003397448.1;Dbxref=GeneID:100643733,Genbank:XP_003397448.1;gbkey=CDS;product=60S ribosomal protein L14-like;protein_id=XP_003397448.1;accession=XM_003397400.1
 NC_015770.1	.	intron	1084785	1084870	.	+	.	Parent=mRNA4590
-NC_015770.1	RefSeq	CDS	1084871	1085020	.	+	0	ID=CDS4389;Parent=mRNA4590;Name=XP_003397448.1;Dbxref=GeneID:100643733,Genbank:XP_003397448.1;gbkey=CDS;product=60S ribosomal protein L14-like;protein_id=XP_003397448.1
+NC_015770.1	RefSeq	CDS	1084871	1085020	.	+	0	ID=CDS4389;Parent=mRNA4590;Name=XP_003397448.1;Dbxref=GeneID:100643733,Genbank:XP_003397448.1;gbkey=CDS;product=60S ribosomal protein L14-like;protein_id=XP_003397448.1;accession=XM_003397400.1
 NC_015770.1	RefSeq	exon	1084871	1085065	.	+	.	Parent=mRNA4590;Dbxref=GeneID:100643733,Genbank:XM_003397400.1;gbkey=mRNA;gene=LOC100643733;product=60S ribosomal protein L14-like;transcript_id=XM_003397400.1
 NC_015770.1	.	stop_codon	1085018	1085020	.	+	.	Parent=mRNA4590
 NC_015770.1	.	three_prime_UTR	1085021	1085065	.	+	.	Parent=mRNA4590
 ###
-NW_003789385.1	RefSeq	gene	4744618	4746240	.	-	.	ID=gene889;Name=LOC100870810;Dbxref=GeneID:100870810;gbkey=Gene;gene=LOC100870810
-NW_003789385.1	RefSeq	mRNA	4744618	4746240	.	-	.	ID=mRNA909;Parent=gene889;Name=XM_003690319.1;Dbxref=GeneID:100870810,Genbank:XM_003690319.1;gbkey=mRNA;gene=LOC100870810;product=uncharacterized LOC100870810;transcript_id=XM_003690319.1
+NW_003789385.1	RefSeq	gene	4744618	4746240	.	-	.	ID=gene889;Name=LOC100870810;Dbxref=GeneID:100870810;gbkey=Gene;gene=LOC100870810;accession=100870810
+NW_003789385.1	RefSeq	mRNA	4744618	4746240	.	-	.	ID=mRNA909;Parent=gene889;Name=XM_003690319.1;Dbxref=GeneID:100870810,Genbank:XM_003690319.1;gbkey=mRNA;gene=LOC100870810;product=uncharacterized LOC100870810;transcript_id=XM_003690319.1;accession=XM_003690319.1
 NW_003789385.1	.	three_prime_UTR	4744618	4744730	.	-	.	Parent=mRNA909
 NW_003789385.1	RefSeq	exon	4744618	4744819	.	-	.	Parent=mRNA909;Dbxref=GeneID:100870810,Genbank:XM_003690319.1;gbkey=mRNA;gene=LOC100870810;product=uncharacterized LOC100870810;transcript_id=XM_003690319.1
 NW_003789385.1	.	stop_codon	4744731	4744733	.	-	.	Parent=mRNA909
-NW_003789385.1	RefSeq	CDS	4744731	4744819	.	-	2	ID=CDS875;Parent=mRNA909;Name=XP_003690367.1;Dbxref=GeneID:100870810,Genbank:XP_003690367.1;gbkey=CDS;product=uncharacterized protein C7orf26 homolog;protein_id=XP_003690367.1
+NW_003789385.1	RefSeq	CDS	4744731	4744819	.	-	2	ID=CDS875;Parent=mRNA909;Name=XP_003690367.1;Dbxref=GeneID:100870810,Genbank:XP_003690367.1;gbkey=CDS;product=uncharacterized protein C7orf26 homolog;protein_id=XP_003690367.1;accession=XM_003690319.1
 NW_003789385.1	.	intron	4744820	4744891	.	-	.	Parent=mRNA909
 NW_003789385.1	RefSeq	exon	4744892	4745181	.	-	.	Parent=mRNA909;Dbxref=GeneID:100870810,Genbank:XM_003690319.1;gbkey=mRNA;gene=LOC100870810;product=uncharacterized LOC100870810;transcript_id=XM_003690319.1
-NW_003789385.1	RefSeq	CDS	4744892	4745181	.	-	1	ID=CDS875;Parent=mRNA909;Name=XP_003690367.1;Dbxref=GeneID:100870810,Genbank:XP_003690367.1;gbkey=CDS;product=uncharacterized protein C7orf26 homolog;protein_id=XP_003690367.1
+NW_003789385.1	RefSeq	CDS	4744892	4745181	.	-	1	ID=CDS875;Parent=mRNA909;Name=XP_003690367.1;Dbxref=GeneID:100870810,Genbank:XP_003690367.1;gbkey=CDS;product=uncharacterized protein C7orf26 homolog;protein_id=XP_003690367.1;accession=XM_003690319.1
 NW_003789385.1	.	intron	4745182	4745252	.	-	.	Parent=mRNA909
 NW_003789385.1	RefSeq	exon	4745253	4745874	.	-	.	Parent=mRNA909;Dbxref=GeneID:100870810,Genbank:XM_003690319.1;gbkey=mRNA;gene=LOC100870810;product=uncharacterized LOC100870810;transcript_id=XM_003690319.1
-NW_003789385.1	RefSeq	CDS	4745253	4745874	.	-	2	ID=CDS875;Parent=mRNA909;Name=XP_003690367.1;Dbxref=GeneID:100870810,Genbank:XP_003690367.1;gbkey=CDS;product=uncharacterized protein C7orf26 homolog;protein_id=XP_003690367.1
+NW_003789385.1	RefSeq	CDS	4745253	4745874	.	-	2	ID=CDS875;Parent=mRNA909;Name=XP_003690367.1;Dbxref=GeneID:100870810,Genbank:XP_003690367.1;gbkey=CDS;product=uncharacterized protein C7orf26 homolog;protein_id=XP_003690367.1;accession=XM_003690319.1
 NW_003789385.1	.	intron	4745875	4745958	.	-	.	Parent=mRNA909
-NW_003789385.1	RefSeq	CDS	4745959	4746037	.	-	0	ID=CDS875;Parent=mRNA909;Name=XP_003690367.1;Dbxref=GeneID:100870810,Genbank:XP_003690367.1;gbkey=CDS;product=uncharacterized protein C7orf26 homolog;protein_id=XP_003690367.1
+NW_003789385.1	RefSeq	CDS	4745959	4746037	.	-	0	ID=CDS875;Parent=mRNA909;Name=XP_003690367.1;Dbxref=GeneID:100870810,Genbank:XP_003690367.1;gbkey=CDS;product=uncharacterized protein C7orf26 homolog;protein_id=XP_003690367.1;accession=XM_003690319.1
 NW_003789385.1	RefSeq	exon	4745959	4746240	.	-	.	Parent=mRNA909;Dbxref=GeneID:100870810,Genbank:XM_003690319.1;gbkey=mRNA;gene=LOC100870810;product=uncharacterized LOC100870810;transcript_id=XM_003690319.1
 NW_003789385.1	.	start_codon	4746035	4746037	.	-	.	Parent=mRNA909
 NW_003789385.1	.	five_prime_UTR	4746038	4746240	.	-	.	Parent=mRNA909
 ###
-PdomSCFr1.2-0173	maker	gene	67861	68495	.	-	.	ID=PdomGENEr1.2-09997;Name=PdomGENEr1.2-09997;Dbxref=MAKER:genemark-PdomSCFr1.2-0173-processed-gene-0.121
-PdomSCFr1.2-0173	maker	mRNA	67861	68495	.	-	.	ID=PdomMRNAr1.2-09997.1;Parent=PdomGENEr1.2-09997;Name=PdomMRNAr1.2-09997.1;_AED=0.54;_eAED=0.52;_QI=0|0|0|0.5|1|1|2|0|174;Dbxref=MAKER:genemark-PdomSCFr1.2-0173-processed-gene-0.121-mRNA-1
+PdomSCFr1.2-0173	maker	gene	67861	68495	.	-	.	ID=PdomGENEr1.2-09997;Name=PdomGENEr1.2-09997;Dbxref=MAKER:genemark-PdomSCFr1.2-0173-processed-gene-0.121;accession=PdomGENEr1.2-09997
+PdomSCFr1.2-0173	maker	mRNA	67861	68495	.	-	.	ID=PdomMRNAr1.2-09997.1;Parent=PdomGENEr1.2-09997;Name=PdomMRNAr1.2-09997.1;_AED=0.54;_eAED=0.52;_QI=0|0|0|0.5|1|1|2|0|174;Dbxref=MAKER:genemark-PdomSCFr1.2-0173-processed-gene-0.121-mRNA-1;accession=PdomMRNAr1.2-09997.1
 PdomSCFr1.2-0173	.	stop_codon	67861	67863	.	-	.	Parent=PdomMRNAr1.2-09997.1
 PdomSCFr1.2-0173	maker	exon	67861	67875	.	-	.	Parent=PdomMRNAr1.2-09997.1
-PdomSCFr1.2-0173	maker	CDS	67861	67875	.	-	0	ID=PdomMRNAr1.2-09997.1.cds;Parent=PdomMRNAr1.2-09997.1
+PdomSCFr1.2-0173	maker	CDS	67861	67875	.	-	0	ID=PdomMRNAr1.2-09997.1.cds;Parent=PdomMRNAr1.2-09997.1;accession=PdomMRNAr1.2-09997.1
 PdomSCFr1.2-0173	.	intron	67876	67985	.	-	.	Parent=PdomMRNAr1.2-09997.1
 PdomSCFr1.2-0173	maker	exon	67986	68495	.	-	.	Parent=PdomMRNAr1.2-09997.1
-PdomSCFr1.2-0173	maker	CDS	67986	68495	.	-	0	ID=PdomMRNAr1.2-09997.1.cds;Parent=PdomMRNAr1.2-09997.1
+PdomSCFr1.2-0173	maker	CDS	67986	68495	.	-	0	ID=PdomMRNAr1.2-09997.1.cds;Parent=PdomMRNAr1.2-09997.1;accession=PdomMRNAr1.2-09997.1
 PdomSCFr1.2-0173	.	start_codon	68493	68495	.	-	.	Parent=PdomMRNAr1.2-09997.1
 ###

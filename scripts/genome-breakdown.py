@@ -9,6 +9,18 @@ import sys
 import hilocus_utils
 
 
+def locus_mrna_map(root='.'):
+    locus2mrna = dict()
+    for species in ['Acep', 'Ador', 'Aech', 'Aflo', 'Amel', 'Bimp',
+                    'Bter', 'Cflo', 'Dmel', 'Hsal', 'Mrot', 'Nvit',
+                    'Pbar', 'Pdom', 'Sinv', 'Tcas']:
+        fname = '%s/species/%s/%s.ilocus.mrnas.txt' % (root, species, species)
+        for line in open(fname, 'r'):
+            ilocusid, mrnaid = line.rstrip().split()
+            locus2mrna[ilocusid] = mrnaid
+    return locus2mrna
+
+
 def load_hilocus_data(infile):
     """Load phyloclass for each iLocus from hiLocus data table."""
     ilocus_class = dict()
@@ -43,6 +55,8 @@ if __name__ == '__main__':
                         'is to report total bp occupied')
     parser.add_argument('-f', '--skip_fragments', action='store_true',
                         help='ignore fragment iLoci')
+    parser.add_argument('-t', '--table', action='store_true',
+                        help='print table with an extra column')
     parser.add_argument('-r', '--rootdir', default='.',
                         help='path to HymHub root directory; default is '
                         'current directory')
@@ -59,42 +73,55 @@ if __name__ == '__main__':
     hicons = load_conserved_iloci(args.hicons)
 
     outcols = ['Conserved', 'Matched', 'Orphan', 'Complex', 'ncRNA',
-               'Intergenic']
+               'Intergenic', 'Fragment']
     breakdown = dict()
-    next(args.iloci)
+    header = next(args.iloci)
     for line in args.iloci:
         values = line.rstrip().split('\t')
         species = values[0]
         ilcid = values[1]
-        ilclass = values[7]
-        genecount = int(values[8])
-        fragment = values[9]
+        eff_len = values[4]
+        ilclass = values[8]
+        genecount = int(values[9])
+        fragment = values[10]
         if args.skip_fragments and fragment == 'True':
             continue
 
         if species not in breakdown:
             breakdown[species] = dict((col, list()) for col in outcols)
 
-        if ilclass == 'intron_gene':
-            pass
-        elif ilcid in hicons:
-            assert genecount == 1, ilcid
-            assert ilclass in ['mRNA', 'mixed'], ilcid
-            breakdown[species]['Conserved'].append(values)
-        elif ilclass == 'geneless':
-            assert genecount == 0
-            breakdown[species]['Intergenic'].append(values)
-        elif ilclass == 'ncRNA' or ilclass == 'tRNA':
-            breakdown[species]['ncRNA'].append(values)
-        elif genecount > 1 or ilclass == 'mixed' or ilcid not in ilocus_class:
-            breakdown[species]['Complex'].append(values)
-        else:
-            assert genecount == 1
-            if ilocus_class[ilcid] == 'Orphan':
-                breakdown[species]['Orphan'].append(values)
+        if ilclass == 'iiLocus':
+            if fragment == 'True':
+                breakdown[species]['Fragment'].append(values)
             else:
-                # print('DEBUG matched: %s' % ilcid)
+                breakdown[species]['Intergenic'].append(values)
+        elif ilclass == 'niLocus':
+            breakdown[species]['ncRNA'].append(values)
+        else:
+            assert ilclass in ['piLocus', 'complex'], ilcid
+            if ilclass == 'complex' or genecount > 1 or \
+                    ilcid not in ilocus_class:
+                breakdown[species]['Complex'].append(values)
+            elif ilocus_class[ilcid] == 'Orphan':
+                breakdown[species]['Orphan'].append(values)
+            elif ilcid in hicons:
+                breakdown[species]['Conserved'].append(values)
+            else:
                 breakdown[species]['Matched'].append(values)
+
+    if args.table:
+        locus2mrna = locus_mrna_map(root=args.rootdir)
+        print(header.rstrip() + '\tClass\tmRNA')
+        for spec in breakdown:
+            for col in outcols:
+                for ilocus in breakdown[spec][col]:
+                    ilocus.append(col)
+                    mrna = 'NA'
+                    if ilocus[1] in locus2mrna:
+                        mrna = locus2mrna[ilocus[1]]
+                    ilocus.append(mrna)
+                    print('\t'.join(ilocus))
+        sys.exit(0)
 
     print('\t'.join(['Species'] + outcols))
     for species in sorted(breakdown):
@@ -104,6 +131,6 @@ if __name__ == '__main__':
             if args.counts:
                 print('\t%d' % len(iloci), end='', sep='')
             else:
-                cumlength = sum([int(x[3]) - int(x[11]) for x in iloci])
+                cumlength = sum([int(x[4]) for x in iloci])
                 print('\t%d' % cumlength, end='', sep='')
         print('\n', end='')

@@ -2,8 +2,8 @@
 ##sequence-region   NT_033778.3 19707893 19724863
 ##sequence-region   NW_003798164.1 140567 151385
 ##sequence-region   PdomSCFr1.2-0001 302897 332963
-NT_033778.3	RefSeq	gene	19707893	19724863	.	+	.	ID=gene9161;Name=CG5549;Dbxref=FLYBASE:FBgn0034911,GeneID:37772;gbkey=Gene;gene=CG5549;gene_synonym=Dmel%5CCG5549;locus_tag=Dmel_CG5549;partial=true
-NT_033778.3	RefSeq	mRNA	19707893	19724863	.	+	.	ID=mRNA16418;Parent=gene9161;Name=NM_137992.2;Note=CG5549-RB%3B Dmel%5CCG5549-RB;Dbxref=Genbank:NM_137992.2,FLYBASE:FBgn0034911,GeneID:37772;gbkey=mRNA;gene=CG5549;product=CG5549;transcript_id=NM_137992.2
+NT_033778.3	RefSeq	gene	19707893	19724863	.	+	.	ID=gene9161;Name=CG5549;Dbxref=FLYBASE:FBgn0034911,GeneID:37772;gbkey=Gene;gene=CG5549;gene_synonym=Dmel%5CCG5549;locus_tag=Dmel_CG5549;partial=true;accession=37772
+NT_033778.3	RefSeq	mRNA	19707893	19724863	.	+	.	ID=mRNA16418;Parent=gene9161;Name=NM_137992.2;Note=CG5549-RB%3B Dmel%5CCG5549-RB;Dbxref=Genbank:NM_137992.2,FLYBASE:FBgn0034911,GeneID:37772;gbkey=mRNA;gene=CG5549;product=CG5549;transcript_id=NM_137992.2;accession=NM_137992.2
 NT_033778.3	RefSeq	exon	19707893	19708118	.	+	.	Parent=mRNA16418;Note=CG5549-RB%3B Dmel%5CCG5549-RB;Dbxref=Genbank:NM_137992.2,FLYBASE:FBgn0034911,GeneID:37772;gbkey=mRNA;gene=CG5549;product=CG5549;transcript_id=NM_137992.2
 NT_033778.3	.	five_prime_UTR	19707893	19708118	.	+	.	Parent=mRNA16418
 NT_033778.3	.	intron	19708119	19717490	.	+	.	Parent=mRNA16418
@@ -34,8 +34,8 @@ NT_033778.3	RefSeq	exon	19722956	19724863	.	+	.	Parent=mRNA16418;Note=CG5549-RB%
 NT_033778.3	RefSeq	CDS	19722956	19724863	.	+	0	ID=CDS14277;Parent=mRNA16418;Name=NP_611836.2;Dbxref=Genbank:NP_611836.2,FLYBASE:FBgn0034911,GeneID:37772;gbkey=CDS;product=CG5549;protein_id=NP_611836.2
 NT_033778.3	.	stop_codon	19724861	19724863	.	+	.	Parent=mRNA16418
 ###
-NW_003798164.1	RefSeq	gene	140567	151385	.	-	.	ID=gene8773;Name=LOC100884126;Dbxref=GeneID:100884126;gbkey=Gene;gene=LOC100884126
-NW_003798164.1	RefSeq	mRNA	140567	151385	.	-	.	ID=mRNA9074;Parent=gene8773;Name=XM_003708196.1;Dbxref=GeneID:100884126,Genbank:XM_003708196.1;gbkey=mRNA;gene=LOC100884126;product=transcription factor IIIB 90 kDa subunit-like;transcript_id=XM_003708196.1
+NW_003798164.1	RefSeq	gene	140567	151385	.	-	.	ID=gene8773;Name=LOC100884126;Dbxref=GeneID:100884126;gbkey=Gene;gene=LOC100884126;accession=100884126
+NW_003798164.1	RefSeq	mRNA	140567	151385	.	-	.	ID=mRNA9074;Parent=gene8773;Name=XM_003708196.1;Dbxref=GeneID:100884126,Genbank:XM_003708196.1;gbkey=mRNA;gene=LOC100884126;product=transcription factor IIIB 90 kDa subunit-like;transcript_id=XM_003708196.1;accession=XM_003708196.1
 NW_003798164.1	.	stop_codon	140567	140569	.	-	.	Parent=mRNA9074
 NW_003798164.1	RefSeq	exon	140567	140700	.	-	.	Parent=mRNA9074;Dbxref=GeneID:100884126,Genbank:XM_003708196.1;gbkey=mRNA;gene=LOC100884126;product=transcription factor IIIB 90 kDa subunit-like;transcript_id=XM_003708196.1
 NW_003798164.1	RefSeq	CDS	140567	140700	.	-	2	ID=CDS8727;Parent=mRNA9074;Name=XP_003708244.1;Dbxref=GeneID:100884126,Genbank:XP_003708244.1;gbkey=CDS;product=transcription factor IIIB 90 kDa subunit-like;protein_id=XP_003708244.1
@@ -81,7 +81,7 @@ NW_003798164.1	RefSeq	CDS	151172	151385	.	-	0	ID=CDS8727;Parent=mRNA9074;Name=XP
 NW_003798164.1	.	start_codon	151383	151385	.	-	.	Parent=mRNA9074
 ###
 PdomSCFr1.2-0001	maker	gene	302897	332963	.	+	.	ID=PdomGENEr1.2-08589;Name=PdomGENEr1.2-08589;Dbxref=MAKER:1:gene9
-PdomSCFr1.2-0001	maker	mRNA	302897	332963	.	+	.	ID=PdomMRNAr1.2-08589.1;Parent=PdomGENEr1.2-08589;Name=PdomMRNAr1.2-08589.1;_AED=0.06;_eAED=0.06;_QI=108|1|0.96|1|0.87|0.88|50|1|4079;Dbxref=yrGATE:yrGATE-GDB001.00436,MAKER:1:mRNA9;description="ATP-binding cassette sub-family A member 13 and/or PREDICTED: hypothetical protein LOC"
+PdomSCFr1.2-0001	maker	mRNA	302897	332963	.	+	.	ID=PdomMRNAr1.2-08589.1;Parent=PdomGENEr1.2-08589;Name=PdomMRNAr1.2-08589.1;_AED=0.06;_eAED=0.06;_QI=108|1|0.96|1|0.87|0.88|50|1|4079;Dbxref=yrGATE:yrGATE-GDB001.00436,MAKER:1:mRNA9;description="ATP-binding cassette sub-family A member 13 and/or PREDICTED: hypothetical protein LOC";accession=PdomMRNAr1.2-08589.1
 PdomSCFr1.2-0001	maker	exon	302897	302983	.	+	.	Parent=PdomMRNAr1.2-08589.1
 PdomSCFr1.2-0001	maker	five_prime_UTR	302897	302983	.	+	.	ID=PdomMRNAr1.2-08589.1.5putr;Parent=PdomMRNAr1.2-08589.1
 PdomSCFr1.2-0001	.	intron	302984	307105	.	+	.	Parent=PdomMRNAr1.2-08589.1

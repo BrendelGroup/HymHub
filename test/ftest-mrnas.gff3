@@ -2,20 +2,20 @@
 ##sequence-region   NW_003791127.1 5226673 5245610
 ##sequence-region   NW_006263567.1 203927 218388
 ##sequence-region   Si_gnF.scaffold05345 242061 242348
-NW_003791127.1	RefSeq	mRNA	5226673	5226695	.	+	.	ID=mRNA6484;Dbxref=GeneID:100863346,Genbank:XM_003696020.1;gbkey=mRNA;gene=LOC100863346;product=uncharacterized LOC100863346;transcript_id=XM_003696020.1;Name=XM_003696020.1
-NW_003791127.1	RefSeq	mRNA	5237971	5238100	.	+	.	ID=mRNA6484;Dbxref=GeneID:100863346,Genbank:XM_003696020.1;gbkey=mRNA;gene=LOC100863346;product=uncharacterized LOC100863346;transcript_id=XM_003696020.1;Name=XM_003696020.1
-NW_003791127.1	RefSeq	mRNA	5240913	5241011	.	+	.	ID=mRNA6484;Dbxref=GeneID:100863346,Genbank:XM_003696020.1;gbkey=mRNA;gene=LOC100863346;product=uncharacterized LOC100863346;transcript_id=XM_003696020.1;Name=XM_003696020.1
-NW_003791127.1	RefSeq	mRNA	5245338	5245610	.	+	.	ID=mRNA6484;Dbxref=GeneID:100863346,Genbank:XM_003696020.1;gbkey=mRNA;gene=LOC100863346;product=uncharacterized LOC100863346;transcript_id=XM_003696020.1;Name=XM_003696020.1
+NW_003791127.1	RefSeq	mRNA	5226673	5226695	.	+	.	ID=mRNA6484;Dbxref=GeneID:100863346,Genbank:XM_003696020.1;gbkey=mRNA;gene=LOC100863346;product=uncharacterized LOC100863346;transcript_id=XM_003696020.1;Name=XM_003696020.1;accession=XM_003696020.1
+NW_003791127.1	RefSeq	mRNA	5237971	5238100	.	+	.	ID=mRNA6484;Dbxref=GeneID:100863346,Genbank:XM_003696020.1;gbkey=mRNA;gene=LOC100863346;product=uncharacterized LOC100863346;transcript_id=XM_003696020.1;Name=XM_003696020.1;accession=XM_003696020.1
+NW_003791127.1	RefSeq	mRNA	5240913	5241011	.	+	.	ID=mRNA6484;Dbxref=GeneID:100863346,Genbank:XM_003696020.1;gbkey=mRNA;gene=LOC100863346;product=uncharacterized LOC100863346;transcript_id=XM_003696020.1;Name=XM_003696020.1;accession=XM_003696020.1
+NW_003791127.1	RefSeq	mRNA	5245338	5245610	.	+	.	ID=mRNA6484;Dbxref=GeneID:100863346,Genbank:XM_003696020.1;gbkey=mRNA;gene=LOC100863346;product=uncharacterized LOC100863346;transcript_id=XM_003696020.1;Name=XM_003696020.1;accession=XM_003696020.1
 ###
-NW_006263567.1	Gnomon	mRNA	203927	204384	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1
-NW_006263567.1	Gnomon	mRNA	204476	204809	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1
-NW_006263567.1	Gnomon	mRNA	204906	205396	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1
-NW_006263567.1	Gnomon	mRNA	208365	208501	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1
-NW_006263567.1	Gnomon	mRNA	208594	208722	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1
-NW_006263567.1	Gnomon	mRNA	211079	211142	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1
-NW_006263567.1	Gnomon	mRNA	212319	212372	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1
-NW_006263567.1	Gnomon	mRNA	214776	214887	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1
-NW_006263567.1	Gnomon	mRNA	218213	218388	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1
+NW_006263567.1	Gnomon	mRNA	203927	204384	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1;accession=XM_006617018.1
+NW_006263567.1	Gnomon	mRNA	204476	204809	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1;accession=XM_006617018.1
+NW_006263567.1	Gnomon	mRNA	204906	205396	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1;accession=XM_006617018.1
+NW_006263567.1	Gnomon	mRNA	208365	208501	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1;accession=XM_006617018.1
+NW_006263567.1	Gnomon	mRNA	208594	208722	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1;accession=XM_006617018.1
+NW_006263567.1	Gnomon	mRNA	211079	211142	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1;accession=XM_006617018.1
+NW_006263567.1	Gnomon	mRNA	212319	212372	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1;accession=XM_006617018.1
+NW_006263567.1	Gnomon	mRNA	214776	214887	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1;accession=XM_006617018.1
+NW_006263567.1	Gnomon	mRNA	218213	218388	.	-	.	ID=mRNA9962;Dbxref=GeneID:102674035,Genbank:XM_006617018.1;gbkey=mRNA;gene=LOC102674035;product=ETS-like protein pointed%2C isoform P2%2FD-like;transcript_id=XM_006617018.1;Name=XM_006617018.1;accession=XM_006617018.1
 ###
-Si_gnF.scaffold05345	sinv_OGSv2.2.3	mRNA	242061	242348	.	+	.	ID=mRNA14616;Name=SINV11243-RA
+Si_gnF.scaffold05345	sinv_OGSv2.2.3	mRNA	242061	242348	.	+	.	ID=mRNA14616;Name=SINV11243-RA;accession=SINV11243-RA
 ###

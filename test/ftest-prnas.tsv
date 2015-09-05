@@ -1,3 +1,3 @@
-Species	MrnaId	Accession	Length	GCContent	GCSkew	NContent	ExonCount	IntronCount	5pUTRlen	3pUTRlen
-default	mRNA11008	NM_143481.3	1285	0.496	0.047	0.000	2	1	65	105
-default	mRNA15321	SINV13460-RA	1954	0.320	0.085	0.000	6	5	0	0
+Species	Accession	Length	GCContent	GCSkew	NContent	ExonCount	IntronCount	5pUTRlen	3pUTRlen
+default	NM_143481.3	1285	0.496	0.047	0.000	2	1	65	105
+default	SINV13460-RA	1954	0.320	0.085	0.000	6	5	0	0

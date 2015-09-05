@@ -36,17 +36,17 @@ args = parser.parse_args()
 mrnas2keep = dict()
 next(args.hiloci)
 for line in args.hiloci:
-    values = line.split('\t')
+    values = line.rstrip().split('\t')
     species = values[args.s - 1]
     mrnaid = values[args.m - 1]
     if species not in mrnas2keep:
         mrnas2keep[species] = dict()
     mrnas2keep[species][mrnaid] = True
 
-print str(next(args.featfile)).rstrip()
+print >> args.outfile, str(next(args.featfile)).rstrip()
 for line in args.featfile:
-    values = line.split('\t')
+    values = line.rstrip().split('\t')
     species = values[args.S - 1]
     mrnaid = values[args.M - 1]
     if species in mrnas2keep and mrnaid in mrnas2keep[species]:
-        print line.rstrip()
+        print >> args.outfile, line.rstrip()

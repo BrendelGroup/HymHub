@@ -56,8 +56,9 @@ if [ "$DOFORMAT" != "0" ]; then
   echo "[HymHub: $FULLSPEC] clean up annotation"
   gunzip -c $refrgff3 \
       | grep -v -f species/Dmel/excludes.txt \
-      | species/Dmel/fix-trna.py \
+      | python species/Dmel/fix-trna.py \
       | tidygff3 2> ${gff3}.tidy.log \
+      | python scripts/gff3-format.py - \
       | gt gff3 -retainids -sort -tidy -o ${gff3} -force 2>&1 \
       | grep -v 'has not been previously introduced' \
       | grep -v 'does not begin with "##gff-version"' || true

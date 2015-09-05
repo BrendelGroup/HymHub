@@ -24,12 +24,8 @@ ncbi_format()
   echo "[HymHub: $FULLSPEC] clean up annotation"
   gunzip -c $refrgff3 \
       | $filtercmd \
-      | grep -v $'\tregion\t' \
-      | grep -v $'\tmatch\t' \
-      | grep -v $'\tcDNA_match\t' \
-      | grep -v '###' \
-      | grep -v '##species' \
       | tidygff3 2> ${gff3}.tidy.log \
+      | python scripts/gff3-format.py - \
       | gt gff3 -sort -tidy -o ${gff3} -force 2>&1 \
       | grep -v 'has not been previously introduced' \
       | grep -v 'does not begin with "##gff-version"' || true

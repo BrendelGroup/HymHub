@@ -37,7 +37,7 @@ get_iloci()
 
   echo "[HymHub: ${SPEC}] identifying iLocus representatives (longest isoforms)"
   grep -v $'\tintron\t' ${WD}/${SPEC}.iloci.gff3 \
-      | pmrna --locus --map ${WD}/${SPEC}.ilocus.mrnas.txt \
+      | pmrna --locus --accession --map ${WD}/${SPEC}.ilocus.mrnas.txt \
       | canon-gff3 --outfile ${WD}/${SPEC}.ilocus.mrnas.gff3 2>&1 \
       | grep -v 'no valid mRNAs' || true
   cut -f 2 ${WD}/${SPEC}.ilocus.mrnas.txt > ${WD}/${SPEC}.mrnas.txt
@@ -54,7 +54,7 @@ get_genes()
 
   echo "[HymHub: ${SPEC}] identifying gene representatives (longest isoforms)"
   grep -v $'\tintron\t' ${WD}/${SPEC}.gff3 \
-      | pmrna --map ${WD}/${SPEC}.mrna2gene.txt \
+      | pmrna --accession --map ${WD}/${SPEC}.mrna2gene.txt \
       | canon-gff3 --outfile ${WD}/${SPEC}.gene.mrnas.gff3 2>&1 \
       | grep -v 'no valid mRNAs' || true
   cut -f 2 ${WD}/${SPEC}.mrna2gene.txt > ${WD}/${SPEC}.gene.mrnas.txt
@@ -147,23 +147,20 @@ get_exons()
   local WD=species/${SPEC}
 
   echo "[HymHub: ${SPEC}] extracting exons"
-  xtractore --type=exon --outfile=${WD}/${SPEC}.all.exons.fa \
-            ${WD}/${SPEC}.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
+  xtractore --type=exon --outfile=${WD}/${SPEC}.exons.fa \
+            ${WD}/${SPEC}.ilocus.mrnas.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
       | grep -v 'has not been previously introduced' \
       | grep -v 'does not begin with "##gff-version"' || true
-  python scripts/select-seq.py ${WD}/${SPEC}.gene.mrnas.txt ${WD}/${SPEC}.all.exons.fa > ${WD}/${SPEC}.gene.exons.fa
-  python scripts/select-seq.py ${WD}/${SPEC}.mrnas.txt ${WD}/${SPEC}.all.exons.fa > ${WD}/${SPEC}.exons.fa
 
   echo "[HymHub: ${SPEC}] extracting introns"
-  canon-gff3 --outfile ${WD}/${SPEC}-withintrons.gff3 ${WD}/${SPEC}.ilocus.mrnas.gff3 \
-      | grep -v 'no valid mRNAs' || true
-  xtractore --type=intron --outfile=${WD}/${SPEC}.all.introns.fa \
+  canon-gff3 ${WD}/${SPEC}.ilocus.mrnas.gff3 \
+      | python scripts/intron-accessions.py \
+      > ${WD}/${SPEC}-withintrons.gff3
+  xtractore --type=intron --outfile=${WD}/${SPEC}.introns.fa \
             ${WD}/${SPEC}-withintrons.gff3 ${WD}/${SPEC}.gdna.fa 2>&1 \
       | grep -v 'has not been previously introduced' \
       | grep -v 'does not begin with "##gff-version"' || true
-  python scripts/select-seq.py ${WD}/${SPEC}.gene.mrnas.txt ${WD}/${SPEC}.all.introns.fa > ${WD}/${SPEC}.gene.introns.fa
-  python scripts/select-seq.py ${WD}/${SPEC}.mrnas.txt ${WD}/${SPEC}.all.introns.fa > ${WD}/${SPEC}.introns.fa
-  rm ${WD}/${SPEC}-withintrons.gff3
+  #rm ${WD}/${SPEC}-withintrons.gff3
 }
 
 get_datatypes()

@@ -39,7 +39,8 @@ if [ "$DOFORMAT" != "0" ]; then
   gunzip -f ${WD}/Pdom.gdna.fa.gz
   gunzip -c ${WD}/protein.fa.gz > ${WD}/Pdom.all.prot.fa
 
-  cp ${WD}/pdom-annot-r1.2.gff3 ${WD}/Pdom.gff3
+  python scripts/gff3-format.py --mode pdom ${WD}/pdom-annot-r1.2.gff3 \
+      > ${WD}/Pdom.gff3
 
   echo "[HymHub: $FULLSPEC] verify data files"
   shasum -c species/${SPEC}/checksums.sha

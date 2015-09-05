@@ -153,10 +153,9 @@ def premrna_desc(gff3, fasta):
     seqs = {}
     for defline, seq in fasta_utils.parse_fasta(fasta):
         seqid = defline[1:].split(" ")[0]
-        assert seqid not in seqs
-        seqs[seqid] = seq
+        if seqid not in seqs:
+            seqs[seqid] = seq
 
-    mrnaid = ""
     mrnaacc = ""
     mrnalen = 0
     gccontent = 0.0
@@ -170,13 +169,14 @@ def premrna_desc(gff3, fasta):
         if "\tmRNA\t" in entry:
             fields = entry.rstrip().split("\t")
             assert len(fields) == 9
-            mrnaid = re.search("ID=([^;\n]+)", fields[8]).group(1)
-            mrnaacc = re.search("Name=([^;\n]+)", fields[8]).group(1)
+            mrnaacc = re.search("accession=([^;\n]+)", fields[8]).group(1)
             mrnalen = int(fields[4]) - int(fields[3]) + 1
-            mrnaseq = seqs[mrnaid]
-            assert len(mrnaseq) == mrnalen, \
-                "mRNA '%s': length mismatch; gff=%d, fa=%d" % (
-                mrnaid, mrnalen, len(mrnaseq))
+            mrnaseq = seqs[mrnaacc]
+            if len(mrnaseq) != mrnalen:
+                print >> sys.stderr, \
+                    "mRNA '%s': length mismatch; gff=%d, fa=%d" % (
+                        mrnaacc, mrnalen, len(mrnaseq))
+                mrnaacc = ""
             gccontent = gc_content(mrnaseq)
             gcskew = gc_skew(mrnaseq)
             ncontent = n_content(mrnaseq)
@@ -193,10 +193,11 @@ def premrna_desc(gff3, fasta):
             assert len(fields) == 9
             utr3plen += int(fields[4]) - int(fields[3]) + 1
         elif "###" in entry:
-            values = "%s %s %d %.3f %.3f %.3f %d %d %d %d" % (
-                mrnaid, mrnaacc, mrnalen, gccontent, gcskew, ncontent,
-                exoncount, introncount, utr5plen, utr3plen)
-            mrnaid = ""
+            if mrnaacc != "":
+                values = "%s %d %.3f %.3f %.3f %d %d %d %d" % (
+                    mrnaacc, mrnalen, gccontent, gcskew, ncontent,
+                    exoncount, introncount, utr5plen, utr3plen)
+                yield values.split(" ")
             mrnaacc = ""
             mrnalen = 0
             gccontent = 0.0
@@ -207,7 +208,6 @@ def premrna_desc(gff3, fasta):
             introncount = 0
             utr5plen = 0
             utr3plen = 0
-            yield values.split(" ")
 
 
 def mrna_desc(gff3, fasta):
@@ -218,10 +218,9 @@ def mrna_desc(gff3, fasta):
     seqs = {}
     for defline, seq in fasta_utils.parse_fasta(fasta):
         seqid = defline[1:].split(" ")[0]
-        assert seqid not in seqs
-        seqs[seqid] = seq
+        if seqid not in seqs:
+            seqs[seqid] = seq
 
-    mrnaid = ""
     mrnaacc = ""
     mrnalen = 0
     for entry in gff3:
@@ -230,21 +229,25 @@ def mrna_desc(gff3, fasta):
             assert len(fields) == 9
             mrnaid = re.search("ID=([^;\n]+)", fields[8]).group(1)
             mrnalen += int(fields[4]) - int(fields[3]) + 1
-            mrnaacc = re.search("Name=([^;\n]+)", fields[8]).group(1)
+            accmatch = re.search("accession=([^;\n]+)", fields[8])
+            assert accmatch, 'Unable to parse mRNA accession: %s' % fields[8]
+            mrnaacc = accmatch.group(1)
         elif "###" in entry:
-            mrnaseq = seqs[mrnaid]
-            assert len(mrnaseq) == mrnalen, \
-                "mature mRNA '%s': length mismatch; gff=%d, fa=%d" % (
-                mrnaid, mrnalen, len(mrnaseq))
+            mrnaseq = seqs[mrnaacc]
+            if len(mrnaseq) != mrnalen:
+                print >> sys.stderr, \
+                    "mature mRNA '%s': length mismatch; gff=%d, fa=%d" % (
+                        mrnaacc, mrnalen, len(mrnaseq))
+                mrnaacc = ""
             gccontent = gc_content(mrnaseq)
             gcskew = gc_skew(mrnaseq)
             ncontent = n_content(mrnaseq)
-            values = "%s %s %d %.3f %.3f %.3f" % (
-                mrnaid, mrnaacc, mrnalen, gccontent, gcskew, ncontent)
-            mrnaid = ""
+            if mrnaacc != "":
+                values = "%s %d %.3f %.3f %.3f" % (
+                    mrnaacc, mrnalen, gccontent, gcskew, ncontent)
+                yield values.split(" ")
             mrnaacc = ""
             mrnalen = 0
-            yield values.split(" ")
 
 
 def cds_desc(gff3, fasta):
@@ -255,35 +258,33 @@ def cds_desc(gff3, fasta):
     seqs = {}
     for defline, seq in fasta_utils.parse_fasta(fasta):
         seqid = defline[1:].split(" ")[0]
-        assert seqid not in seqs
-        seqs[seqid] = seq
+        if seqid not in seqs:
+            seqs[seqid] = seq
 
-    cdsid = ""
+    accession = ""
     cdslen = 0
     for entry in gff3:
         if "\tCDS\t" in entry:
             fields = entry.rstrip().split("\t")
             assert len(fields) == 9
-            parentid = re.search("Parent=([^;\n]+)", fields[8]).group(1)
-            cdsmatch = re.search("ID=([^;\n]+)", fields[8])
-            if cdsmatch:
-                cdsid = cdsmatch.group(1)
-            else:
-                cdsid = parentid
+            accession = re.search("accession=([^;\n]+)", fields[8]).group(1)
             cdslen += int(fields[4]) - int(fields[3]) + 1
         elif "###" in entry:
-            cdsseq = seqs[cdsid]
-            assert len(cdsseq) == cdslen, \
-                "CDS '%s': length mismatch; gff=%d, fa=%d" % (
-                cdsid, cdslen, len(cdsseq))
+            cdsseq = seqs[accession]
+            if len(cdsseq) != cdslen:
+                print >> sys.stderr, \
+                    "CDS '%s': length mismatch; gff=%d, fa=%d" % (
+                        accession, cdslen, len(cdsseq))
+                accession = ""
             gccontent = gc_content(cdsseq)
             gcskew = gc_skew(cdsseq)
             ncontent = n_content(cdsseq)
-            values = "%s %s %d %.3f %.3f %.3f" % (
-                cdsid, parentid, cdslen, gccontent, gcskew, ncontent)
-            cdsid = ""
+            if accession != "":
+                values = "%s %d %.3f %.3f %.3f" % (
+                    accession, cdslen, gccontent, gcskew, ncontent)
+                yield values.split(" ")
+            accession = ""
             cdslen = 0
-            yield values.split(" ")
 
 
 def feat_overlap(f1, f2):
@@ -360,10 +361,18 @@ def exon_desc(gff3, fasta):
         exonpos = defline[1:].split(" ")[1]
         seqs[exonpos] = seq
 
+    rnaid_to_accession = dict()
     reported_exons = {}
     exons, cdss = [], {}
     start, stop = None, None
     for entry in gff3:
+        for rnatype in ['mRNA', 'tRNA', 'ncRNA', 'transcript',
+                        'primary_transcript']:
+            if ('\t%s\t' % rnatype) in entry:
+                accession = re.search("accession=([^;\n]+)", entry).group(1)
+                tid = re.search("ID=([^;\n]+)", entry).group(1)
+                rnaid_to_accession[tid] = accession
+
         if "\texon\t" in entry:
             exons.append(entry)
         elif "\tCDS\t" in entry:
@@ -410,8 +419,8 @@ def exon_desc(gff3, fasta):
                     phase = int(cexon.split("\t")[7])
                     remainder = (exonlength - phase) % 3
                 values = "%s %s %d %.3f %.3f %.3f %s %r %r" % (
-                    exonpos, mrnaid, exonlength, gccontent, gcskew, ncontent,
-                    context, phase, remainder)
+                    exonpos, rnaid_to_accession[mrnaid], exonlength, gccontent,
+                    gcskew, ncontent, context, phase, remainder)
                 reported_exons[exonpos] = 1
                 yield values.split(" ")
             exons, cdss = [], {}
@@ -468,9 +477,12 @@ def intron_desc(gff3, fasta):
 
     reported_introns = {}
     introns = []
+    mrnaid = None
     start, stop = None, None
     for entry in gff3:
-        if "\tintron\t" in entry:
+        if "\tmRNA\t" in entry:
+            mrnaid = re.search("Name=([^;\n]+)", entry).group(1)
+        elif "\tintron\t" in entry:
             introns.append(entry)
         elif "\tstart_codon\t" in entry:
             start = entry
@@ -484,7 +496,6 @@ def intron_desc(gff3, fasta):
                     fields = intron.split("\t")
                     assert len(fields) == 9, \
                         "entry does not have 9 fields: %s" % intron
-                    mrnaid = re.search("Parent=([^;\n]+)", fields[8]).group(1)
                     intronpos = "%s_%s-%s%s" % (fields[0], fields[3],
                                                 fields[4], fields[6])
                     if intronpos in reported_introns:
@@ -552,7 +563,7 @@ if __name__ == "__main__":
         with open(a[0], "r") as gff, \
                 open(a[1], "r") as fa,  \
                 open(a[2], "w") as out:
-            header = ["Species", "MrnaId", "Accession", "Length", "GCContent",
+            header = ["Species", "Accession", "Length", "GCContent",
                       "GCSkew", "NContent", "ExonCount", "IntronCount",
                       "5pUTRlen", "3pUTRlen"]
             print >> out, "\t".join(header)
@@ -566,7 +577,7 @@ if __name__ == "__main__":
         with open(a[0], "r") as gff, \
                 open(a[1], "r") as fa, \
                 open(a[2], "w") as out:
-            header = ["Species", "MrnaId", "Accession", "Length", "GCContent",
+            header = ["Species", "Accession", "Length", "GCContent",
                       "GCSkew", "NContent"]
             print >> out, "\t".join(header)
             for fields in mrna_desc(gff, fa):
@@ -579,7 +590,7 @@ if __name__ == "__main__":
         with open(a[0], "r") as gff, \
                 open(a[1], "r") as fa, \
                 open(a[2], "w") as out:
-            header = ["Species", "CdsId", "MrnaId", "Length", "GCContent",
+            header = ["Species", "MrnaAcc", "Length", "GCContent",
                       "GCSkew", "NContent"]
             print >> out, "\t".join(header)
             for fields in cds_desc(gff, fa):
@@ -592,7 +603,7 @@ if __name__ == "__main__":
         with open(a[0], "r") as gff, \
                 open(a[1], "r") as fa, \
                 open(a[2], "w") as out:
-            header = ["Species", "ExonPos", "MrnaId", "Length", "GCContent",
+            header = ["Species", "ExonPos", "MrnaAcc", "Length", "GCContent",
                       "GCSkew", "NContent", "Context", "Phase", "Remainder"]
             print >> out, "\t".join(header)
             for fields in exon_desc(gff, fa):
@@ -605,7 +616,7 @@ if __name__ == "__main__":
         with open(a[0], "r") as gff, \
                 open(a[1], "r") as fa, \
                 open(a[2], "w") as out:
-            header = ["Species", "IntronPos", "MrnaId", "Length", "GCContent",
+            header = ["Species", "IntronPos", "MrnaAcc", "Length", "GCContent",
                       "GCSkew", "NContent", "Context"]
             print >> out, "\t".join(header)
             for fields in intron_desc(gff, fa):
