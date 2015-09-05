@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
     for hid in sorted(iloci):
         values = [hid]
-        for lineage in ['Ants', 'Bees', 'Pdom', 'Nvit']:
+        for lineage in ['Ants', 'Bees', 'Vespids', 'Chalcids']:
             random.shuffle(iloci[hid][lineage])
             values.append('%s:%s' % (iloci[hid][lineage][0]))
         print '\t'.join(values)

@@ -6,6 +6,7 @@
 
 import sys
 import hilocus_utils
+import hym_species
 
 
 def ilocus_isoforms(rootdir='.'):
@@ -18,9 +19,7 @@ def ilocus_isoforms(rootdir='.'):
     """
     ilocus2mrna = dict()
     mapping = dict()
-    for species in ['Acep', 'Ador', 'Aech', 'Aflo', 'Amel', 'Bimp', 'Bter',
-                    'Cflo', 'Dmel', 'Hsal', 'Mrot', 'Nvit', 'Pbar', 'Pdom',
-                    'Sinv', 'Tcas']:
+    for species in hym_species.labels:
         mrnafile = '%s/species/%s/%s.ilocus.mrnas.txt' % (rootdir, species,
                                                           species)
         protfile = '%s/species/%s/%s.protein2ilocus.txt' % (rootdir, species,
@@ -41,17 +40,30 @@ if __name__ == '__main__':
     import argparse
     import sys
 
-    desc = ('Select hiLoci that are well conserved in the main hymenopteran '
-            'lineages--specifically those with single-copy orthologs from at '
-            'least one ant, at least one be, vespid wasps (Polistes), and '
-            'parasitic wasps (Nasonia)')
+    desc = ('Select conserved hiLoci based on the specified criteria')
     parser = argparse.ArgumentParser(description=desc)
-    parser.add_argument('-r', '--rootdir', default='.',
+    parser.add_argument('-m', '--mode', default='rep', help='specify the '
+                        '"mode" used to query conservation; "rep" selects '
+                        'hiLoci with at least one single-copy ortholog in each'
+                        ' of the 4 primary lineages; "six" selects hiLoci with'
+                        ' single-copy orthologs in Amel, Bter, Hsal, Cflo, '
+                        'Pdom, and Nvit; "four" selects hiLoci with single-'
+                        'copy orthologs in Amel, Hsal, Pdom, and Nvit; a '
+                        'comma-separated list of species labels will select '
+                        'hiLoci with single-copy orthologs in those species; '
+                        'default is "rep"')
+    parser.add_argument('-r', '--rootdir', default='.', metavar='RD',
                         help='path to HymHub root directory; default is '
                         'current directory')
     parser.add_argument('hiloci', type=argparse.FileType('r'),
                         default=sys.stdin, help='hiLocus data table')
     args = parser.parse_args()
+
+    if args.mode not in ['rep', 'six', 'four']:
+        speclabs = args.mode.split(',')
+        for speclab in speclabs:
+            assert speclab in hym_species.labels, \
+                'Invalid species label %s' % speclab
 
     ilocus_mapping = ilocus_isoforms(rootdir=args.rootdir)
     simple = hilocus_utils.load_simple_iloci(args.rootdir)
@@ -60,22 +72,49 @@ if __name__ == '__main__':
                      'Protein'])
     for line in args.hiloci:
         values = line.rstrip().split('\t')
-        if values[4] not in ['Hymenoptera', 'Insects']:
-            continue
         species = values[6].split(',')
-        if 'Pdom' not in species or 'Nvit' not in species:
-            continue
         iloci = values[5].split(',')
         hid = values[0]
 
-        ants = hilocus_utils.in_ants(iloci, as_list=True, simple_iloci=simple)
-        bees = hilocus_utils.in_bees(iloci, as_list=True, simple_iloci=simple)
-        pdom = hilocus_utils.in_pdom(iloci, as_list=True, simple_iloci=simple)
-        nvit = hilocus_utils.in_nvit(iloci, as_list=True, simple_iloci=simple)
-        if None in [ants, bees, pdom, nvit]:
-            # Lack representative from one or more clades; moving on
-            continue
+        if args.mode in ['rep', 'six', 'four']:
+            if values[4] not in ['Hymenoptera', 'Insects']:
+                continue
+            if 'Pdom' not in species or 'Nvit' not in species:
+                continue
 
-        for spec, ilocus, lineage in ants + bees + pdom + nvit:
+        if args.mode == 'rep':
+            ants = hilocus_utils.in_ants(iloci, as_list=True,
+                                         simple_iloci=simple)
+            bees = hilocus_utils.in_bees(iloci, as_list=True,
+                                         simple_iloci=simple)
+            pdom = hilocus_utils.in_pdom(iloci, as_list=True,
+                                         simple_iloci=simple)
+            nvit = hilocus_utils.in_nvit(iloci, as_list=True,
+                                         simple_iloci=simple)
+            if None in [ants, bees, pdom, nvit]:
+                # Lack representative from one or more clades; moving on
+                continue
+            scos = ants + bees + pdom + nvit
+
+        elif args.mode == 'six' or args.mode == 'four':
+            if args.mode == 'six':
+                queryfunc = hilocus_utils.in_six
+                testlen = 6
+            elif args.mode == 'four':
+                queryfunc = hilocus_utils.in_four
+                testlen = 4
+            scos = queryfunc(iloci, as_list=True, simple_iloci=simple)
+            if scos is None or len(scos) != testlen:
+                # Lack representative from one or more clades; moving on
+                continue
+
+        else:
+            scos = hilocus_utils.in_clade(iloci, speclabs, as_list=True,
+                                          simple_iloci=simple)
+            if scos is None or len(scos) != len(speclabs):
+                # Lack representative from one or more clades; moving on
+                continue
+
+        for spec, ilocus, lineage in scos:
             mrnaid, protid = ilocus_mapping[ilocus]
             print '\t'.join([hid, ilocus, spec, lineage, mrnaid, protid])

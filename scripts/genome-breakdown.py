@@ -6,14 +6,13 @@
 
 from __future__ import print_function
 import sys
+import hym_species
 import hilocus_utils
 
 
 def locus_mrna_map(root='.'):
     locus2mrna = dict()
-    for species in ['Acep', 'Ador', 'Aech', 'Aflo', 'Amel', 'Bimp',
-                    'Bter', 'Cflo', 'Dmel', 'Hsal', 'Mrot', 'Nvit',
-                    'Pbar', 'Pdom', 'Sinv', 'Tcas']:
+    for species in hym_species.labels:
         fname = '%s/species/%s/%s.ilocus.mrnas.txt' % (root, species, species)
         for line in open(fname, 'r'):
             ilocusid, mrnaid = line.rstrip().split()

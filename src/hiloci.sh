@@ -28,25 +28,39 @@ cluster_proteins()
                                    data/hym-prot.clstr \
                                    <(cat species/*/*.protein2ilocus.txt)
 
-  echo "[HymHub] computing Hymenoptera-conserved hiLoci"
-  scripts/hilocus-conserved.py data/hiloci.tsv > data/hiloci-conserved.tsv 
-
-  echo "[HymHub] computing representative quartets of conserved hiLoci"
-  scripts/hilocus-quartets.py --seed 2466724 \
-      data/hiloci-conserved.tsv \
-      > data/quartets.tsv
-
-  echo "[HymHub] extracting computed features for conserved hiLoci"
-  scripts/mrna-feat-subset.py -M 2 data/hiloci-conserved.tsv \
-      data/mrnas.tsv \
-      > data/mrnas-hicons.tsv
-  for featuretype in exons introns cds
+  for mode in rep six four
   do
-    scripts/mrna-feat-subset.py \
-        data/hiloci-conserved.tsv \
-        data/${featuretype}.tsv \
-        > data/${featuretype}-hicons.tsv
+    echo "[HymHub] computing Hymenoptera-conserved hiLoci ($mode)"
+    scripts/hilocus-conserved.py --mode $mode data/hiloci.tsv \
+        > data/hiloci-conserved-${mode}.tsv 
+
+    echo "[HymHub] extracting computed features for conserved hiLoci ($mode)"
+    scripts/mrna-feat-subset.py -M 2 data/hiloci-conserved-${mode}.tsv \
+        data/mrnas.tsv \
+        > data/mrnas-hicons-${mode}.tsv
+    for featuretype in exons introns cds
+    do
+      scripts/mrna-feat-subset.py \
+          data/hiloci-conserved-${mode}.tsv \
+          data/${featuretype}.tsv \
+          > data/${featuretype}-hicons-${mode}.tsv
+    done
   done
 
-  #shasum -c data/hilocus-data.sha
+  echo "[HymHub] computing representative quartets of conserved hiLoci"
+  scripts/hilocus-quartets.py data/hiloci-conserved-four.tsv \
+      > data/quartets.tsv
+
+  echo "[HymHub] computing breakdowns of genome content"
+  scripts/genome-breakdown.py data/iloci.tsv data/hiloci.tsv \
+                           data/hiloci-conserved-six.tsv \
+      > data/breakdown-bp.tsv
+  scripts/genome-breakdown.py --counts data/iloci.tsv data/hiloci.tsv \
+                           data/hiloci-conserved-six.tsv \
+      > data/breakdown-counts.tsv
+  scripts/genome-breakdown.py --table data/iloci.tsv data/hiloci.tsv \
+                           data/hiloci-conserved-six.tsv \
+      > data/breakdown-iloci.tsv
+
+  shasum -c data/hilocus-data.sha
 }
