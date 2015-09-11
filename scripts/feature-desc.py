@@ -139,9 +139,13 @@ def ilocus_desc(gff3, fasta):
             gmatch = re.search('gene=(\d+)', attrs)
             assert gmatch
             genecount = int(gmatch.group(1))
-        values = '%s %s %d %d %.3f %.3f %.3f %s %d %r %r' % (
+        orient = 'NA'
+        orientmatch = re.search('fg_orient=(..)', attrs)
+        if orientmatch:
+            orient = orientmatch.group(1)
+        values = '%s %s %d %d %.3f %.3f %.3f %s %d %r %r %s' % (
             locusid, locuspos, locuslen, efflen, gccontent, gcskew, ncontent,
-            locusclass, genecount, fragment, unannot)
+            locusclass, genecount, fragment, unannot, orient)
         yield values.split(' ')
 
 
@@ -551,7 +555,8 @@ if __name__ == '__main__':
                 open(a[2], 'w') as out:
             header = ['Species', 'LocusId', 'LocusPos', 'Length',
                       'EffectiveLength', 'GCContent', 'GCSkew', 'NContent',
-                      'LocusClass', 'GeneCount', 'Fragment', 'SeqUnannot']
+                      'LocusClass', 'GeneCount', 'Fragment', 'SeqUnannot',
+                      'FlankGeneOrient']
             print >> out, '\t'.join(header)
             for fields in ilocus_desc(gff, fa):
                 fields = [args.species] + fields

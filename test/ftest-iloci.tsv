@@ -1,4 +1,4 @@
-Species	LocusId	LocusPos	Length	EffectiveLength	GCContent	GCSkew	NContent	LocusClass	GeneCount	Fragment	SeqUnannot
-default	HymHubTcasILCv0.0.1-03043	NC_007418.2_8522509-8530684	8176	8176	0.326	-0.031	0.000	piLocus	1	False	False
-default	HymHubNvitILCv0.0.1-03989	NC_015868.2_15753180-15759619	6440	6440	0.472	0.019	0.000	iiLocus	0	False	False
-default	HymHubCfloILCv0.0.1-48614	scaffold916_1-16131	16131	16131	0.302	-0.048	0.029	piLocus	1	False	False
+Species	LocusId	LocusPos	Length	EffectiveLength	GCContent	GCSkew	NContent	LocusClass	GeneCount	Fragment	SeqUnannot	FlankGeneOrient
+default	HymHubTcasILCv0.0.1-03043	NC_007418.2_8522509-8530684	8176	8176	0.326	-0.031	0.000	piLocus	1	False	False	NA
+default	HymHubNvitILCv0.0.1-03989	NC_015868.2_15753180-15759619	6440	6440	0.472	0.019	0.000	iiLocus	0	False	False	NA
+default	HymHubCfloILCv0.0.1-48614	scaffold916_1-16131	16131	16131	0.302	-0.048	0.029	piLocus	1	False	False	NA
