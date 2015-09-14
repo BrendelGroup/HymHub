@@ -13,9 +13,11 @@ get_iloci()
 
   echo "[HymHub: ${SPEC}] computing iLocus boundaries"
   lpdriver.py --idfmt="HymHub${SPEC}ILC${VERSION}-%05lu" --delta=500 \
+              --ilenfile ${WD}/${SPEC}.ilens.txt \
               --out ${WD}/${SPEC}.iloci.gff3 \
               ${WD}/${SPEC}.gff3 \
       2> ${WD}/iloci.gff3.log
+  python scripts/filens.py < ${WD}/${SPEC}.iloci.gff3 > ${WD}/${SPEC}.filens.tsv
 
   echo "[HymHub: ${SPEC}] merging iLoci"
   miloci.py < ${WD}/${SPEC}.iloci.gff3 > ${WD}/${SPEC}.miloci.gff3
