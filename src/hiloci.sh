@@ -60,9 +60,9 @@ cluster_proteins()
       > data/breakdown-counts.tsv
   scripts/genome-breakdown.py --table data/iloci.tsv data/hiloci.tsv \
                            data/hiloci-conserved-six.tsv \
+      > data/breakdown-iloci.temp
+  scripts/add-utrs.py data/pre-mrnas.tsv data/breakdown-iloci.temp \
       > data/breakdown-iloci.tsv
-  scripts/add-utrs.py data/pre-mrnas.tsv data/breakdown-iloci.tsv \
-      > data/breakdown-iloci-withutrs.tsv
 
   shasum -c data/hilocus-data.sha
 }

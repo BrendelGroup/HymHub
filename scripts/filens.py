@@ -11,12 +11,20 @@ import argparse
 import re
 import sys
 
-for line in sys.stdin:
+parser = argparse.ArgumentParser()
+parser.add_argument('species', help='4-letter species label')
+parser.add_argument('gff3', type=argparse.FileType('r'), default=sys.stdin)
+args = parser.parse_args()
+
+for line in args.gff3:
     liilmatch = re.search('liil=(\d+)', line)
     riilmatch = re.search('riil=(\d+)', line)
+    idmatch = re.search('ID=([^;\n]+)', line)
     if not liilmatch or not riilmatch:
         continue
 
-    liil = int(liilmatch.group(1))
-    riil = int(riilmatch.group(1))
-    print("%d\t%d" % (liil, riil))
+    lid = idmatch.group(1)
+    liil = liilmatch.group(1)
+    riil = riilmatch.group(1)
+    fields = '\t'.join([args.species, lid, liil, riil])
+    print(fields)

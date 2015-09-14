@@ -5,6 +5,7 @@ data/Hym.prot.fa
 data/cdhit.log
 data/hym-prot
 data/hym-prot.clstr
+data/*temp
 
 # Various species-specific intermediate files
 species/*/*.log
