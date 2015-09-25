@@ -59,6 +59,8 @@ if __name__ == '__main__':
     parser.add_argument('-r', '--rootdir', default='.',
                         help='path to HymHub root directory; default is '
                         'current directory')
+    parser.add_argument('-s', '--skiplong', action='store_true',
+                        help='Skip 100 longest piLoci for all species')
     parser.add_argument('iloci', type=argparse.FileType('r'),
                         default=sys.stdin, help='iLocus data table')
     parser.add_argument('hiloci', type=argparse.FileType('r'),
@@ -74,6 +76,7 @@ if __name__ == '__main__':
     outcols = ['Conserved', 'Matched', 'Orphan', 'Complex', 'ncRNA',
                'Intergenic', 'Fragment']
     breakdown = dict()
+    pilocus_lengths = dict()
     header = next(args.iloci)
     for line in args.iloci:
         values = line.rstrip().split('\t')
@@ -88,6 +91,7 @@ if __name__ == '__main__':
 
         if species not in breakdown:
             breakdown[species] = dict((col, list()) for col in outcols)
+            pilocus_lengths[species] = list()
 
         if ilclass == 'iiLocus':
             if fragment == 'True':
@@ -98,6 +102,7 @@ if __name__ == '__main__':
             breakdown[species]['ncRNA'].append(values)
         else:
             assert ilclass in ['piLocus', 'complex'], ilcid
+            pilocus_lengths[species].append(int(values[3]))
             if ilclass == 'complex' or genecount > 1 or \
                     ilcid not in ilocus_class:
                 breakdown[species]['Complex'].append(values)
@@ -124,12 +129,19 @@ if __name__ == '__main__':
 
     print('\t'.join(['Species'] + outcols))
     for species in sorted(breakdown):
+        pilocus_lengths[species].sort()
+        longpilocus = pilocus_lengths[species][-500]
         print(species, end='', sep='')
         for col in outcols:
             iloci = breakdown[species][col]
             if args.counts:
                 print('\t%d' % len(iloci), end='', sep='')
             else:
-                cumlength = sum([int(x[4]) for x in iloci])
+                if args.skiplong and col in ['Conserved', 'Matched', 'Complex',
+                                             'Orphan']:
+                    cumlength = sum([int(x[4]) for x in iloci
+                                     if int(x[3]) < 75000])
+                else:
+                    cumlength = sum([int(x[4]) for x in iloci])
                 print('\t%d' % cumlength, end='', sep='')
         print('\n', end='')

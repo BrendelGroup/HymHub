@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
         if '\texon\t' in line or '\tintron\t' in line or '\tCDS\t' in line:
             rnaid = re.search('Parent=([^;\n]+)', line).group(1)
-            assert ',' not in rnaid
+            assert ',' not in rnaid, rnaid
             assert rnaid in rnaid_to_accession, rnaid
             if rnaid in rnaid_to_accession:
                 line += ';accession=%s' % rnaid_to_accession[rnaid]
