@@ -41,7 +41,7 @@ aggregate_stats()
     cat species/${spec}/${spec}.filens.tsv > data/filens.tsv
   done
 
-  #shasum -c data/checksums.sha
+  shasum -c data/checksums.sha
 }
 
 aggregate_stats_diffsrc()

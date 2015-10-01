@@ -64,5 +64,5 @@ cluster_proteins()
   scripts/add-utrs.py data/pre-mrnas.tsv data/breakdown-iloci.temp \
       > data/breakdown-iloci.tsv
 
-  #shasum -c data/hilocus-data.sha
+  shasum -c data/hilocus-data.sha
 }

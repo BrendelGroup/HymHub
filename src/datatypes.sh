@@ -25,7 +25,7 @@ get_iloci()
   miloci.py < ${WD}/${SPEC}.iloci.gff3 > ${WD}/${SPEC}.miloci.gff3
 
   echo "[HymHub: ${SPEC}] extracting iLocus sequences"
-  xtractore --type=locus ${WD}/${SPEC}.iloci.gff3 \
+  xtractore --nameisid --type=locus ${WD}/${SPEC}.iloci.gff3 \
             ${WD}/${SPEC}.gdna.fa \
       > ${WD}/${SPEC}.iloci.fa
   xtractore --type=locus ${WD}/${SPEC}.miloci.gff3 \

@@ -111,7 +111,7 @@ def ilocus_desc(gff3, fasta):
         assert len(fields) == 9
         locuspos = '%s_%s-%s' % (fields[0], fields[3], fields[4])
         locusid = locuspos
-        locusidmatch = re.search('ID=([^;\n]+)', fields[8])
+        locusidmatch = re.search('Name=([^;\n]+)', fields[8])
         if locusidmatch:
             locusid = locusidmatch.group(1)
         locuslen = int(fields[4]) - int(fields[3]) + 1

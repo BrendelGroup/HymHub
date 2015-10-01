@@ -93,7 +93,7 @@ def parse_hymbase(filehandle):
             ilocusid = idmatch.group(2)
             gene2loci[geneid] = ilocusid
         elif feattype == 'mRNA':
-            idmatch = re.search('Parent=([^;\n]+);Name=([^;\n]+)', fields[8])
+            idmatch = re.search('Parent=([^;\n]+);.*Name=([^;\n]+)', fields[8])
             assert idmatch, \
                 'Unable to parse mRNA and gene IDs: %s' % fields[8]
             mrnaid = idmatch.group(2)

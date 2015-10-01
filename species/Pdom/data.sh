@@ -43,7 +43,7 @@ if [ "$DOFORMAT" != "0" ]; then
       > ${WD}/Pdom.gff3
 
   echo "[HymHub: $FULLSPEC] verify data files"
-  #shasum -c species/${SPEC}/checksums.sha
+  shasum -c species/${SPEC}/checksums.sha
 fi
 
 if [ "$DODATATYPES" != "0" ]; then
