@@ -21,17 +21,36 @@ prep_specdirs()
 {
   local WD=$1
 
-  cp -r species/* $WD/.
-  rm -f $WD/*/*.gz $WD/*/*.log $WD/*/*.temp $WD/*/data.sh $WD/*/excludes.txt \
-        $WD/*/*.py $WD/*/N?_??????.*
-  ls $WD/*/*.fa | grep -v '\.gdna\.fa' | grep -v '\.iloci\.fa' | xargs rm
+  for spec in $species
+  do
+    mkdir $WD/$spec
+    cp species/$spec/${spec}.iloci.gff3 $WD/${spec}/.
+    cp species/$spec/${spec}.iloci.fa $WD/${spec}/.
+    cp species/$spec/${spec}*.tsv $WD/${spec}/.
+  done
 }
 
 prep_datadir()
 {
   local WD=$1
-  cp -r data $WD/summary-stats
-  rm $WD/summary-stats/HymHubDemo*
+  mkdir $WD/summary-stats
+  cp data/iloci.tsv data/miloci.tsv data/pre-mrnas.tsv $WD/summary-stats/.
+  for feat in introns exons cds mrnas
+  do
+    cp data/${feat}.tsv $WD/summary-stats/.
+    cp data/${feat}-hicons-rep.tsv $WD/summary-stats/.
+    cp data/${feat}-hicons-four.tsv $WD/summary-stats/.
+    cp data/${feat}-hicons-six.tsv $WD/summary-stats/.
+  done
+  cp data/hiloci-conserved-four.tsv \
+     data/hiloci-conserved-six.tsv \
+     data/hiloci-conserved-rep.tsv \
+     data/hiloci.tsv \
+     $WD/summary-stats/.
+  cp data/breakdown-bp.tsv \
+     data/breakdown-counts.tsv \
+     data/breakdown-iloci.tsv \
+     $WD/summary-stats/.
 }
 
 compress_dirs()

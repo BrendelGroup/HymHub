@@ -2,7 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased][unreleased]
+## [v0.2.0] - 2015-10-02
+
+### Changed
+- Handling of overlapping iLoci (refined iLocus parsing as handled by AEGeAn).
+
+### Fixed
+- Use feature accession numbers rather than (unstable) GFF3 IDs for tracking.
+
+### Added
+- Scripts for performing gene tree analysis on hiLocus data.
+- Scripts for genome breakdown.
+- Analysis of iLocus neighbor statistics.
+
+## [v0.1.0] - 2015-06-16
 ### Fixed
 - When parsing iLoci, `scripts/feature-desc.py` will now use the iLocus position
   as a default locusid (rather than causing an assertion failure).

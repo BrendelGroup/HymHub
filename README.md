@@ -2,7 +2,7 @@
 
 Welcome! What would you like to do?
 
-* **download the data**: data is available for download at [doi:m9.figshare.1306864][doi] courtesy of fig**share**.
+* **download the data**: data is available for download at [fig**share**][figshare].
 * **see the code**: the code used to generate the data files is available at [BrendelGroup/HymHub][github] courtesy of GitHub.
   Also included is a basic data analysis demo (implemented both in R and Python) that you can download and use interactively on your local system.
   A static rendering of the demo is available from the following links.
@@ -10,7 +10,7 @@ Welcome! What would you like to do?
   * [Python (IPython Notebook) demo][ipynb]
 * **read more about HymHub**: check out [our homepage][homepage].
 
-[doi]: http://dx.doi.org/10.6084/m9.figshare.1450783
+[figshare]: http://figshare.com/account/projects/3342
 [github]: https://github.com/BrendelGroup/HymHub
 [rpubs]: http://rpubs.com/danielstandage/hymhubdemo
 [ipynb]: https://github.com/BrendelGroup/HymHub/blob/master/data/HymHubDemo.ipynb
