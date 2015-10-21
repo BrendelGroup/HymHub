@@ -33,12 +33,12 @@ aggregate_stats()
     done
   done
 
-  echo $"Species\tiiLocusLen" > data/ilens.tsv
-  echo $"Species\tiLocusID\tLeftLen\tRightLen" > data/filens.tsv
-  for spec in Aech Ador Aech Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pbar Pdom Sinv Tcas
+  echo $'Species\tiiLocusLen' > data/ilens.tsv
+  echo $'Species\tiLocusID\tLeftLen\tRightLen' > data/filens.tsv
+  for spec in Acep Aech Ador Aech Aflo Amel Bimp Bter Cflo Dmel Hsal Mrot Nvit Pbar Pdom Sinv Tcas
   do
-    cat species/${spec}/${spec}.ilens.tsv > data/ilens.tsv
-    cat species/${spec}/${spec}.filens.tsv > data/filens.tsv
+    cat species/${spec}/${spec}.ilens.tsv >> data/ilens.tsv
+    cat species/${spec}/${spec}.filens.tsv >> data/filens.tsv
   done
 
   shasum -c data/checksums.sha
