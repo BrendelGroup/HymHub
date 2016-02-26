@@ -1,4 +1,0 @@
-Species	ExonPos	MrnaAcc	Length	GCContent	GCSkew	NContent	Context	Phase	Remainder
-default	NT_033778.3_19722259-19722625+	NM_137992.2	367	0.605	0.009	0.000	cds	1	0
-default	NW_003798164.1_151172-151385-	XM_003708196.1	214	0.416	0.281	0.000	start	None	None
-default	PdomSCFr1.2-0001_325761-325941+	PdomMRNAr1.2-08589.1	181	0.442	0.175	0.000	cds	1	0
